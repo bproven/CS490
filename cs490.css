@@ -1,0 +1,37 @@
+body {
+    background-color: antiquewhite;
+    font: 14px arial, sans-serif;
+}
+
+h1 {
+    color: brown;
+}
+
+label {
+    width: 320px;
+}
+
+input {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border-width: 2px;
+}
+
+.loginform {
+    width: 320px;
+    margin: 4px;
+    padding: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: burlywood;
+    border-radius: 10px;
+}
+
+.field {
+    margin: 5px;
+}
+
+#login {
+    width: 80px;
+}

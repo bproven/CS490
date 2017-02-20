@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <link rel="stylesheet" href="cs490.css">
+    </head>
+    
+    <body>
+        
+        <h1>CS 490 Project</h1>
+        
+        <div class="login">
+            
+            <form action="http://afsaccess1.njit.edu/~rap9/cs490/front.php" id="login-form">
+                <div class="field">
+                    <label for="user">Username:</label>
+                    <input type="text" id="user" value="" />
+                </div>
+                <div class="field">
+                    <label for="pass">Password:</label>
+                    <input type="password" id="pass" value="" />
+                </div>
+                <div class="field">
+                <input type="button" id="login" value="Login" onclick="postLogin()" />
+                </div>
+            </form>
+            
+            <div class="field">
+                <label>NJIT Result: </label><label id="njit-result"></label>
+            </div>
+            
+            <div class="field">
+                <label>Our Result: </label><label id="our-result"></label>
+            </div>
+            
+        </div>
+    
+    </body>
+    
+    <script type="text/javascript">
+        
+        // shows an error on the current page.
+        function showError( error ) {
+            
+            alert( "Error: " + error );
+            
+        }
+    
+        function postLogin() {
+            
+            // grab the form
+            var loginForm = document.getElementById( "login-form" );
+            
+            // pull out the input fields and create a request object
+            var formFields = {
+                "user": loginForm.elements[ "user" ].value,
+                "pass": loginForm.elements[ "pass" ].value
+            };
+            
+            // create a json string from the request object
+            var json = JSON.stringify( formFields );
+            
+            //alert( json );
+            
+            // create a request object
+            var request = new XMLHttpRequest();
+            
+            // attach a state change handler
+            request.onreadystatechange = function() {
+              
+                // if the request is done
+                if ( request.readyState == XMLHttpRequest.DONE ) {
+                    
+                    if ( request.status == 200 ) {
+                        
+                        var response = request.response;
+                        
+                        var results = JSON.parse( response );         // not sure if we're allowed to use JSON.parse which is safer
+                        
+                        var njitResult = results.njitResult;
+                        var ourResult = results.ourResult;
+                        
+                        document.getElementById( "njit-result" ).innerHTML = njitResult ? "Authenticated" : "Invalid username/password combination";
+                        document.getElementById( "our-result" ).innerHTML = ourResult ? "Authenticated" : "Invalid username/password combination";
+                        
+                    }
+                    else {
+                        
+                        showError( "Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'" );
+                        
+                    }
+                    
+                }
+                
+            };
+            
+            // open the request
+            request.open( "POST", loginForm.action, true );
+            
+            // set the type
+            request.setRequestHeader( "Content-Type", "application/json" );
+            
+            // send the data
+            request.send( json );
+            
+        }
+    
+    </script>
+    
+</html>
+
