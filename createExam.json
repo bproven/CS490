@@ -1,0 +1,15 @@
+createExam.php
+
+input json:
+
+{
+    questionIds: [ int, int, int, ..., int ]
+}
+
+return json:
+
+{
+    result: true/false,
+    examId: int
+}
+

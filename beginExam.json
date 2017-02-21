@@ -1,0 +1,16 @@
+beginExam.php
+
+input json:
+
+{
+    studentId: int,
+    examId: int
+}
+
+output json:
+
+{
+    result: true/false,
+    studentExamId: int
+}
+

@@ -1,0 +1,46 @@
+addQuestion.php
+
+input json:
+
+{
+    functionName: "theFunctionName",
+    hasIf: true/false,
+    hasFor: true/false,
+    hasWhile: true/false,
+    arguments: [
+        "theType1",
+        "theType2",
+        "theType3",
+        "theType4"
+    ],
+    returnType: "theReturnType"
+}
+
+return json:
+
+{
+    result: true/false,
+    questionId: int
+}
+
+addQuestionTestCase.php
+
+input json:
+
+{
+    questionId: int,
+    arguments: [
+        "argument1", 
+        "argument2", 
+        "argument3",
+        "argument4"
+    ],
+    result: "expected result"
+}
+
+return json:
+
+{
+    result: true/false,
+    questionTestCaseId: int
+}

@@ -1,0 +1,18 @@
+saveAnswer.php
+
+input json
+
+{
+    studentId: int,
+    examId: int,
+    questionId: int,
+    answer: "theAnswer"
+}
+
+output json:
+
+{
+    result: true/false,
+    answerId: int
+}
+
