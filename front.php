@@ -1,61 +1,208 @@
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+
+ 	<link rel="stylesheet" type="text/css" href="front.css">
+	<title>CS490 Login Page</title>
+	<meta charset = "utf-8" />
+        
+    </head>
+    
+    <body>
+
+	<div class=main>
+        
+        <h1>CS 490 Project </h1>
+       
+	<form action="front.php" method="post">
+		<fieldset>
+		Write a function called <input type="text" name="FunctionName">
+		that <input type="text" name="Question">
+		using arguments 1:<input type="text" name="Argument1">
+		2:<input type="text" name="Argument2">
+		3:<input type="text" name="Argument3">
+		4:<input type="text" name="Argument4">.
+		Difficulty: <input type="text" name="Difficulty">.
+		<br></br>Answer:<br></br>
+			<textarea name="Answer"></textarea><br></br>
+		Has If Statement? (n for no, y for yes) <input type="text" name="HasIf">
+		Has While Loop? (n for no, y for yes)<input type="text" name="HasWhile">
+		Has For Loop? (n for no, y for yes)<input type="text" name="HasFor"><br></br>
+		<button type="submit" value="Submit" name="Insert">Insert Question</button>
+		<button type="reset" value="Reset">Reset</button>
+		</fieldset>
+	</form>
+
+	<form action="front.php" method="post">
+		<fieldset>
+		Add into Exam Number <input type="text" name="ExamNumber">
+		, question ID# <input type="text" name="QuestionNumber">
+		. Points assigned to question: <input type="text" name="Points">
+		<button type="submit" value="AddQuestion" name="AddQuestion">Add Question</button>
+		<button type="reset" value="Reset">Reset</button>
+		</fieldset>
+	</form>	
+
+
+
+	<br></br>
+	<form action="front.php" method="post">
+		<button type="submit" value="ViewUsers" name="ViewUsers">View Users</button>
+		<button type="submit" value="ViewQuestions" name="ViewQuestions">View Questions</button>
+		<button type="submit" value="ViewExams" name="ViewExams">View Exams</button>
+		<button type="submit" value="ViewGrades" name="ViewGrades">View Grades</button>
+		<button type="submit" value="Clean" name="Clean">Clean Database</button>
+	</form>
+	
+
+
 <?php
+	function viewUsers() {
+		$URL = "https://web.njit.edu/~dhg6/cs490/users.php";        
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
 
-$response_code = 200;
+	function viewQuestions() {
+		$URL = "https://web.njit.edu/~dhg6/cs490/questions.php";        
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
 
-// make sure we have a valid request
-if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
-    
-    $url = "http://afsaccess1.njit.edu/~keg9/cs490/middle.php";
-    $post_data = file_get_contents( "php://input" );
-    
-    $njit_result = true;
-    $our_result = true;
-    
-    // send request to middle tier
-    
-    $curl = curl_init();
-    
-    curl_setopt( $curl, CURLOPT_URL, $url );
-    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt( $curl, CURLOPT_POST, true );
-    curl_setopt( $curl, CURLOPT_POSTFIELDS, $post_data );
-    
-    session_write_close();
-    $result = curl_exec( $curl );
-    session_start();
-    
-    if ( $result === false ) {
-        
-        $response_code = 500;
-        
-        header( "Content-Type: text/plain" );
-        
-        $error_msg = "front.php Curl error: " . curl_error( $curl );
-        
-        error_log( $error_msg );
-        
-        echo $error_msg;
-        
-    }
-    else {
-        
-        // return results
+	function viewExams() {
+		$URL = "https://web.njit.edu/~dhg6/cs490/exams.php";        
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
 
-        header( "Content-Type: application/json" );
+	function viewGrades() {
+		$URL = "https://web.njit.edu/~dhg6/cs490/grades.php";        
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
+	function insert(){
+		$URL = "https://web.njit.edu/~dhg6/cs490/insert.php";
+		$data = array( 'Question' => ($_POST["Question"]), 'FunctionName' => ($_POST["FunctionName"]), 
+			'Argument1' => ($_POST["Argument1"]), 'Argument2' => ($_POST["Argument2"]), 
+			'Argument3' => ($_POST["Argument3"]), 'Argument4' => ($_POST["Argument4"]),
+			'Difficulty' => ($_POST["Difficulty"]), 'Answer' => ($_POST["Answer"]),
+			'HasIf' => ($_POST["HasIf"]), 'HasWhile' => ($_POST["HasWhile"]),
+			'HasFor' => ($_POST["HasFor"]) );
+                                       
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
 
-        echo $result;
-    
-    }
-    
-    curl_close( $curl );
-    
-}
-else {
+	function add(){
+		$URL = "https://web.njit.edu/~dhg6/cs490/add.php";
+		$data = array( 'ExamNumber' => ($_POST["ExamNumber"]), 'QuestionNumber' => ($_POST["QuestionNumber"]),
+		'Points' => ($_POST["Points"]) );                 
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
 
-    $response_code = 405;                       // 405: Method Not Allowed
+	function clean() {
+		$URL = "https://web.njit.edu/~dhg6/cs490/clean.php";        
+		$data_string = json_encode($data);                                                                                   
+		$ch = curl_init($URL);                                                                      
+		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+		$result = curl_exec($ch);
+		echo $result;
+		curl_close($ch);
+	}
 
-}
-
-http_response_code( $response_code )
-
+	if(isset($_POST['Insert'])) {
+		insert();
+	} 	
+	if(isset($_POST['ViewUsers'])) {
+		viewUsers();
+	}
+	if(isset($_POST['ViewQuestions'])) {
+		viewQuestions();
+	}
+	if(isset($_POST['ViewGrades'])) {
+		viewGrades();
+	}
+	if(isset($_POST['ViewExams'])) {
+		viewExams();
+	}
+	if(isset($_POST['AddQuestion'])) {
+		add();
+	}
+	if(isset($_POST['Clean'])) {
+		clean();
+	} 
 ?>
+
+	</div>
+    </body>
+    
+</html>

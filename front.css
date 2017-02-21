@@ -1,0 +1,31 @@
+body {	
+	background-color: #222930;
+	margin: 10px;
+	padding: 10px;
+	font-family: Tahoma;
+	text-align: center;
+	color: #4EB1BA;
+}
+
+.main {
+	border-style: groove;
+	margin-top: 10px;
+ 	margin-right: 100px;
+   	margin-left: 100px;
+	padding-top: 10px;
+	padding-bottom: 50px;
+
+}
+
+.insert {
+	border-style: groove;
+
+}
+
+.form {
+	font-weight: bold;
+}
+
+.label{
+	font-weight: bold;
+}
