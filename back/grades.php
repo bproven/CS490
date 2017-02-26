@@ -1,17 +1,7 @@
 <?php
 
-$servername = "sql2.njit.edu";
-$username = "dhg6";
-$password = "VkwQg0fD";
-$dbname = "dhg6";
-
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
+$conn = include( "connect.php" );
 
 $sql = "SELECT * FROM cs490_ExamGrades";
 $result = $conn->query($sql);

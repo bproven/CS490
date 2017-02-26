@@ -2,37 +2,21 @@
 
 $content = trim(file_get_contents("php://input"));
 $decoded = json_decode($content);
-$servername = "sql2.njit.edu";
-$username = "dhg6";
-$password = "VkwQg0fD";
-$dbname = "dhg6";
-$qnum=1;
-$flag=0;
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
+$conn = include( "connect.php" );
 
 echo "<br></br>";
 
-$sql = "SELECT * FROM cs490_Questions, cs490_ExamQuestions
-	WHERE cs490_Questions.Id = cs490_ExamQuestions.QuestionId
-	ORDER BY ExamId";
+$sql = "SELECT * FROM cs490_Questions";
 $result = $conn->query($sql);
 while($row = $result->fetch_assoc()) {
-	if ( $flag !== $row["ExamId"] ) { $qnum = 1; }
 	$count=4;
 	if ( $row["Argument1"]===NULL Or $row["Argument1"]==="" ) { $count = ($count-1);}
 	if ( $row["Argument2"]===NULL Or $row["Argument2"]==="" ) { $count = ($count-1);}
 	if ( $row["Argument3"]===NULL Or $row["Argument3"]==="" ) { $count = ($count-1);}
 	if ( $row["Argument4"]===NULL Or $row["Argument4"]==="" ) { $count = ($count-1);}
-	if ( $qnum===1 ) { echo "<strong>"."Exam #".$row["ExamId"]."</strong>"."<br><br>"; }
-	echo "Question #" . $qnum . ", ID#" . $row["Id"] . ": "."Write a function called ".$row["FunctionName"];
-	$qnum=($qnum+1);
+	echo "Question ID#".$row["Id"].": Write a function called ".$row["FunctionName"];
 	echo " that ".$row["Question"].", using ";
 	echo $count." arguments";
 	if ( $count >0 ) { echo " called "; }
@@ -41,14 +25,15 @@ while($row = $result->fetch_assoc()) {
 	if ( $row["Argument3"]!=NULL ) { echo $row["Argument3"] . ", "; }
 	if ( $row["Argument4"]!=NULL ) { echo $row["Argument4"] . ", "; }
 	echo " in the space provided.";
+	if ( $row["HasIf"] == 'y' ) { echo " You must use an if statement."; }
+	if ( $row["HasWhile"] == 'y' ) { echo " You must use a while loop."; }
+	if ( $row["HasFor"] == 'y' ) { echo " You must use a for loop."; }
+
 	echo "<br></br>";
 	echo "Answer: ".$row["Answer"];
 	echo "<br></br>";
-	echo "Difficulty: ".$row["Difficulty"]. str_repeat('&nbsp;', 5);;
-	echo "Points: ".$row["Points"];
-	echo "<br></br>";
-
-	$flag = $row["ExamId"];
+	echo "Difficulty: ".$row["Difficulty"];
+	echo "<br></br>"."<br></br>";
 }
 
 

@@ -1,6 +1,8 @@
 <?php
+
 $content = trim(file_get_contents("php://input"));
 $decoded = json_decode($content);
+
 $question=($decoded->Question);
 $function_name=($decoded->FunctionName);
 $arg1=($decoded->Argument1);
@@ -12,18 +14,9 @@ $answer=($decoded->Answer);
 $hasIf=($decoded->HasIf);
 $hasWhile=($decoded->HasWhile);
 $hasFor=($decoded->HasFor);
-$servername = "sql2.njit.edu";
-$username = "dhg6";
-$password = "VkwQg0fD";
-$dbname = "dhg6";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
+$conn = include( "connect.php" );
 
 $question=mysqli_real_escape_string($conn, $question);
 $function_name=mysqli_real_escape_string($conn, $function_name);

@@ -3,25 +3,15 @@
 $content = trim(file_get_contents("php://input"));
 $decoded = json_decode($content);
 
-$servername = "sql2.njit.edu";
-$username = "dhg6";
-$password = "VkwQg0fD";
-$dbname = "dhg6";
-
 $examnum=($decoded->ExamNumber);
 $qnum=($decoded->QuestionNumber);
 $points=($decoded->Points);
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = include( "connect.php" );
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-$examnum=mysqli_real_escape_string($conn, $examnum);
-$qnum=mysqli_real_escape_string($conn, $qnum);
+$examnum    = mysqli_real_escape_string($conn, $examnum);
+$qnum       = mysqli_real_escape_string($conn, $qnum);
 
 echo "<br></br>";
 
@@ -35,9 +25,6 @@ while($row = $result->fetch_assoc()) {
 	}
 }
 
-
-
-
 $sql = "INSERT INTO cs490_ExamQuestions
 	VALUES ('".$examnum."', '".$qnum."', '".$points."')";
 
@@ -46,8 +33,6 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
-
-
 
 $conn->close();
 
