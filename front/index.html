@@ -12,10 +12,10 @@
         
         <div class="login">
             
-            <form action="http://afsaccess1.njit.edu/~rap9/cs490/front.php" id="login-form">
+            <form action="login.php" id="login-form">
                 <div class="field">
-                    <label for="user">Username:</label>
-                    <input type="text" id="user" value="" />
+                    <label for="ucid">Username:</label>
+                    <input type="text" id="ucid" value="" />
                 </div>
                 <div class="field">
                     <label for="pass">Password:</label>
@@ -25,14 +25,6 @@
                 <input type="button" id="login" value="Login" onclick="postLogin()" />
                 </div>
             </form>
-            
-            <div class="field">
-                <label>NJIT Result: </label><label id="njit-result"></label>
-            </div>
-            
-            <div class="field">
-                <label>Our Result: </label><label id="our-result"></label>
-            </div>
             
         </div>
     
@@ -52,7 +44,7 @@
             
             // pull out the input fields and create a request object
             var formFields = {
-                "user": loginForm.elements[ "user" ].value,
+                "ucid": loginForm.elements[ "ucid" ].value,
                 "pass": loginForm.elements[ "pass" ].value
             };
             
@@ -76,11 +68,12 @@
                         
                         var results = JSON.parse( response );         // not sure if we're allowed to use JSON.parse which is safer
                         
-                        var njitResult = results.njitResult;
-                        var ourResult = results.ourResult;
-                        
-                        document.getElementById( "njit-result" ).innerHTML = njitResult ? "Authenticated" : "Invalid username/password combination";
-                        document.getElementById( "our-result" ).innerHTML = ourResult ? "Authenticated" : "Invalid username/password combination";
+                        if ( results.length === 1 ) {
+                            alert( "logged in" );
+                        }
+                        else {
+                            showError( "unauthorized" );
+                        }
                         
                     }
                     else {

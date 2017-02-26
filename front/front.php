@@ -59,8 +59,11 @@
 
 
 <?php
+
+    $config = include( "config.php" );
+
 	function viewUsers() {
-		$URL = "https://web.njit.edu/~dhg6/cs490/users.php";        
+		$URL = $config->middle . "users.php";        
 		$data_string = json_encode($data);                                                                                   
 		$ch = curl_init($URL);                                                                      
 		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
@@ -76,7 +79,7 @@
 	}
 
 	function viewQuestions() {
-		$URL = "https://web.njit.edu/~dhg6/cs490/questions.php";        
+		$URL = $config->middle . "questions.php";        
 		$data_string = json_encode($data);                                                                                   
 		$ch = curl_init($URL);                                                                      
 		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
@@ -92,7 +95,7 @@
 	}
 
 	function viewExams() {
-		$URL = "https://web.njit.edu/~dhg6/cs490/exams.php";        
+		$URL = $config->middle . "exams.php";        
 		$data_string = json_encode($data);                                                                                   
 		$ch = curl_init($URL);                                                                      
 		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
@@ -108,7 +111,7 @@
 	}
 
 	function viewGrades() {
-		$URL = "https://web.njit.edu/~dhg6/cs490/grades.php";        
+		$URL = $config->middle . "grades.php";        
 		$data_string = json_encode($data);                                                                                   
 		$ch = curl_init($URL);                                                                      
 		curl_setopt($ch, CURLOPT_POST, 1);                                                                     
@@ -123,7 +126,7 @@
 		curl_close($ch);
 	}
 	function insert(){
-		$URL = "https://web.njit.edu/~dhg6/cs490/insert.php";
+		$URL = $config->middle . "insert.php";
 		$data = array( 'Question' => ($_POST["Question"]), 'FunctionName' => ($_POST["FunctionName"]), 
 			'Argument1' => ($_POST["Argument1"]), 'Argument2' => ($_POST["Argument2"]), 
 			'Argument3' => ($_POST["Argument3"]), 'Argument4' => ($_POST["Argument4"]),
@@ -146,7 +149,7 @@
 	}
 
 	function add(){
-		$URL = "https://web.njit.edu/~dhg6/cs490/add.php";
+		$URL = $config->middle . "add.php";
 		$data = array( 'ExamNumber' => ($_POST["ExamNumber"]), 'QuestionNumber' => ($_POST["QuestionNumber"]),
 		'Points' => ($_POST["Points"]) );                 
 		$data_string = json_encode($data);                                                                                   
@@ -164,7 +167,7 @@
 	}
 
 	function clean() {
-		$URL = "https://web.njit.edu/~dhg6/cs490/clean.php";        
+		$URL = $config->middle . "clean.php";        
 		$data_string = json_encode($data);                                                                                   
 		$ch = curl_init($URL);                                                                      
 		curl_setopt($ch, CURLOPT_POST, 1);                                                                     

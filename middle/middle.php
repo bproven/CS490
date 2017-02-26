@@ -5,8 +5,10 @@
 
 	$id=($decoded->user);
 	$pass=($decoded->pass);
+        
+        $config = include( "config.php" );
 
-	$URL = "https://web.njit.edu/~dhg6/cs490/view.php";
+	$URL = $config->back . "view.php";
 	
 	$data = array(UCID => ("$id"), 'password' => ("$pass"));
 	$data_string = json_encode($data); 
