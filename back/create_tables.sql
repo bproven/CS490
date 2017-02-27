@@ -1,75 +1,134 @@
 use dhg6;
 
-drop table if exists `cs490_ExamGrades`;
+/* Users */
 
-create table `cs490_ExamGrades` (
-  `UCID`   text    not null,
-  `ExamId` int(11) not null,
-  `Grade`  int(11) not null
+drop table if exists cs490_User;
+
+create table cs490_User (
+  ucid      varchar(8) not null,
+  password  varchar(20) not null,
+  firstName varchar(20) not null,
+  lastName  varchar(20) not null,
+  privelege char(1) not null
 );
 
-insert into `cs490_ExamGrades` 
-    values ('dhg6',1,64);
+insert into cs490_User 
+    values  ('dhg6','password','Dan',   'Gordon',    'S'),
+            ('rap9','password','Bob',   'Provencher','S'),
+            ('keg9','password','Keith', 'Grubbs',    'S'),
+            ('taj1','password','Tom',   'Jones',     'I'),
+            ('jsp9','password','Jamie', 'Platt',     'S'),
+            ('cod6','password','Cody',  'Doogan',    'S');
 
-drop table if exists `cs490_ExamQuestions`;
+/* Questions */
 
-create table `cs490_ExamQuestions` (
-  `ExamId`     int(11) not null,
-  `QuestionId` int(11) not null,
-  `Points`     int(11) not null
+drop table if exists cs490_Question;
+
+create table cs490_Question (
+  questionId int not null auto_increment primary key,
+  question  text,
+  argument1 varchar(8),
+  argument2 varchar(8),
+  argument3 varchar(8),
+  argument4 varchar(8),
+  returnType varchar(8),
+  difficulty int,
+  functionName varchar(64),
+  hasIf    bool,
+  hasWhile bool,
+  hasFor   bool,
+  hasRecursion bool
 );
 
-insert into `cs490_ExamQuestions` 
-    values  (1,22,25),
-            (1,23,25),
-            (1,24,25),
-            (1,25,25),
-            (2,22,50),
-            (2,25,50),
-            (5,26,50),
-            (5,22,20),
-            (5,23,25),
-            (5,24,5);
+insert into cs490_Question 
+    values  (23,'returns the sum of two integers',                          'int','int',null,null,'int',1,'sum',          false,false,false,false),
+            (24,'returns one integer subtracted by a second',               'int','int',null,null,'int',1,'minus',        false,false,false,false),
+            (25,'returns the remainder of one integer divided by another',  'int','int',null,null,'int',2,'remainder',    false,false,false,false),
+            (26,'returns the product of two numbers,',                      'int','int',null,null,'int',1,'times',        false,false,false,false);
 
-drop table if exists `cs490_Questions`;
+alter table cs490_Question auto_increment = 27;
 
-create table `cs490_Questions` (
-  `Id` int(11) not null auto_increment,
-  `Question`  text,
-  `Answer`    text,
-  `Argument1` text,
-  `Argument2` text,
-  `Argument3` text,
-  `Argument4` text,
-  `Difficulty` text,
-  `FunctionName` text,
-  `HasIf`    bool,
-  `HasWhile` bool,
-  `HasFor`   bool,
-  PRIMARY KEY (`Id`)
-) auto_increment = 27;
+/* Test Case */
 
-insert into `cs490_Questions` 
-    values  (22,'prints using \'println\' all numbers in sequence leading up to, and including it, using \'i\' to iterate through the for loop, and','public static void count(int x) {\r\n      for (int i=1; i<=x; i++){\r\n         System.out.println(i);}','x','','','','Medium','count',0,0,1),
-            (23,'returns the sum of two integers','public static int sum(int x, int y) {\r\n      return (x+y); }','x',1,'','','Easy','sum',0,0,0),
-            (24,'returns one integer subtracted by a second','   public static int minus(int x, int y) {\r\n      return (x-y); }','x',1,'','','Easy','minus',0,0,0),
-            (25,'returns the remainder of one integer divided by another','public static int remainder(int x, int y) {\r\n      return (x%y);}','x',1,'','','Medium','remainder',0,0,0),
-            (26,'returns the product of two numbers,','public static int times(int x, int y) { return (x*y); }','a','b','','','Medium','times',0,0,0);
+drop table if exists cs490_TestCase;
 
-drop table if exists `cs490_Users`;
-
-create table `cs490_Users` (
-  `UCID`     varchar(20) not null,
-  `Password` varchar(20) not null,
-  `First`    varchar(20) not null,
-  `Last`     varchar(20) not null,
-  `Privelege` char(1) not null
+create table cs490_TestCase (
+    testCaseId    int not null auto_increment primary key,
+    questionId    int not null,
+    argument1     varchar(16),
+    argument2     varchar(16),
+    argument3     varchar(16),
+    argument4     varchar(16),
+    returnValue   varchar(16)
 );
 
-insert into `cs490_Users` 
-    values  ('dhg6','password','Dan','Gordon','S'),
-            ('rap9','password','Bob','Provencher','S'),
-            ('keg9','password','Keith','Grubbs','S'),
-            ('taj1','password','Tom','Jones','I'),
-            ('jsp9','password','Jamie','Platt','S'),
-            ('cod6','password','Cody','Doogan','S');
+insert into cs490_TestCase
+    values  ( 1, 23,  '2', '3', null, null,  '5' ),
+            ( 2, 24,  '5', '3', null, null,  '2' ),
+            ( 3, 25, '10', '3', null, null,  '1' ),
+            ( 4, 26,  '5', '8', null, null, '40' );
+
+alter table cs490_TestCase auto_increment = 5;
+
+/* Exams */
+
+drop table if exists cs490_Exam;
+
+create table cs490_Exam (
+    examId    int not null auto_increment primary key,
+    examName  varchar(64) not null,
+    ownerId   varchar(8) not null
+);
+
+insert into cs490_Exam 
+    values ( 1, 'CS 490 Exam', 'taj1' );
+
+alter table cs490_Exam auto_increment = 2;
+
+/* ExamQuestions */
+
+drop table if exists cs490_ExamQuestion;
+
+create table cs490_ExamQuestion (
+  examId     int not null,
+  questionId int not null,
+  points     int not null
+);
+
+insert into cs490_ExamQuestion 
+    values  ( 1, 23, 25 ),
+            ( 1, 24, 25 ),
+            ( 1, 25, 25 ),
+            ( 2, 25, 50 ),
+            ( 5, 26, 50 ),
+            ( 5, 23, 25 ),
+            ( 5, 24,  5 );
+
+/* ExamQuestionAnswer */
+
+drop table if exists cs490_ExamQuestionAnswer;
+
+create table cs490_ExamQuestionAnswer (
+    ucid        varchar(8) not null,
+    examId      int not null,
+    questionId  int not null,
+    answer      text
+);
+
+insert into cs490_ExamQuestionAnswer
+    values  ( 'dhg6', 1, 26, 'this is a sample answer' );
+
+/* ExamGrades */
+
+drop table if exists cs490_ExamGrade;
+
+create table cs490_ExamGrade (
+  ucid   varchar(8) not null,
+  examId int not null,
+  grade  int not null
+);
+
+insert into cs490_ExamGrade
+    values  ('dhg6',1,64),
+            ('rap9',1,55),
+            ('keg9',1,99);

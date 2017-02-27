@@ -8,7 +8,7 @@ $conn = include( "connect.php" );
 
 echo "<br></br>";
 
-$sql = "SELECT * FROM cs490_Questions";
+$sql = "select * from cs490_Questions";
 $result = $conn->query($sql);
 while($row = $result->fetch_assoc()) {
 	$count=4;

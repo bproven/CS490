@@ -15,7 +15,7 @@ $qnum       = mysqli_real_escape_string($conn, $qnum);
 
 echo "<br></br>";
 
-$sql = "SELECT * FROM cs490_ExamQuestions";
+$sql = "select * from cs490_ExamQuestions";
 $result = $conn->query($sql);
 
 while($row = $result->fetch_assoc()) {

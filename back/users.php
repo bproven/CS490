@@ -3,6 +3,6 @@
 include "query.php";
 
 header( "Content-type: application/json" );
-echo execQueryToJSON( "SELECT * FROM cs490_Users" );
+echo execQueryToJSON( "select * from cs490_Users" );
 
 ?>

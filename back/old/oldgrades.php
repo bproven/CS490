@@ -3,7 +3,7 @@
 // Create connection
 $conn = include( "connect.php" );
 
-$sql = "SELECT * FROM cs490_ExamGrades";
+$sql = "select * from cs490_ExamGrades";
 $result = $conn->query($sql);
 echo "<table>";
 echo "<tr>";

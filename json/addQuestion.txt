@@ -3,17 +3,18 @@ addQuestion.php
 input json:
 
 {
+    question: "text",
+    argument1: "theType1",
+    argument2: "theType2",
+    argument3: "theType3",
+    argument4: "theType4",
+    returnType: "theReturnType",
+    difficulty: int,
     functionName: "theFunctionName",
     hasIf: true/false,
-    hasFor: true/false,
     hasWhile: true/false,
-    arguments: [
-        "theType1",
-        "theType2",
-        "theType3",
-        "theType4"
-    ],
-    returnType: "theReturnType"
+    hasFor: true/false,
+    hasRecursion: true/false
 }
 
 return json:

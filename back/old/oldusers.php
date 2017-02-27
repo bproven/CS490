@@ -3,7 +3,7 @@
 // Create connection
 $conn = include( "connect.php" );
 
-$sql = "SELECT * FROM cs490_Users";
+$sql = "select * from cs490_Users";
 
 if ( $result = $conn->query( $sql ) ) {
 

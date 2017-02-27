@@ -13,7 +13,7 @@ $flag = false;
 // Create connection
 $conn = include( "connect.php" );
 
-$sql = "SELECT Id, Password FROM cs490_Users";
+$sql = "select Id, Password from cs490_Users";
 $result = $conn->query($sql);
 
 while($row = $result->fetch_assoc()) {

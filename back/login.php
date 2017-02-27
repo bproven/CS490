@@ -8,11 +8,11 @@ $creds = json_decode($content);
 $ucid = $creds->ucid;
 $pass = $creds->pass;
 
-echo execQueryJSON( 
-      "select ucid, first, last, privelege " .
-        "from cs490_users " . 
+echo execQueryToJSON( 
+      "select ucid, firstName, lastName, privelege " .
+        "from cs490_Users " . 
        "where ucid = '" . $ucid . "'" .
-         "and pass = '" . $pass . "'" );
+         "and password = '" . $pass . "'" );
 
 ?>
 
