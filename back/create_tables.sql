@@ -3,6 +3,7 @@ use dhg6;
 /* Users */
 
 drop table if exists cs490_User;
+drop table if exists cs490_Users;
 
 create table cs490_User (
   ucid      varchar(8) not null,
@@ -23,6 +24,7 @@ insert into cs490_User
 /* Questions */
 
 drop table if exists cs490_Question;
+drop table if exists cs490_Questions;
 
 create table cs490_Question (
   questionId int not null auto_increment primary key,
@@ -51,6 +53,7 @@ alter table cs490_Question auto_increment = 27;
 /* Test Case */
 
 drop table if exists cs490_TestCase;
+drop table if exists cs490_TestCases;
 
 create table cs490_TestCase (
     testCaseId    int not null auto_increment primary key,
@@ -73,6 +76,7 @@ alter table cs490_TestCase auto_increment = 5;
 /* Exams */
 
 drop table if exists cs490_Exam;
+drop table if exists cs490_Exams;
 
 create table cs490_Exam (
     examId    int not null auto_increment primary key,
@@ -88,6 +92,7 @@ alter table cs490_Exam auto_increment = 2;
 /* ExamQuestions */
 
 drop table if exists cs490_ExamQuestion;
+drop table if exists cs490_ExamQuestions;
 
 create table cs490_ExamQuestion (
   examId     int not null,
@@ -107,6 +112,7 @@ insert into cs490_ExamQuestion
 /* ExamQuestionAnswer */
 
 drop table if exists cs490_ExamQuestionAnswer;
+drop table if exists cs490_ExamQuestionAnswers;
 
 create table cs490_ExamQuestionAnswer (
     ucid        varchar(8) not null,
@@ -121,6 +127,7 @@ insert into cs490_ExamQuestionAnswer
 /* ExamGrades */
 
 drop table if exists cs490_ExamGrade;
+drop table if exists cs490_ExamGrades;
 
 create table cs490_ExamGrade (
   ucid   varchar(8) not null,
