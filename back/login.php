@@ -2,17 +2,18 @@
 
 include 'query.php';
 
-$content = trim(file_get_contents("php://input"));
+//$content = trim(file_get_contents("php://input"));
+$content = '{ "ucid": "rap9", "pass": "password" }';
 $creds = json_decode($content);
 
 $ucid = $creds->ucid;
 $pass = $creds->pass;
 
 echo execQueryToJSON( 
-      "select ucid, firstName, lastName, privelege " .
-        "from cs490_Users " . 
+      "select id, ucid, firstName, lastName, privelege " .
+        "from cs490_User " . 
        "where ucid = '" . $ucid . "'" .
-         "and password = '" . $pass . "'" );
+         "and password = MD5( '" . $pass . "' )" );
 
 ?>
 

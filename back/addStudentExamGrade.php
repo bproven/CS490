@@ -17,7 +17,7 @@ $content = trim(file_get_contents("php://input"));
 //$content = '{ "ucid": 1, "examId": 1, "grade": 100 }';
 $examGrade = json_decode($content);
 
-$id = insert( 'cs490_ExamGrade', $examGrade, false );
+$id = insert( 'cs490_StudentExamGrade', $examGrade, false );
 
 header( "Content-type: application/json" );
 echo jsonInsertResult( $id , null, false );

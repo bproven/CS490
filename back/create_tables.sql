@@ -6,20 +6,21 @@ drop table if exists cs490_User;
 drop table if exists cs490_Users;
 
 create table cs490_User (
-  ucid      varchar(8) not null,
-  password  varchar(20) not null,
+  id        char(36)    not null primary key,
+  ucid      varchar(8)  not null,
+  password  char(32)    not null,
   firstName varchar(20) not null,
   lastName  varchar(20) not null,
-  privelege char(1) not null
+  privelege char(1)     not null
 );
 
 insert into cs490_User 
-    values  ('dhg6','password','Dan',   'Gordon',    'S'),
-            ('rap9','password','Bob',   'Provencher','S'),
-            ('keg9','password','Keith', 'Grubbs',    'S'),
-            ('taj1','password','Tom',   'Jones',     'I'),
-            ('jsp9','password','Jamie', 'Platt',     'S'),
-            ('cod6','password','Cody',  'Doogan',    'S');
+    values  ( UUID(), 'dhg6',MD5('password'),'Dan',   'Gordon',    'S'),
+            ( UUID(), 'rap9',MD5('password'),'Bob',   'Provencher','S'),
+            ( UUID(), 'keg9',MD5('password'),'Keith', 'Grubbs',    'S'),
+            ( UUID(), 'taj1',MD5('password'),'Tom',   'Jones',     'I'),
+            ( UUID(), 'jsp9',MD5('password'),'Jamie', 'Platt',     'S'),
+            ( UUID(), 'cod6',MD5('password'),'Cody',  'Doogan',    'S');
 
 /* Questions */
 
@@ -124,18 +125,57 @@ create table cs490_ExamQuestionAnswer (
 insert into cs490_ExamQuestionAnswer
     values  ( 'dhg6', 1, 26, 'this is a sample answer' );
 
-/* ExamGrades */
+/* StudentExamGrades */
 
+drop table if exists cs490_StudentExamGrade;
 drop table if exists cs490_ExamGrade;
 drop table if exists cs490_ExamGrades;
 
-create table cs490_ExamGrade (
+create table cs490_StudentExamGrade (
   ucid   varchar(8) not null,
   examId int not null,
   grade  int not null
 );
 
-insert into cs490_ExamGrade
-    values  ('dhg6',1,64),
-            ('rap9',1,55),
-            ('keg9',1,99);
+insert into cs490_StudentExamGrade
+    values  ( 'dhg6', 1, 64 ),
+            ( 'rap9', 1, 55 ),
+            ( 'keg9', 1, 99 );
+
+/* StudentExamQuestionScore */
+
+drop table if exists cs490_StudentExamQuestionScore;
+
+create table cs490_StudentExamQuestionScore (
+    ucid        varchar(8),
+    examId      int not null,
+    questionId  int not null,
+    score       int not null
+);
+
+insert into cs490_StudentExamQuestionScore
+    values  ( 'rap9', 1, 25, 76 ),
+            ( 'rap9', 1, 26, 78 ),
+            ( 'dhg6', 1, 25, 63 ),
+            ( 'dhg6', 1, 26, 65 ),
+            ( 'keg9', 1, 25, 100 ),
+            ( 'keg9', 1, 26, 98 );
+
+/* StudentExamTestCaseScore */
+
+drop table if exists cs490_StudentExamTestCaseScore;
+
+create table cs490_StudentExamTestCaseScore (
+    ucid        varchar(8),
+    examId      int not null,
+    testCaseId  int not null,
+    score       int not null
+);
+
+insert into cs490_StudentExamTestCaseScore
+    values  ( 'rap9', 1, 3,  76 ),
+            ( 'rap9', 1, 4,  78 ),
+            ( 'dhg6', 1, 3,  63 ),
+            ( 'dhg6', 1, 4,  65 ),
+            ( 'keg9', 1, 3, 100 ),
+            ( 'keg9', 1, 4,  98 );

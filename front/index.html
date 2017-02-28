@@ -2,7 +2,9 @@
 <html>
     
     <head>
-        <title>CS 490 Project</title>
+        <title>CS 490 Project Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="cs490.css">
     </head>
     
@@ -27,77 +29,90 @@
             </form>
             
         </div>
-    
-    <script type="text/javascript">
         
-        // shows an error on the current page.
-        function showError( error ) {
+        <script type="text/javascript" src="cs490.js"></script> 
             
-            alert( "Error: " + error );
-            
-        }
-    
-        function postLogin() {
-            
-            // grab the form
-            var loginForm = document.getElementById( "login-form" );
-            
-            // pull out the input fields and create a request object
-            var formFields = {
-                "ucid": loginForm.elements[ "ucid" ].value,
-                "pass": loginForm.elements[ "pass" ].value
-            };
-            
-            // create a json string from the request object
-            var json = JSON.stringify( formFields );
-            
-            //alert( json );
-            
-            // create a request object
-            var request = new XMLHttpRequest();
-            
-            // attach a state change handler
-            request.onreadystatechange = function() {
-              
-                // if the request is done
-                if ( request.readyState === XMLHttpRequest.DONE ) {
-                    
-                    if ( request.status === 200 ) {
-                        
-                        var response = request.response;
-                        
-                        var results = JSON.parse( response );         // not sure if we're allowed to use JSON.parse which is safer
-                        
-                        if ( results.length === 1 ) {
-                            alert( "logged in" );
+        <script type="text/javascript">
+
+            // shows an error on the current page.
+            function showError( error ) {
+
+                alert( "Error: " + error );
+
+            }
+
+            function postLogin() {
+
+                // grab the form
+                var loginForm = document.getElementById( "login-form" );
+
+                // pull out the input fields and create a request object
+                var formFields = {
+                    "ucid": loginForm.elements[ "ucid" ].value,
+                    "pass": loginForm.elements[ "pass" ].value
+                };
+
+                // create a json string from the request object
+                var json = JSON.stringify( formFields );
+
+                //alert( json );
+
+                // create a request object
+                var request = new XMLHttpRequest();
+
+                // attach a state change handler
+                request.onreadystatechange = function() {
+
+                    // if the request is done
+                    if ( request.readyState === XMLHttpRequest.DONE ) {
+
+                        if ( request.status === 200 ) {
+
+                            var response = request.response;
+
+                            alert( response );
+
+                            var results = JSON.parse( response );
+
+                            if ( results.length === 1 ) {
+                                alert( "logged in " + results[0] );
+                                var user = results[ 0 ];
+                                if ( user.privelege === 'I' ) {
+                                    setInstructorCookies( user.id, user.ucid );
+                                    document.location = 'instructor.html';
+                                }
+                                else if ( user.privelege === 'S' ) {
+                                    setStudentCookies( user.id, user.ucid );
+                                    document.location = 'student.html';
+                                }
+                            }
+                            else {
+                                showError( "unauthorized" );
+                            }
+
                         }
                         else {
-                            showError( "unauthorized" );
+
+                            showError( "Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'" );
+
                         }
-                        
+
                     }
-                    else {
-                        
-                        showError( "Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'" );
-                        
-                    }
-                    
-                }
-                
-            };
-            
-            // open the request
-            request.open( "POST", loginForm.action, true );
-            
-            // set the type
-            request.setRequestHeader( "Content-Type", "application/json" );
-            
-            // send the data
-            request.send( json );
-            
-        }
-    
-    </script>
+
+                };
+
+                // open the request
+                request.open( "POST", loginForm.action, true );
+
+                // set the type
+                request.setRequestHeader( "Content-Type", "application/json" );
+
+                // send the data
+                request.send( json );
+
+            }
+
+        </script>
     
     </body>
     
