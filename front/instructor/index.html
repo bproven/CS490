@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--
+    File:           instructor/index.html
+    Author:         Bob Provencher
+    Created:        Mar 1, 2017
+    Description:    Instructor index
+-->
+<html>
+    
+    <head>
+        <title>CS 490 Project - Instructor Access</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../cs490.css">
+    </head>
+    
+    <body>
+        
+        <div><h1>CS 490 Project - Instructor</h1></div>
+        
+        <div id="cs490-exams-id">
+            <h2>Exams</h2>
+            <div id="cs490-exam-list-id"></div>
+        </div>
+        
+        <div id="cs490-questions-id">
+            <h2>Questions</h2>
+        </div>
+        
+        <div id="cs490-test-cases-id">
+            <h2>Test Cases</h2>
+        </div>
+        
+        <script type="text/javascript" src="../cs490.js"></script>
+        <script type="text/javascript" src="../cookies.js"></script>
+        
+        <script type="text/javascript">
+            
+            function showError( error ) {
+                alert( error );
+            }
+            
+            function getExams( ownerUcid ) {
+
+                // the user
+                var data = {
+                    "ownerId": ownerUcid
+                };
+
+                // create a json string from the request object
+                var json = JSON.stringify( data );
+
+                //alert( json );
+
+                // create a request object
+                var request = new XMLHttpRequest();
+
+                // attach a state change handler
+                request.onreadystatechange = function() {
+
+                    // if the request is done
+                    if ( request.readyState === XMLHttpRequest.DONE ) {
+
+                        if ( request.status === 200 ) {
+
+                            var response = request.response;
+
+                            //alert( response );
+
+                            var results = JSON.parse( response );
+
+                            if ( results.length > 0 ) {
+                                alert( "logged in " + results );
+                                var elem = document.getElementById( "cs490-exam-list-id" );
+                                elem.textContent( response );
+                            }
+                            else {
+                                showError( "unauthorized" );
+                            }
+
+                        }
+                        else {
+
+                            showError( "Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'" );
+
+                        }
+
+                    }
+
+                };
+
+                // open the request
+                request.open( "POST", "../exams.php", true );
+
+                // set the type
+                request.setRequestHeader( "Content-Type", "application/json" );
+
+                // send the data
+                request.send( json );
+
+            }
+            
+            var instructorId   = 'x';       //getCookie( 'instructorId' );
+            var instructorUcid = 'taj1';    //getCookie( 'instructorUcid' );
+            
+            if ( instructorId === '' || instructorUcid === '' ) {
+                alert( 'not logged in' );
+                document.location = '../';
+            }
+            else {
+                getExams( instructorUcid );
+            }
+            
+        </script>
+        
+    </body>
+</html>

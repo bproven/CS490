@@ -31,6 +31,7 @@
         </div>
         
         <script type="text/javascript" src="cs490.js"></script> 
+        <script type="text/javascript" src="cookies.js"></script> 
             
         <script type="text/javascript">
 
@@ -70,20 +71,20 @@
 
                             var response = request.response;
 
-                            alert( response );
+                            //alert( response );
 
                             var results = JSON.parse( response );
 
                             if ( results.length === 1 ) {
-                                alert( "logged in " + results[0] );
+                                //alert( "logged in " + results[0] );
                                 var user = results[ 0 ];
                                 if ( user.privelege === 'I' ) {
-                                    setInstructorCookies( user.id, user.ucid );
-                                    document.location = 'instructor.html';
+                                    saveInstructor( user );
+                                    document.location = './instructor';
                                 }
                                 else if ( user.privelege === 'S' ) {
-                                    setStudentCookies( user.id, user.ucid );
-                                    document.location = 'student.html';
+                                    saveStudent( user );
+                                    document.location = './student';
                                 }
                             }
                             else {

@@ -1,9 +1,24 @@
 use dhg6;
 
-/* Users */
-
+drop table if exists cs490_StudentExamTestCaseScore;
+drop table if exists cs490_StudentExamQuestionScore;
+drop table if exists cs490_StudentExamGrade;
+drop table if exists cs490_ExamGrade;
+drop table if exists cs490_ExamGrades;
+drop table if exists cs490_ExamQuestionAnswer;
+drop table if exists cs490_ExamQuestionAnswers;
+drop table if exists cs490_ExamQuestion;
+drop table if exists cs490_ExamQuestions;
+drop table if exists cs490_Exam;
+drop table if exists cs490_Exams;
+drop table if exists cs490_TestCase;
+drop table if exists cs490_TestCases;
+drop table if exists cs490_Question;
+drop table if exists cs490_Questions;
 drop table if exists cs490_User;
 drop table if exists cs490_Users;
+
+/* Users */
 
 create table cs490_User (
   id        char(36)    not null primary key,
@@ -23,9 +38,6 @@ insert into cs490_User
             ( UUID(), 'cod6',MD5('password'),'Cody',  'Doogan',    'S');
 
 /* Questions */
-
-drop table if exists cs490_Question;
-drop table if exists cs490_Questions;
 
 create table cs490_Question (
   questionId int not null auto_increment primary key,
@@ -53,9 +65,6 @@ alter table cs490_Question auto_increment = 27;
 
 /* Test Case */
 
-drop table if exists cs490_TestCase;
-drop table if exists cs490_TestCases;
-
 create table cs490_TestCase (
     testCaseId    int not null auto_increment primary key,
     questionId    int not null,
@@ -76,9 +85,6 @@ alter table cs490_TestCase auto_increment = 5;
 
 /* Exams */
 
-drop table if exists cs490_Exam;
-drop table if exists cs490_Exams;
-
 create table cs490_Exam (
     examId    int not null auto_increment primary key,
     examName  varchar(64) not null,
@@ -91,9 +97,6 @@ insert into cs490_Exam
 alter table cs490_Exam auto_increment = 2;
 
 /* ExamQuestions */
-
-drop table if exists cs490_ExamQuestion;
-drop table if exists cs490_ExamQuestions;
 
 create table cs490_ExamQuestion (
   examId     int not null,
@@ -112,9 +115,6 @@ insert into cs490_ExamQuestion
 
 /* ExamQuestionAnswer */
 
-drop table if exists cs490_ExamQuestionAnswer;
-drop table if exists cs490_ExamQuestionAnswers;
-
 create table cs490_ExamQuestionAnswer (
     ucid        varchar(8) not null,
     examId      int not null,
@@ -126,10 +126,6 @@ insert into cs490_ExamQuestionAnswer
     values  ( 'dhg6', 1, 26, 'this is a sample answer' );
 
 /* StudentExamGrades */
-
-drop table if exists cs490_StudentExamGrade;
-drop table if exists cs490_ExamGrade;
-drop table if exists cs490_ExamGrades;
 
 create table cs490_StudentExamGrade (
   ucid   varchar(8) not null,
@@ -143,8 +139,6 @@ insert into cs490_StudentExamGrade
             ( 'keg9', 1, 99 );
 
 /* StudentExamQuestionScore */
-
-drop table if exists cs490_StudentExamQuestionScore;
 
 create table cs490_StudentExamQuestionScore (
     ucid        varchar(8),
@@ -162,8 +156,6 @@ insert into cs490_StudentExamQuestionScore
             ( 'keg9', 1, 26, 98 );
 
 /* StudentExamTestCaseScore */
-
-drop table if exists cs490_StudentExamTestCaseScore;
 
 create table cs490_StudentExamTestCaseScore (
     ucid        varchar(8),
