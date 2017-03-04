@@ -1,6 +1,6 @@
 <?php
 
-include 'query.php';
+include "query.php";
 
 //create table cs490_ExamQuestion (
 //  examId     int not null,

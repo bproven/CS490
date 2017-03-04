@@ -1,9 +1,9 @@
 <?php
 
-include 'query.php';
+include "query.php";
 
-//$content = trim(file_get_contents("php://input"));
-$content = '{ "ucid": "rap9", "pass": "password" }';
+$content = trim(file_get_contents("php://input"));
+//$content = '{ "ucid": "rap9", "pass": "password" }';
 $creds = json_decode($content);
 
 $ucid = $creds->ucid;

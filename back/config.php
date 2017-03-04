@@ -11,8 +11,8 @@
     if ( $debug ) {
         $config = (object) array(
             "servername"    => "localhost",
-            "username"      => "root",
-            "password"      => "enAleyEd",
+            "username"      => "bob",
+            "password"      => "3oth4iN%01",
             "dbname"        => "dhg6",
             "back"          => "http://localhost/~rap9/cs490/back/"
         );
