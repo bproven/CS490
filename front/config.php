@@ -15,7 +15,7 @@
     }
     else {
         $config = (object) array(
-            "middle"        => "http://afsaccess2/~keg9/cs490/middle/"
+            "middle"        => "http://afsaccess2.njit.edu/~keg9/cs490/middle/"
         );
     }
     
