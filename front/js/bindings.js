@@ -212,11 +212,14 @@ function createAndAddElementsById( elems, onclick, create, parentId ) {
 }
 
 function clearElements( parent, tag ) {
-    var length = parent.childNodes.length;
+    var nodes = parent.children;
+    var length = nodes.length;
     for ( var i = length - 1; i >= 0; i-- ) {
-        var node = parent.childNodes[ i ];
-        if ( node.tagname.toLower() === tag.toLower() ) {
-            parent.removeChild( node );
+        var node = nodes[ i ];
+        if ( node.nodeType === Node.ELEMENT_NODE ) {
+            if ( node.tagName.toLowerCase() === tag.toLowerCase() ) {
+                parent.removeChild( node );
+            }
         }
     }
 }

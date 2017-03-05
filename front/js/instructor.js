@@ -1,0 +1,224 @@
+/* 
+ *     File:    instructor.js
+ *     Author:  Bob Provencher
+ *     Created: Mar 5, 2017
+ */
+
+var currentExamId = null;
+var currentQuestionId = null;
+
+var questions = [];
+var exams = [];
+var testcases = [];
+var examquestions = [];
+
+/*        question  text,
+  argument1 varchar(8),
+  argument2 varchar(8),
+  argument3 varchar(8),
+  argument4 varchar(8),
+  returnType varchar(8),
+  difficulty int,
+  functionName varchar(64),
+  hasIf    bool,
+  hasWhile bool,
+  hasFor   bool,
+  hasRecursion bool */
+
+function onPostError( request ) {
+    showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
+};
+
+function addQuestion() {
+
+    // pull out the input fields and create a request object
+    var object = formToObjectById( "cs490-question-form-id" );
+
+    var fields = [
+        "question", "argument1", "returnType", 
+        "difficulty", "functionName", 
+        "hasIf", "hasWhile", "hasFor", "hasRecursion"
+    ];
+
+    var verified = verifyFieldsNotBlank( object, fields );
+
+    if ( verified ) {
+
+        var success = function( results ) {
+
+            //console.log( results );
+
+            if ( results.success ) {
+                object.questionId = results.questionId;
+                createAndAddElementById( object, selectQuestion, createQuestionElement, "cs490-question-list-id" );
+            }
+
+        };
+
+        post( "../addQuestion.php", object, success, onPostError );
+
+    }
+
+}
+
+function addExam() {
+
+    // pull out the input fields and create a request object
+    var object = formToObjectById( "cs490-exam-form-id" );
+
+    var verified = verifyNotBlank ( object.examName, "examName-error", "Exam name cannot be blank" );
+
+    if ( verified ) {
+
+        var success = function( results ) {
+
+            if ( results.success ) {
+                object.examId = results.examId;
+                createAndAddElementById( object, selectExam, createExamElement, "cs490-exam-list-id" );
+            }
+
+        };
+
+        post( "../addExam.php", object, success, onPostError );
+
+    }
+
+}
+
+function addTestCase() {
+
+    var object = formToObjectById( "cs490-testcase-form-id" );
+
+    object.questionId = currentQuestionId;
+
+    if ( object.questionId !== null ) {
+
+        var fields = [
+            "argument1", "returnValue" 
+        ];
+
+        var verified = verifyFieldsNotBlank( object, fields );
+
+        if ( verified ) {
+
+            var success = function( results ) {
+
+                if ( results.success ) {
+                    object.testCaseId = results.testCaseId;
+                    displayLabelById( "cs490-testcase-list-empty-id", false, null );
+                    createAndAddElementById( object, null, createTestcaseElement, "cs490-testcase-list-id" );
+                }
+
+            }
+
+            post( "../addTestCase.php", object, success, onPostError );
+
+        }
+
+    }
+    else {
+
+        showError( "testcase-error", "Please choose a question", 3000 );
+
+    }
+
+}
+
+function addToExam() {
+
+    var questionId = this.id;
+
+    var data = {
+        examId: currentExamId,
+        questionId: questionId
+    };
+
+    var success = function( results ) {
+
+        if ( results.success ) {
+            displayLabelById( "cs490-examquestion-list-empty-id", false, null );
+            createAndAddElementById( data, null, createExamQuestionElement, "cs490-examquestion-list-id" );
+        }
+
+    };
+
+    post( "../addExamQuestion.php", data, success, onPostError );
+
+}
+
+function releaseScores() {
+    var examId = this.id;
+}
+
+function getExams( ownerUcid ) {
+
+    // the user
+    var data = {
+        ownerId: ownerUcid
+    };
+
+    var success = function( results ) {
+        var found = results.length > 0;
+        displayLabelById( "cs490-exam-list-empty-id", !found, "No exams found" );
+        exams = results;
+        createAndReplaceElementsById( "cs490-exam-list-id", "tr", results, selectExam, createExamElement );
+    };
+
+    post( "../exams.php", data, success, onPostError );
+
+}
+
+function getExamQuestions( examId ) {
+
+    var data = {
+        examId: examId
+    };
+
+    var success = function( results ) {
+        var found = results.length > 0;
+        displayLabelById( "cs490-examquestion-list-empty-id", !found, "No questions found" );
+        examquestions = results;
+        createAndReplaceElementsById( "cs490-examquestion-list-id", "tr", results, null, createExamQuestionElement );
+    };
+
+    post( "../examQuestions.php", data, success, onPostError );
+}
+
+function getQuestions() {
+
+    var success = function( results ) {
+        var found = results.length > 0;
+        displayLabelById( "cs490-question-list-empty-id", !found, "No questions found" );
+        questions = results;
+        createAndReplaceElementsById( "cs490-question-list-id", "tr", results, selectQuestion, createQuestionElement );
+    };
+
+    post( "../questions.php", null, success, onPostError );
+
+}
+
+function getTestCases( questionId ) {
+
+    var success = function( results ) {
+        var found = results.length > 0;
+        displayLabelById( "cs490-testcase-list-empty-id", !found, "No test cases found" );
+        testcases = results;
+        createAndReplaceElementsById( "cs490-testcase-list-id", "tr", results, selectQuestion, createTestcaseElement );
+    };
+
+    var data = { questionId: questionId };
+
+    post( "../testCases.php", data, success, onPostError );
+
+}
+
+function selectExam() {
+    currentExamId = this.id;
+    getExamQuestions( currentExamId );
+}
+
+function selectQuestion() {
+    currentQuestionId = this.id;
+    getTestCases( currentQuestionId );
+}
+

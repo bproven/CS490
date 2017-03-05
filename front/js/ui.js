@@ -7,14 +7,15 @@
 function showError( id, error, time, onTimer ) {
     var elem = document.getElementById( id );
     displayLabel( elem, true, error );
-    if ( time !== undefined && time !== null && time > 0 ) {
-        setTimeout( function() {
-            error.style.display = 'none';
-            if ( onTimer !== undefined && onTimer !== null ) {
-                onTimer();
-            }
-        });
+    if ( time !== undefined || time !== null || time <= 0 ) {
+        time = 3000;
     }
+    setTimeout( function() {
+        elem.style.display = 'none';
+        if ( onTimer !== undefined && onTimer !== null ) {
+            onTimer();
+        }
+    }, time );
 }
 
 function displayLabel( elem, show, text ) {

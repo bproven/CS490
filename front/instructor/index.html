@@ -94,6 +94,7 @@
                     <input type="checkbox" name="hasFor"       id="hasFor">
                     <label for="hasRecursion">Recursion:</label>
                     <input type="checkbox" name="hasRecursion" id="hasRecursion">
+                    <input type="button" id="submit" value="Add Question" onclick="addQuestion()" />
                 </div>
                 
                 <div>
@@ -101,30 +102,46 @@
                     <label class="error" id="hasWhile-error"></label>
                     <label class="error" id="hasFor-error"></label>
                     <label class="error" id="hasRecursion-error"></label>
-                </div>
-                
-                <div class="field">
-                    <input type="button" id="submit" value="Add Question" onclick="addQuestion()" />
-                </div>
-                
-                <div>
-                    <label class="error" id="exam-name-error"></label>
+                    <label class="error" id="question-error"></label>
                 </div>
                 
             </form>
         
             <div>
                 <label id="cs490-question-list-empty-id"></label>
-                <table id="cs490-question-list-id">
+                <table>
                     <thead>
                         <tr>
                             <th>Name</th><th>Question</th><th>Signature</th><th>Traits</th><th></th>
                         </tr>
                     </thead>
+                    <tbody id="cs490-question-list-id">
+                    </tbody>
                 </table>
             </div>
             
             <h2>Test Cases</h2>
+            
+            <form action="#" id="cs490-testcase-form-id">
+                
+                <div class="field">
+                    <label for="returns">Returns:</label>
+                    <input class="arg" name="returnValue" id="returnValue">
+                    <label for="argument1">Arguments:</label>
+                    <input class="arg" name="argument1" id="argument1">
+                    <input class="arg" name="argument2" id="argument2">
+                    <input class="arg" name="argument3" id="argument3">
+                    <input class="arg" name="argument4" id="argument4">
+                    <input type="button" id="submit" value="Add Test Case" onclick="addTestCase()" />
+                </div>
+                
+                <div>
+                    <label class="error" id="argument1-error"></label>
+                    <label class="error" id="returnValue-error"></label>
+                    <label class="error" id="testcase-error"></label>
+                </div>
+                
+            </form>
             
             <div>
                 <label id="cs490-testcase-list-empty-id"></label>
@@ -147,7 +164,7 @@
                 </div>
                 
                 <div>
-                    <label class="error" id="exam-name-error"></label>
+                    <label class="error" id="examName-error"></label>
                 </div>
                 
             </form>
@@ -174,180 +191,13 @@
         <script type="text/javascript" src="../js/bindings.js"></script>
         <script type="text/javascript" src="../js/ui.js"></script>
         
+        <script type="text/javascript" src="../js/instructor.js"></script>
+        
         <script type="text/javascript">
             
-            var currentExamId = null;
-            var currentQuestionId = null;
-            
-            var questions = [];
-            var exams = [];
-            var testcases = [];
-            var examquestions = [];
-            
-/*        question  text,
-              argument1 varchar(8),
-              argument2 varchar(8),
-              argument3 varchar(8),
-              argument4 varchar(8),
-              returnType varchar(8),
-              difficulty int,
-              functionName varchar(64),
-              hasIf    bool,
-              hasWhile bool,
-              hasFor   bool,
-              hasRecursion bool */
-    
-            function onPostError( request ) {
-                showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
-            };
-            
-            function addQuestion() {
-                
-                var form = document.getElementById( "cs490-question-form-id" );
+            var instructorId   = getCookie( 'instructorId' );       // 'x';       //
+            var instructorUcid = getCookie( 'instructorUcid' );     // 'taj1';    //
 
-                // pull out the input fields and create a request object
-                var object = formToObjectById( "cs490-question-form-id" );
-                
-                var fields = [
-                    "question", "argument1", "returnType", 
-                    "difficulty", "functionName", 
-                    "hasIf", "hasWhile", "hasFor", "hasRecursion"
-                ];
-                
-                var verified = verifyFieldsNotBlank( object, fields );
-                
-                var success = function( results ) {
-
-                    console.log( results );
-                    
-                    if ( results.success ) {
-                        object.questionId = results.questionId;
-                        createAndAddElementById( object, selectQuestion, createQuestionElement, "cs490-question-list-id" );
-                    }
-        
-                };
-                
-                if ( verified ) {
-                    post( "../addQuestion.php", object, success, onPostError );
-                }
-                
-            }
-            
-            function addExam() {
-                
-                var form = document.getElementById( "cs490-exam-form-id" );
-
-                // pull out the input fields and create a request object
-                var fields = {
-                    examName: form.elements[ "examName" ].value
-                };
-
-                var result = verifyNotBlank ( fields.examName, "exam-name-error", "Exam name cannot be blank" );
-                
-                if ( result ) {
-                    
-                }
-                
-            }
-            
-            function addToExam() {
-                
-                var questionId = this.id;
-                
-                var data = {
-                    examId: currentExamId,
-                    questionId: questionId
-                };
-                
-                var success = function( results ) {
-
-                    if ( results.success ) {
-                        createAndAddElementById( data, null, createExamQuestionElement, "cs490-examquestion-list-id" );
-                    }
-        
-                };
-                
-                post( "../addExamQuestion.php", data, success, onPostError );
-                
-            }
-            
-            function releaseScores() {
-                var examId = this.id;
-            }
-            
-            function getExams( ownerUcid ) {
-
-                // the user
-                var data = {
-                    ownerId: ownerUcid
-                };
-                
-                var success = function( results ) {
-                    var found = results.length > 0;
-                    displayLabelById( "cs490-exam-list-empty-id", !found, "No exams found" );
-                    exams = results;
-                    if ( found ) {
-                        createAndReplaceElementsById( "cs490-exam-list-id", "tr", results, selectExam, createExamElement );
-                    }
-                };
-                
-                post( "../exams.php", data, success, onPostError );
-
-            }
-            
-            function getExamQuestions( examId ) {
-                
-                var data = {
-                    examId: examId
-                };
-                
-                var success = function( results ) {
-                    var found = results.length > 0;
-                    displayLabelById( "cs490-examquestion-list-empty-id", !found, "No questions found" );
-                    examquestions = results;
-                    if ( found ) {
-                        createAndReplaceElementsById( "cs490-examquestion-list-id", "tr", results, null, createExamQuestionElement );
-                    }
-                };
-                
-                post( "../examQuestions.php", data, success, onPostError );
-            }
-            
-            function getQuestions() {
-                
-                var success = function( results ) {
-                    var found = results.length > 0;
-                    displayLabelById( "cs490-question-list-empty-id", !found, "No questions found" );
-                    questions = results;
-                    if ( found ) {
-                        createAndReplaceElementsById( "cs490-question-list-id", "tr", results, selectQuestion, createQuestionElement );
-                    }
-                };
-                
-                post( "../questions.php", null, success, onPostError );
-                
-            }
-            
-            function getTestCases( questionId ) {
-                
-                var success = function( results ) {
-                    var found = results.length > 0;
-                    displayLabelById( "cs490-testcase-list-empty-id", !found, "No test cases found" );
-                    testcases = results;
-                    if ( found ) {
-                        createAndReplaceElementsById( "cs490-testcase-list-id", "tr", results, selectQuestion, createTestcaseElement );
-                    }
-                };
-                
-                var data = { questionId: questionId };
-                
-                post( "../testCases.php", data, success, onPostError );
-                
-            }
-            
-            var instructorId   = 'x';       //getCookie( 'instructorId' );
-            var instructorUcid = 'taj1';    //getCookie( 'instructorUcid' );
-            
             if ( instructorId === '' || instructorUcid === '' ) {
                 showError( "page-error", "Not logged in", 3000, function () {
                     document.location = '../';
@@ -357,17 +207,7 @@
                 getQuestions();
                 getExams( instructorUcid );
             }
-            
-            function selectExam() {
-                currentExamId = this.id;
-                getExamQuestions( currentExamId );
-            }
-            
-            function selectQuestion() {
-                currentQuestionId = this.id;
-                getTestCases( currentQuestionId );
-            }
-            
+
         </script>
         
     </body>

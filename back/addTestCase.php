@@ -13,7 +13,7 @@ include "query.php";
 //);
 
 $content = trim(file_get_contents("php://input"));
-//$content = '{ "questionId": 24, "argument1": "int", "argument2": "int", "argument3": null, "argument4": null, "returnValue": "int" }';
+//$content = '{ "questionId": 24, "argument1": "1", "argument2": "1", "argument3": null, "argument4": null, "returnValue": "1" }';
 $testCase = json_decode($content);
 
 $id = insert( 'cs490_TestCase', $testCase );

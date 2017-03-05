@@ -66,6 +66,12 @@ function values( $object, $conn ) {
         else if ( $type == "boolean" ) {
             $value = $value ? "true" : "false";
         }
+        else if ( $type == "NULL" ) {
+            if ( $value == null ) {
+                $value = "null"; 
+                $quote = '';
+            }
+        }
         $values = $values . $quote . $value . $quote;
     }
     

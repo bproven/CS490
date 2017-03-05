@@ -12,9 +12,10 @@
         
         <h1>CS 490 Project</h1>
         
-        <div class="login-form">
+        <div>
             
-            <form action="login.php" id="form">
+            <form action="login.php" id="login-form">
+                
                 <div class="field">
                     <label for="ucid">Username:</label>
                     <input type="text" id="ucid" value="" />
@@ -26,90 +27,66 @@
                 <div class="field">
                 <input type="button" id="login" value="Login" onclick="postLogin()" />
                 </div>
+                
+                <div>
+                    <label class="error" id="pass-error"></label>
+                    <label class="error" id="ucid-error"></label>
+                </div>
+
+                
             </form>
             
         </div>
         
         <script type="text/javascript" src="js/cs490.js"></script> 
         <script type="text/javascript" src="js/cookies.js"></script> 
+        <script type="text/javascript" src="js/bindings.js"></script> 
+        <script type="text/javascript" src="js/http.js"></script> 
+        <script type="text/javascript" src="js/ui.js"></script> 
             
         <script type="text/javascript">
 
-            // shows an error on the current page.
-            function showError( error ) {
-
-                alert( "Error: " + error );
-
-            }
+            function onPostError( request ) {
+                showError( "pass-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
+            };
 
             function postLogin() {
+                
+                var object = formToObjectById( "login-form" );
+                
+                var fields = [ "ucid", "pass" ];
+                
+                var verified = verifyFieldsNotBlank( object, fields );
+                
+                if ( verified ) {
+                
+                    var success = function( results ) {
 
-                // grab the form
-                var loginForm = document.getElementById( "login-form" );
+                        if ( results.length === 1 ) {
 
-                // pull out the input fields and create a request object
-                var formFields = {
-                    ucid: loginForm.elements[ "ucid" ].value,
-                    pass: loginForm.elements[ "pass" ].value
-                };
+                            var user = results[ 0 ];
 
-                // create a json string from the request object
-                var json = JSON.stringify( formFields );
-
-                //alert( json );
-
-                // create a request object
-                var request = new XMLHttpRequest();
-
-                // attach a state change handler
-                request.onreadystatechange = function() {
-
-                    // if the request is done
-                    if ( request.readyState === XMLHttpRequest.DONE ) {
-
-                        if ( request.status === 200 ) {
-
-                            var response = request.response;
-
-                            //alert( response );
-
-                            var results = JSON.parse( response );
-
-                            if ( results.length === 1 ) {
-                                //alert( "logged in " + results[0] );
-                                var user = results[ 0 ];
-                                if ( user.privelege === 'I' ) {
-                                    saveInstructor( user );
-                                    document.location = './instructor';
-                                }
-                                else if ( user.privelege === 'S' ) {
-                                    saveStudent( user );
-                                    document.location = './student';
-                                }
+                            if ( user.privelege === 'I' ) {
+                                saveInstructor( user );
+                                document.location = './instructor';
                             }
-                            else {
-                                showError( "unauthorized" );
+                            else if ( user.privelege === 'S' ) {
+                                saveStudent( user );
+                                document.location = './student';
                             }
 
                         }
                         else {
 
-                            showError( "Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'" );
+                            showError( "pass-error", "Invalid username/password combination" );
 
                         }
 
-                    }
+                    };
+                    
+                    post( "login.php", object, success, onPostError );
 
-                };
-
-                // open the request
-                request.open( "POST", loginForm.action, true );
-
-                // set the type
-                request.setRequestHeader( "Content-Type", "application/json" );
-
-                // send the data
-                request.send( json );
+                }   
 
             }
 
