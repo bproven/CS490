@@ -1,9 +1,16 @@
 <?php
 
-include "query.php";
+/* 
+ *     File:        addQuestion
+ *     Author:      Keith
+ *     Created:     Mar 4, 2017
+ *     Description: 
+ */
 
-$content = trim(file_get_contents("php://input"));
-//$content = json_encode( (object) array(
+include "callback.php";
+
+$data = trim(file_get_contents("php://input"));
+//$data = json_encode( (object) array(
 //    "question" => "q",
 //    "argument1"  => "int", 
 //    "returnType" => "int", 
@@ -15,11 +22,7 @@ $content = trim(file_get_contents("php://input"));
 //    "hasRecursion" => false 
 //) );
 
-$question = json_decode($content);
-
-$id = insert( 'cs490_Question', $question );
-
 header( "Content-type: application/json" );
-echo jsonInsertResult( $id , "questionId" );
+echo callback( "addQuestion.php", $data );
 
 ?>

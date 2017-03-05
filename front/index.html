@@ -12,9 +12,9 @@
         
         <h1>CS 490 Project</h1>
         
-        <div class="login">
+        <div class="login-form">
             
-            <form action="login.php" id="login-form">
+            <form action="login.php" id="form">
                 <div class="field">
                     <label for="ucid">Username:</label>
                     <input type="text" id="ucid" value="" />
@@ -30,8 +30,8 @@
             
         </div>
         
-        <script type="text/javascript" src="cs490.js"></script> 
-        <script type="text/javascript" src="cookies.js"></script> 
+        <script type="text/javascript" src="js/cs490.js"></script> 
+        <script type="text/javascript" src="js/cookies.js"></script> 
             
         <script type="text/javascript">
 
@@ -49,8 +49,8 @@
 
                 // pull out the input fields and create a request object
                 var formFields = {
-                    "ucid": loginForm.elements[ "ucid" ].value,
-                    "pass": loginForm.elements[ "pass" ].value
+                    ucid: loginForm.elements[ "ucid" ].value,
+                    pass: loginForm.elements[ "pass" ].value
                 };
 
                 // create a json string from the request object

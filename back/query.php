@@ -58,9 +58,13 @@ function values( $object, $conn ) {
         if ( $type == "string" ) {
             $quote = '"';
             $value = $conn->real_escape_string( $value );
+            if ( $value == null ) {
+                $value = "null"; 
+                $quote = '';
+            }
         }
-        if ( $value == null ) {
-            $value = "null"; 
+        else if ( $type == "boolean" ) {
+            $value = $value ? "true" : "false";
         }
         $values = $values . $quote . $value . $quote;
     }

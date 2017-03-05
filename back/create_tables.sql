@@ -49,10 +49,10 @@ create table cs490_Question (
   returnType varchar(8),
   difficulty int,
   functionName varchar(64),
-  hasIf    bool,
-  hasWhile bool,
-  hasFor   bool,
-  hasRecursion bool
+  hasIf    bool not null,
+  hasWhile bool not null,
+  hasFor   bool not null,
+  hasRecursion bool not null
 );
 
 insert into cs490_Question 
@@ -92,26 +92,27 @@ create table cs490_Exam (
 );
 
 insert into cs490_Exam 
-    values ( 1, 'CS 490 Exam', 'taj1' );
+    values ( 1, 'CS 113 Exam', 'taj1' ),
+           ( 2, 'CS 320 Exam', 'taj1' ),
+           ( 3, 'CS 490 Exam', 'taj1' );
 
-alter table cs490_Exam auto_increment = 2;
+alter table cs490_Exam auto_increment = 4;
 
 /* ExamQuestions */
 
 create table cs490_ExamQuestion (
   examId     int not null,
-  questionId int not null,
-  points     int not null
+  questionId int not null
 );
 
 insert into cs490_ExamQuestion 
-    values  ( 1, 23, 25 ),
-            ( 1, 24, 25 ),
-            ( 1, 25, 25 ),
-            ( 2, 25, 50 ),
-            ( 5, 26, 50 ),
-            ( 5, 23, 25 ),
-            ( 5, 24,  5 );
+    values  ( 1, 23 ),
+            ( 1, 24 ),
+            ( 1, 25 ),
+            ( 2, 25 ),
+            ( 5, 26 ),
+            ( 5, 23 ),
+            ( 5, 24 );
 
 /* ExamQuestionAnswer */
 

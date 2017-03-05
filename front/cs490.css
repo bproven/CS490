@@ -1,3 +1,16 @@
+.field {
+    margin: 5px;
+}
+
+.login {
+    width: 120px;
+}
+
+.error {
+    color: firebrick;
+    font-weight: bold;
+}
+
 body {
     background-color: antiquewhite;
     font: 14px arial, sans-serif;
@@ -18,8 +31,7 @@ input {
     border-width: 2px;
 }
 
-.loginform {
-    width: 320px;
+form {
     margin: 4px;
     padding: 10px;
     border-style: solid;
@@ -28,10 +40,26 @@ input {
     border-radius: 10px;
 }
 
-.field {
-    margin: 5px;
+td {
+    margin: 2px;
+    padding: 2px;
 }
 
-.login {
-    width: 80px;
+form .login-form {
+    width: 320px;
+}
+
+.arg {
+    width: 50px;
+}
+
+.qcol {
+    width: 60%;
+    display: block;
+    float: left;
+}
+
+.ecol {
+    display: block;
+    float: left;
 }
