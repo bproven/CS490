@@ -1,22 +1,18 @@
 <?php
 
-    $debug = FALSE;
-    
-    if ( file_exists( "debug.php" ) ) {
-        $debug = include( "debug.php" );
-    }
-   
-    $config = NULL;
-   
-    if ( $debug ) {
-        $config = (object) array(
-            "middle"        => "http://localhost/~rap9/cs490/middle/"
-        );
+    $config = null;
+
+    if ( file_exists( "userConfig.php" ) ) {
+        
+        $config = include( "userConfig.php" );
+        
     }
     else {
+        
         $config = (object) array(
-            "middle"        => "http://afsaccess2.njit.edu/~keg9/cs490/middle/"
+            "middle" => "http://afsaccess2.njit.edu/~keg9/cs490/middle/"
         );
+        
     }
     
     return $config;
