@@ -88,12 +88,18 @@ function scoreCompilation( $answer, $question ) {
     file_put_contents($file, $answerText, FILE_APPEND);
     file_put_contents($file, "\n\n", FILE_APPEND);
     file_put_contents($file, "public static void main(String[] args) {\n", FILE_APPEND);
-    file_put_contents($file, "System.out.println(cubed($value));\n", FILE_APPEND);
+    //file_put_contents($file, "System.out.println(cubed($value));\n", FILE_APPEND);
     file_put_contents($file, "}\n\n}", FILE_APPEND);
+    
+    $compiled = "test.class";
+    
+    if ( file_exists( $compiled ) == true ){
+        unlink( $compiled );
+    }
     
     exec("javac test.java"); //compile Java
     
-    $correct = file_exists('test.class') == true;   //test if students' code compiled successfully
+    $correct = file_exists($compiled) == true;   //test if students' code compiled successfully
     
     if( $correct == true ) { 
         $score = 1;

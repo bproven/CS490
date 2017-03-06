@@ -208,6 +208,8 @@ function showScore() {
 function selectExam() {
     currentExamId = this.id;
     getStudentExamGrade();
+    displayById( "show-exams", true );
+    displayById( "take-test", false );
 }
 
 function getAllExams() {

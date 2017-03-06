@@ -50,10 +50,12 @@ function addExam() {
 
     // pull out the input fields and create a request object
     var object = formToObjectById( "cs490-exam-form-id" );
-
+    
     var verified = verifyNotBlank ( object.examName, "examName-error", "Exam name cannot be blank" );
 
     if ( verified ) {
+
+        object.ownerId = instructorUcid;
 
         var success = function( results ) {
 
