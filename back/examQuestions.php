@@ -9,7 +9,7 @@ $data = json_decode($content);
 
 header( "Content-type: application/json" );
 echo execQueryToJSON( 
-      "select eq.*, q.question, q.functionName 
+      "select eq.*, q.* 
          from cs490_ExamQuestion eq 
          join cs490_Question q on q.questionId = eq.QuestionId
         where examId = $data->examId" );

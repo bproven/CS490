@@ -6,25 +6,14 @@
  */
 
 var currentExamId = null;
+var currentExamTestId = null;
 var currentAnswerId = null;
 
 var exams  = [];
 var grades = [];
 var answers = [];
 var feedback = [];
-
-function getAllExams() {
-
-    var success = function( results ) {
-        var found = results.length > 0;
-        displayLabelById( "cs490-exam-list-empty-id", !found, "No exams found" );
-        exams = results;
-        createAndReplaceElementsById( "cs490-exam-list-id", "tr", results, selectExam, createStudentExamElement );
-    };
-
-    post( "../allExams.php", null, success, onPostError );
-
-}
+var questions = [];
 
 function createStudentExamElement( exam, onclick ) {
     
@@ -139,18 +128,102 @@ function createFeedbackElement( feedback, onclick ) {
     
 }
 
-function takeExam() {
+function createExamQuestionElement( question, onclick ) {
     
+    var tr = document.createElement( "tr" );
+    
+    var td = document.createElement( "td" );
+    tr.appendChild( td );
+    var elem = document.createElement( "label" );
+    td.appendChild( elem );
+    elem.innerHTML = question.question;
+    
+    td = document.createElement( "td" );
+    tr.appendChild( td );
+    elem = document.createElement( "label" );
+    td.appendChild( elem );
+    elem.innerHTML = getQuestionTraits( question, false );
+    
+    td = document.createElement( "td" );
+    tr.appendChild( td );
+    elem = document.createElement( "textarea" );
+    elem.cols = 80;
+    elem.rows = 10;
+    elem.id = question.questionId;
+    td.appendChild( elem );
+    
+    return tr;
+    
+}
+
+function takeExam() {
+    currentExamTestId = this.id;
+    getExamQuestions( currentExamTestId );
+    displayById( "show-exams", false );
+    displayById( "take-test", true );
+}
+
+function saveTest() {
+    
+    var form = document.getElementById( "test" );
+    
+    var data = {
+        ucid: studentUcid,
+        examId: currentExamTestId,
+        answers: []
+    };
+    
+    for ( var i = 0; i < form.elements.length; i++ ) {
+        var elem = form.elements[ i ];
+        if ( elem.type === 'textarea' ) {
+            var a = {
+                questionId: elem.id,
+                answer: elem.value
+            }
+            data.answers.push( a );
+        } 
+    }
+    
+    var success = function( results ) {
+        if ( results.success ) {
+            showError( "test-message", "Test Saved" );
+        }
+        else {
+            showError( "test-message", "Error Saving Test" );
+        }
+    };
+
+    post( "../addExamQuestionAnswers.php", data, success, onPostError );
+
+
 }
 
 function showScore() {
     currentExamId = this.id;
     getStudentExamGrade();
+    displayById( "show-exams", true );
+    displayById( "take-test", false );
 }
 
 function selectExam() {
     currentExamId = this.id;
     getStudentExamGrade();
+}
+
+function getAllExams() {
+    
+    displayById( "show-exams", true );
+    displayById( "take-test", false );
+
+    var success = function( results ) {
+        var found = results.length > 0;
+        displayLabelById( "cs490-exam-list-empty-id", !found, "No exams found" );
+        exams = results;
+        createAndReplaceElementsById( "cs490-exam-list-id", "tr", results, selectExam, createStudentExamElement );
+    };
+
+    post( "../allExams.php", null, success, onPostError );
+
 }
 
 function getExam( examId ) {
@@ -223,5 +296,22 @@ function getQuestionFeedback() {
     }
     
     post( "../studentExamQuestionFeedback.php", data, success, onPostError )
+    
+}
+
+function getExamQuestions( examId ) {
+
+    var data = {
+        examId: examId
+    };
+
+    var success = function( results ) {
+        var found = results.length > 0;
+        displayLabelById( "cs490-question-list-empty-id", !found, "No questions found" );
+        questions = results;
+        createAndReplaceElementsById( "cs490-question-list-id", "tr", results, null, createExamQuestionElement );
+    };
+
+    post( "../examQuestions.php", data, success, onPostError );
     
 }

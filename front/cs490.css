@@ -63,3 +63,14 @@ form .login-form {
     display: block;
     float: left;
 }
+
+.student-exam-col {
+    width: 50%;
+    display: block;
+    float: left;
+}
+
+.student-test-col {
+    display: block;
+    float: left;
+}

@@ -6,18 +6,25 @@ function execQuery( $sql )
     // Create connection
     $conn = include( "connect.php" );
 
-    $results = [];
+    $results = true;
 
     error_log( $sql );
     
     $records = $conn->query( $sql );
     
-    if ( $records ) {
+    $type = gettype( $records );
+    
+    if ( $type != "boolean" ) {
+        
+        $results = [];
 
         while ( $row = $records->fetch_object() ) {
             $results[] = $row;
         }
 
+    }
+    else {
+        $results = $records;
     }
 
     $conn->close();

@@ -18,7 +18,7 @@
         
         <div><h1>CS 490 Project - Student Access</h1></div>
         
-        <div class="qcol">
+        <div class="student-exam-col">
             
             <div id="cs490-errors">
                 <label class="error" id="page-error"></label> 
@@ -38,6 +38,8 @@
                     </tbody>
                 </table>
             </div>
+            
+            <div id="show-exams">
             
             <h2>Exam Grade</h2>
             
@@ -84,9 +86,43 @@
                 <label id="cs490-feedback-list-empty-id"></label>
             </div>
             
+            </div>
+            
         </div>
         
-        <div class="ecol"></div>
+        <div class="student-test-col" id="take-test" >
+            
+            <h2>Answers</h2>
+            
+            <div id="cs490-errors">
+                 <label class="error" id="test-message"></label> 
+            </div>
+                
+            <div>
+                
+                <form action="#" id="test">
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Question</th><th>Required Elements</th><th>Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-question-list-id">
+                        </tbody>
+                    </table>
+                    
+                </form>
+                
+                <label id="cs490-question-list-empty-id"></label>
+                
+                <div class="field">
+                    <input type="button" id="saveTest" value="Finish" onclick="saveTest()" />
+                </div>
+                
+            </div>
+            
+        </div>
         
         <script type="text/javascript" src="../js/cs490.js"></script>
         <script type="text/javascript" src="../js/cookies.js"></script>

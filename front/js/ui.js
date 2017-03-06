@@ -19,8 +19,17 @@ function showError( id, error, time, onTimer ) {
     }, time );
 }
 
-function displayLabel( elem, show, text ) {
+function display( elem, show ) {
     elem.style.display = show ? 'block' : 'none';
+}
+
+function displayById( elemId, show ) {
+    var elem = document.getElementById( elemId );
+    display( elem, show );
+}
+
+function displayLabel( elem, show, text ) {
+    display( elem, show );
     elem.innerHTML = text;
 }
 

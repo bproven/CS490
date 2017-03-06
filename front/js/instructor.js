@@ -13,19 +13,6 @@ var exams = [];
 var testcases = [];
 var examquestions = [];
 
-/*        question  text,
-  argument1 varchar(8),
-  argument2 varchar(8),
-  argument3 varchar(8),
-  argument4 varchar(8),
-  returnType varchar(8),
-  difficulty int,
-  functionName varchar(64),
-  hasIf    bool,
-  hasWhile bool,
-  hasFor   bool,
-  hasRecursion bool */
-
 function addQuestion() {
 
     // pull out the input fields and create a request object
@@ -47,6 +34,7 @@ function addQuestion() {
 
             if ( results.success ) {
                 object.questionId = results.questionId;
+                questions.push( object );
                 createAndAddElementById( object, selectQuestion, createQuestionElement, "cs490-question-list-id" );
             }
 
@@ -71,6 +59,7 @@ function addExam() {
 
             if ( results.success ) {
                 object.examId = results.examId;
+                exams.push( object );
                 createAndAddElementById( object, selectExam, createExamElement, "cs490-exam-list-id" );
             }
 
@@ -102,6 +91,7 @@ function addTestCase() {
 
                 if ( results.success ) {
                     object.testCaseId = results.testCaseId;
+                    testcases.push( object );
                     displayLabelById( "cs490-testcase-list-empty-id", false, null );
                     createAndAddElementById( object, null, createTestcaseElement, "cs490-testcase-list-id" );
                 }
@@ -134,6 +124,7 @@ function addToExam() {
 
         if ( results.success ) {
             displayLabelById( "cs490-examquestion-list-empty-id", false, null );
+            examquestions.push( data );
             createAndAddElementById( data, null, createExamQuestionElement, "cs490-examquestion-list-id" );
         }
 

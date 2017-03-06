@@ -7,7 +7,7 @@
 
 function getQuestion( questionId ) {
     return questions.find( function( elem ) {
-        return elem.questionId === questionId;
+        return elem.questionId == questionId;
     });
 }
 
@@ -49,7 +49,11 @@ function getFunctionSignature( question ) {
 
 }
 
-function getQuestionTraits( question ) {
+function getQuestionTraits( question, difficulty ) {
+    
+    if ( difficulty === undefined || difficulty === null ) {
+        difficulty = true;
+    }
     
     var sig = "";
     
@@ -66,15 +70,19 @@ function getQuestionTraits( question ) {
         }
     });
     
-    var diffs = [ "Easy", "Medium", "Hard" ];
+    if ( difficulty ) {
     
-    var diff = diffs[ question.difficulty ];
+        var diffs = [ "Easy", "Medium", "Hard" ];
+
+        var diff = diffs[ question.difficulty ];
+
+        if ( sig !== "" ) {
+            sig = sig + ", ";
+        }
+
+        sig = sig + diff;
     
-    if ( sig !== "" ) {
-        sig = sig + ", ";
     }
-    
-    sig = sig + diff;
     
     return sig;
     
@@ -147,11 +155,9 @@ function createTestcaseElement( testcase, onclick ) {
     var tr = document.createElement( "tr" );
     
     var td = document.createElement( "td" );
-    var elem = document.createElement( "a" );
-    elem.href = "#";
+    var elem = document.createElement( "label" );
     elem.id = testcase.testCaseId;
     elem.innerHTML = createTestcaseSignature( testcase );
-    elem.onclick = onclick;
     td.appendChild( elem );
     tr.appendChild( td );
     
