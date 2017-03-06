@@ -1,7 +1,8 @@
 /* 
- *     File:    http.js
- *     Author:  Bob Provencher
- *     Created: Mar 4, 2017
+ *     File:        js/http.js
+ *     Author:      Bob Provencher
+ *     Created:     Mar 4, 2017
+ *     Description: http methods
  */
 
 function post( url, data, success, error ) {

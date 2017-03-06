@@ -1,7 +1,8 @@
 /* 
- *     File:    tests.js
- *     Author:  Bob
- *     Created: Feb 27, 2017
+ *     File:        js/cs490.js
+ *     Author:      Bob
+ *     Created:     Feb 27, 2017
+ *     Description: cookies
  */
 
 function saveStudent( student ) {

@@ -1,22 +1,100 @@
 <!DOCTYPE html>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+    File:           student/index.html
+    Author:         Bob Provencher
+    Created:        Mar 1, 2017
+    Description:    Student index
 -->
 <html>
     
     <head>
-        <title>TODO supply a title</title>
+        <title>Student</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../cs490.css">
     </head>
     
     <body>
         
-        <div>TODO write content</div>
+        <div><h1>CS 490 Project - Student Access</h1></div>
         
-        <script type="text/javascript" src="cs490.js"></script>
+        <div class="qcol">
+            
+            <div id="cs490-errors">
+                <label class="error" id="page-error"></label> 
+            </div>
+            
+            <h2>Exams</h2>
+            
+            <div>
+                <label id="cs490-exam-list-empty-id"></label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Exam</th><th></th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cs490-exam-list-id">
+                    </tbody>
+                </table>
+            </div>
+            
+            <h2>Exam Grade</h2>
+            
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Exam</th><th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cs490-grade-list-id">
+                    </tbody>
+                </table>
+                <label id="cs490-grade-list-empty-id"></label>
+            </div>
+            
+            <h2>Answers</h2>
+            
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th><th>Answer</th><th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cs490-answer-list-id">
+                    </tbody>
+                </table>
+                <label id="cs490-answer-list-empty-id"></label>
+            </div>
+            
+            <h2>Answer Feedback</h2>
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feedback</th><th>Correct?</th><th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cs490-feedback-list-id">
+                    </tbody>
+                </table>
+                <label id="cs490-feedback-list-empty-id"></label>
+            </div>
+            
+        </div>
+        
+        <div class="ecol"></div>
+        
+        <script type="text/javascript" src="../js/cs490.js"></script>
+        <script type="text/javascript" src="../js/cookies.js"></script>
+        <script type="text/javascript" src="../js/http.js"></script>
+        <script type="text/javascript" src="../js/bindings.js"></script>
+        <script type="text/javascript" src="../js/ui.js"></script>
+        
+        <script type="text/javascript" src="../js/student.js"></script>
         
         <script type="text/javascript">
             
@@ -24,12 +102,16 @@ and open the template in the editor.
             var studentUcid = getCookie( 'studentUcid' );
             
             if ( studentId === '' || studentUcid === '' ) {
-                //document.location = 'index.html';
+                showError( "page-error", "Unauthorized", 3000, function () {
+                    document.location = '../';
+                });
+            }
+            else {
+                getAllExams();
             }
             
         </script>
 
-        
     </body>
     
 </html>

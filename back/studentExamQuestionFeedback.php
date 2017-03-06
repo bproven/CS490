@@ -3,18 +3,21 @@
 include "query.php";
 
 $data = trim(file_get_contents("php://input"));
-//$data = '{ "ownerId": "taj1" }';
+//$data = '{ "ucid": "rap9", "examId": 1, "questionId": 23 }';
 
 $query = json_decode( $data );
 
-$ownerId = $query->ownerId;
+$ucid   = $query->ucid;
+$examId = $query->examId;
+$questionId = $query->questionId;
 
 header( "Content-type: application/json" );
 
 echo execQueryToJSON( 
-        "select examId, examName 
-           from cs490_Exam
-          where ownerId = '$ownerId'
-       order by examName" );
+        "select * 
+           from cs490_StudentExamQuestionFeedback
+          where ucid = '$ucid'
+            and examId = $examId
+            and questionId = $questionId" );
 
 ?>

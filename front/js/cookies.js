@@ -1,5 +1,5 @@
 /* 
- *     File:        cookies.js
+ *     File:        js/cookies.js
  *     Author:      Bob Provencher
  *     Created:     Feb 27, 2017
  *     Description: basic cookie manipulation for session

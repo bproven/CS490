@@ -8,7 +8,7 @@
 <html>
     
     <head>
-        <title>CS 490 Project - Instructor Access</title>
+        <title>Instructor</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../cs490.css">
@@ -16,7 +16,7 @@
     
     <body>
         
-        <div><h1>CS 490 Project - Instructor</h1></div>
+        <div><h1>CS 490 Project - Instructor Access</h1></div>
         
         <div class="qcol">
             
@@ -199,7 +199,7 @@
             var instructorUcid = getCookie( 'instructorUcid' );     // 'taj1';    //
 
             if ( instructorId === '' || instructorUcid === '' ) {
-                showError( "page-error", "Not logged in", 3000, function () {
+                showError( "page-error", "Unauthorized", 3000, function () {
                     document.location = '../';
                 });
             }
@@ -211,4 +211,5 @@
         </script>
         
     </body>
+    
 </html>

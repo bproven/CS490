@@ -1,40 +1,9 @@
 /* 
- *     File:    bindings.js
- *     Author:  Bob Provencher
- *     Created: Mar 1, 2017
+ *     File:        js/bindings.js
+ *     Author:      Bob Provencher
+ *     Created:     Mar 1, 2017
+ *     Description: binds objects to TRs
  */
-
-/**
- * Creates an exam DOM element suitable for insertion and returns it
- * @param {type} exam
- * @param {type} onclick
- * @returns {Element|createExamElement.tr}
- */
-function createExamElement( exam, onclick ) {
-    
-    var tr = document.createElement( "tr" );
-    
-    var td = document.createElement( "td" );
-    tr.appendChild( td );
-    var elem = document.createElement( "a" );
-    td.appendChild( elem );
-    elem.href = "#";
-    elem.id = exam.examId;
-    elem.innerHTML = exam.examName;
-    elem.onclick = onclick;
-    
-    td = document.createElement( "td" );
-    tr.appendChild( td );
-    elem = document.createElement( "a" );
-    td.appendChild( elem );
-    elem.href = "#";
-    elem.id = exam.examId;
-    elem.innerHTML = "Release Scores";
-    elem.onclick = releaseScores;
-    
-    return tr;
-    
-}
 
 function getQuestion( questionId ) {
     return questions.find( function( elem ) {

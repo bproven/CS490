@@ -1,7 +1,8 @@
 /* 
- *     File:    ui.js
- *     Author:  Bob Provencher
- *     Created: Mar 4, 2017
+ *     File:        js/ui.js
+ *     Author:      Bob Provencher
+ *     Created:     Mar 4, 2017
+ *     Description: UI code
  */
 
 function showError( id, error, time, onTimer ) {
@@ -43,8 +44,7 @@ function verifyFieldsNotBlank( object, fields ) {
     });
     return result;
 }
-            
 
-
-
-
+function onPostError( request ) {
+    showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
+};

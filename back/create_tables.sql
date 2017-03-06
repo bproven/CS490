@@ -1,5 +1,7 @@
 use dhg6;
 
+drop table if exists cs490_StudentExamQuestionFeedback;
+drop table if exists cs490_StudentExamTestCaseResult;
 drop table if exists cs490_StudentExamTestCaseScore;
 drop table if exists cs490_StudentExamQuestionScore;
 drop table if exists cs490_StudentExamGrade;
@@ -110,9 +112,9 @@ insert into cs490_ExamQuestion
             ( 1, 24 ),
             ( 1, 25 ),
             ( 2, 25 ),
-            ( 5, 26 ),
-            ( 5, 23 ),
-            ( 5, 24 );
+            ( 2, 26 ),
+            ( 3, 23 ),
+            ( 3, 24 );
 
 /* ExamQuestionAnswer */
 
@@ -124,7 +126,13 @@ create table cs490_ExamQuestionAnswer (
 );
 
 insert into cs490_ExamQuestionAnswer
-    values  ( 'dhg6', 1, 26, 'this is a sample answer' );
+    values  ( 'rap9', 1, 23, 'this is a sample answer 23' ),
+            ( 'rap9', 1, 24, 'this is a sample answer 24' ),
+            ( 'rap9', 1, 25, 'this is a sample answer 25' ),
+            ( 'rap9', 2, 25, 'this is a sample answer 25' ),
+            ( 'rap9', 2, 26, 'this is a sample answer 26' ),
+            ( 'rap9', 3, 23, 'this is a sample answer 23' ),
+            ( 'rap9', 3, 24, 'this is a sample answer 24' );
 
 /* StudentExamGrades */
 
@@ -135,8 +143,10 @@ create table cs490_StudentExamGrade (
 );
 
 insert into cs490_StudentExamGrade
-    values  ( 'dhg6', 1, 64 ),
+    values  ( 'dhg6', 1, 85 ),
             ( 'rap9', 1, 55 ),
+            ( 'rap9', 2, 65 ),
+            ( 'rap9', 3, 75 ),
             ( 'keg9', 1, 99 );
 
 /* StudentExamQuestionScore */
@@ -149,26 +159,51 @@ create table cs490_StudentExamQuestionScore (
 );
 
 insert into cs490_StudentExamQuestionScore
-    values  ( 'rap9', 1, 25, 76 ),
-            ( 'rap9', 1, 26, 78 ),
-            ( 'dhg6', 1, 25, 63 ),
-            ( 'dhg6', 1, 26, 65 ),
+    values  ( 'rap9', 1, 23,  76 ),
+            ( 'rap9', 1, 24,  78 ),
+            ( 'rap9', 1, 25,  78 ),
+            ( 'rap9', 2, 25,  78 ),
+            ( 'rap9', 2, 26,  78 ),
+            ( 'rap9', 3, 23,  78 ),
+            ( 'rap9', 3, 24,  78 ),
+            ( 'dhg6', 1, 25,  63 ),
+            ( 'dhg6', 1, 26,  65 ),
             ( 'keg9', 1, 25, 100 ),
-            ( 'keg9', 1, 26, 98 );
+            ( 'keg9', 1, 26,  98 );
 
-/* StudentExamTestCaseScore */
+/* StudentExamQuestionFeedback */
 
-create table cs490_StudentExamTestCaseScore (
-    ucid        varchar(8),
+create table cs490_StudentExamQuestionFeedback (
+    feedbackId  int not null,
+    ucid        varchar(8) not null,
     examId      int not null,
-    testCaseId  int not null,
+    questionId  int not null,
+    description varchar( 64 ) not null,
+    correct     bool not null,
     score       int not null
 );
 
-insert into cs490_StudentExamTestCaseScore
-    values  ( 'rap9', 1, 3,  76 ),
-            ( 'rap9', 1, 4,  78 ),
-            ( 'dhg6', 1, 3,  63 ),
-            ( 'dhg6', 1, 4,  65 ),
-            ( 'keg9', 1, 3, 100 ),
-            ( 'keg9', 1, 4,  98 );
+insert into cs490_StudentExamQuestionFeedback
+    values  (  1, 'rap9', 1, 23, "feedback 1",  true, 1 ),
+            (  2, 'rap9', 1, 23, "feedback 2", false, 0 ),
+            (  3, 'rap9', 1, 24, "feedback 3",  true, 1 ),
+            (  4, 'rap9', 1, 24, "feedback 4", false, 0 ),
+            (  5, 'rap9', 1, 25, "feedback 5",  true, 1 ),
+            (  6, 'rap9', 1, 25, "feedback 6", false, 0 ),
+
+            (  7, 'rap9', 2, 25, "feedback 7",  true, 1 ),
+            (  8, 'rap9', 2, 25, "feedback 8", false, 0 ),
+            (  9, 'rap9', 2, 26, "feedback 9",  true, 1 ),
+            ( 10, 'rap9', 2, 26, "feedback 10", false, 0 ),
+
+            ( 11, 'rap9', 3, 23, "feedback 7",  true, 1 ),
+            ( 12, 'rap9', 3, 23, "feedback 8", false, 0 ),
+            ( 13, 'rap9', 3, 24, "feedback 9",  true, 1 ),
+            ( 14, 'rap9', 3, 24, "feedback 10", false, 0 ),
+
+            ( 15, 'dhg6', 1, 24, "feedback 3",  true, 1 ),
+            ( 16, 'dhg6', 1, 25, "feedback 4", false, 0 ),
+            ( 17, 'keg9', 1, 23, "feedback 5",  true, 1 ),
+            ( 18, 'keg9', 1, 25, "feedback 6", false, 0 );
+
+alter table cs490_StudentExamQuestionFeedback auto_increment = 19;

@@ -8,6 +8,8 @@ function execQuery( $sql )
 
     $results = [];
 
+    error_log( $sql );
+    
     $records = $conn->query( $sql );
     
     if ( $records ) {
