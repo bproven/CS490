@@ -5,6 +5,7 @@ drop table if exists cs490_StudentExamTestCaseResult;
 drop table if exists cs490_StudentExamTestCaseScore;
 drop table if exists cs490_StudentExamQuestionScore;
 drop table if exists cs490_StudentExamGrade;
+drop table if exists cs490_StudentExamScore;
 drop table if exists cs490_ExamGrade;
 drop table if exists cs490_ExamGrades;
 drop table if exists cs490_ExamQuestionAnswer;
@@ -136,18 +137,19 @@ insert into cs490_ExamQuestionAnswer
 
 /* StudentExamGrades */
 
-create table cs490_StudentExamGrade (
+create table cs490_StudentExamScore (
   ucid   varchar(8) not null,
   examId int not null,
-  grade  int not null
+  score  int not null,
+  possible int not null  
 );
 
 insert into cs490_StudentExamGrade
-    values  ( 'dhg6', 1, 85 ),
-            ( 'rap9', 1, 55 ),
-            ( 'rap9', 2, 65 ),
-            ( 'rap9', 3, 75 ),
-            ( 'keg9', 1, 99 );
+    values  ( 'dhg6', 1, 85, 100 ),
+            ( 'rap9', 1, 55, 100 ),
+            ( 'rap9', 2, 65, 100 ),
+            ( 'rap9', 3, 75, 100 ),
+            ( 'keg9', 1, 99, 100 );
 
 /* StudentExamQuestionScore */
 
@@ -155,55 +157,57 @@ create table cs490_StudentExamQuestionScore (
     ucid        varchar(8),
     examId      int not null,
     questionId  int not null,
-    score       int not null
+    score       int not null,
+    possible    int not null
 );
 
 insert into cs490_StudentExamQuestionScore
-    values  ( 'rap9', 1, 23,  76 ),
-            ( 'rap9', 1, 24,  78 ),
-            ( 'rap9', 1, 25,  78 ),
-            ( 'rap9', 2, 25,  78 ),
-            ( 'rap9', 2, 26,  78 ),
-            ( 'rap9', 3, 23,  78 ),
-            ( 'rap9', 3, 24,  78 ),
-            ( 'dhg6', 1, 25,  63 ),
-            ( 'dhg6', 1, 26,  65 ),
-            ( 'keg9', 1, 25, 100 ),
-            ( 'keg9', 1, 26,  98 );
+    values  ( 'rap9', 1, 23,  76, 100 ),
+            ( 'rap9', 1, 24,  78, 100 ),
+            ( 'rap9', 1, 25,  78, 100 ),
+            ( 'rap9', 2, 25,  78, 100 ),
+            ( 'rap9', 2, 26,  78, 100 ),
+            ( 'rap9', 3, 23,  78, 100 ),
+            ( 'rap9', 3, 24,  78, 100 ),
+            ( 'dhg6', 1, 25,  63, 100 ),
+            ( 'dhg6', 1, 26,  65, 100 ),
+            ( 'keg9', 1, 25, 100, 100 ),
+            ( 'keg9', 1, 26,  98, 100 );
 
 /* StudentExamQuestionFeedback */
 
 create table cs490_StudentExamQuestionFeedback (
-    feedbackId  int not null,
+    feedbackId  int not null  auto_increment primary key,
     ucid        varchar(8) not null,
     examId      int not null,
     questionId  int not null,
     description varchar( 64 ) not null,
     correct     bool not null,
-    score       int not null
+    score       int not null,
+    possible    int not null
 );
 
 insert into cs490_StudentExamQuestionFeedback
-    values  (  1, 'rap9', 1, 23, "feedback 1",  true, 1 ),
-            (  2, 'rap9', 1, 23, "feedback 2", false, 0 ),
-            (  3, 'rap9', 1, 24, "feedback 3",  true, 1 ),
-            (  4, 'rap9', 1, 24, "feedback 4", false, 0 ),
-            (  5, 'rap9', 1, 25, "feedback 5",  true, 1 ),
-            (  6, 'rap9', 1, 25, "feedback 6", false, 0 ),
+    values  (  1, 'rap9', 1, 23, "feedback 1",  true, 1, 1 ),
+            (  2, 'rap9', 1, 23, "feedback 2", false, 0, 1 ),
+            (  3, 'rap9', 1, 24, "feedback 3",  true, 1, 1 ),
+            (  4, 'rap9', 1, 24, "feedback 4", false, 0, 1 ),
+            (  5, 'rap9', 1, 25, "feedback 5",  true, 1, 1 ),
+            (  6, 'rap9', 1, 25, "feedback 6", false, 0, 1 ),
 
-            (  7, 'rap9', 2, 25, "feedback 7",  true, 1 ),
-            (  8, 'rap9', 2, 25, "feedback 8", false, 0 ),
-            (  9, 'rap9', 2, 26, "feedback 9",  true, 1 ),
-            ( 10, 'rap9', 2, 26, "feedback 10", false, 0 ),
+            (  7, 'rap9', 2, 25, "feedback 7",  true, 1, 1 ),
+            (  8, 'rap9', 2, 25, "feedback 8", false, 0, 1 ),
+            (  9, 'rap9', 2, 26, "feedback 9",  true, 1, 1 ),
+            ( 10, 'rap9', 2, 26, "feedback 10", false, 0, 1 ),
 
-            ( 11, 'rap9', 3, 23, "feedback 7",  true, 1 ),
-            ( 12, 'rap9', 3, 23, "feedback 8", false, 0 ),
-            ( 13, 'rap9', 3, 24, "feedback 9",  true, 1 ),
-            ( 14, 'rap9', 3, 24, "feedback 10", false, 0 ),
+            ( 11, 'rap9', 3, 23, "feedback 7",  true, 1, 1 ),
+            ( 12, 'rap9', 3, 23, "feedback 8", false, 0, 1 ),
+            ( 13, 'rap9', 3, 24, "feedback 9",  true, 1, 1 ),
+            ( 14, 'rap9', 3, 24, "feedback 10", false, 0, 1 ),
 
-            ( 15, 'dhg6', 1, 24, "feedback 3",  true, 1 ),
-            ( 16, 'dhg6', 1, 25, "feedback 4", false, 0 ),
-            ( 17, 'keg9', 1, 23, "feedback 5",  true, 1 ),
-            ( 18, 'keg9', 1, 25, "feedback 6", false, 0 );
+            ( 15, 'dhg6', 1, 24, "feedback 3",  true, 1, 1 ),
+            ( 16, 'dhg6', 1, 25, "feedback 4", false, 0, 1 ),
+            ( 17, 'keg9', 1, 23, "feedback 5",  true, 1, 1 ),
+            ( 18, 'keg9', 1, 25, "feedback 6", false, 0, 1 );
 
 alter table cs490_StudentExamQuestionFeedback auto_increment = 19;

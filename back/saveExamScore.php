@@ -7,37 +7,44 @@ $content = trim(file_get_contents("php://input"));
 //$content = '{ 
 //                "ucid": "rap9", 
 //                "examId": 1, 
-//                "grade": 99,
+//                "score": 99,
+//                "possible": 4,
 //                "questions": [ 
 //                    { 
 //                        "questionId": 23, 
-//                        "score": 2,
+//                        "score": 1,
+//                        "possible": 2, 
 //                        "feedback": [
 //                             {
 //                                  "description": "function name incorrect",
 //                                  "correct": false,
-//                                  "score" : 0
+//                                  "score" : 0,
+//                                  "possible" : 1
 //                             },
 //                             {
 //                                  "description": "function compiles",
 //                                  "correct": true,
-//                                  "score" : 1
+//                                  "score" : 1,
+//                                  "possible" : 1
 //                             }
 //                        ]
 //                    }, 
 //                    { 
 //                        "questionId": 24, 
-//                        "score": 2,
+//                        "score": 1,
+//                        "possible": 2,
 //                        "feedback": [
 //                             {
 //                                  "description": "function name incorrect",
 //                                  "correct": false,
-//                                  "score" : 0
+//                                  "score": 0,
+//                                  "possible": 1
 //                             },
 //                             {
 //                                  "description": "function compiles",
 //                                  "correct": true,
-//                                  "score" : 1
+//                                  "score": 1,
+//                                  "possible": 1
 //                             }
 //                        ]
 //                    } 
@@ -50,25 +57,32 @@ function makeQuestion( $ucid, $examId, $object )
         "ucid"          => $ucid,
         "examId"        => $examId,
         "questionId"    => $object->questionId,
-        "score"         => $object->score
+        "score"         => $object->score,
+        "possible"      => $object->possible
     );
 }
 
-function makeFeedback( $ucid, $examId, $object ) 
+function makeFeedback( $ucid, $examId, $questionId, $object ) 
 {
     return (object) array(
         "ucid"          => $ucid,
         "examId"        => $examId,
+        "questionId"    => $questionId,
         "description"   => $object->description,
         "correct"       => $object->correct,
-        "score"         => $object->score
+        "score"         => $object->score,
+        "possible"      => $object->possible
     );
 }
+
+error_log( $content );
 
 $data = json_decode($content);
 
 $ucid   = $data->ucid;
 $examId = $data->examId;
+
+set_time_limit( 60 );
 
 // first delete the feedback
 
@@ -93,7 +107,7 @@ if ( $result ) {
 if ( $result ) {
     
     $result = execQuery( 
-            "delete from cs490_StudentExamGrade
+            "delete from cs490_StudentExamScore
               where ucid = '$ucid'
                 and examId = $examId" );
     
@@ -107,10 +121,11 @@ if ( $result ) {
     $examGrade = (object) array(
         "ucid"          => $ucid,
         "examId"        => $examId,
-        "grade"         => $data->grade
+        "score"         => $data->score,
+        "possible"      => $data->possible
     );
     
-    $result = insert( 'cs490_StudentExamGrade', $examGrade, false );
+    $result = insert( 'cs490_StudentExamScore', $examGrade, false );
     
     if ( $result ) {
         
@@ -132,7 +147,7 @@ if ( $result ) {
 
                 // save the feedback
 
-                $fb = makeFeedback($ucid, $examId, $feedback);
+                $fb = makeFeedback($ucid, $examId, $question->questionId, $feedback);
 
                 $result = insert( 'cs490_StudentExamQuestionFeedback', $fb, false );
 
@@ -149,6 +164,10 @@ if ( $result ) {
 }
 
 header( "Content-type: application/json" );
-echo jsonInsertResult( $result, null, false );
+$result = jsonInsertResult( $result, null, false );
+
+error_log($result);
+
+echo $result;
 
 ?>

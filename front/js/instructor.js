@@ -135,7 +135,26 @@ function addToExam() {
 }
 
 function releaseScores() {
+    
     var examId = this.id;
+    
+    var data = {
+        examId: examId
+    };
+
+    var success = function( results ) {
+
+        if ( results.success ) {
+            showError( "examName-error", "Scores released!", 3000 );
+        }
+        else {
+            showError( "examName-error", "Sorry, there was an error releasing scores.", 3000 );
+        }
+
+    };
+
+    post( "../releaseScores.php", data, success, onPostError );
+
 }
 
 function getExams( ownerUcid ) {

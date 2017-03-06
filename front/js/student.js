@@ -66,7 +66,7 @@ function createStudentExamGradeElement( grade, onclick ) {
     td.appendChild( elem );
     elem.href = "#";
     elem.id = grade.examId;
-    elem.innerHTML = grade.grade;
+    elem.innerHTML = grade.score;
     elem.onclick = onclick;
     
     return tr;
