@@ -6,6 +6,128 @@
     $studentCode = trim(file_get_contents("php://input"));
 	$answer = json_decode($studentCode);
 */
+
+include( "callback.php" );
+
+function makeFeedback( $description, $correct, $score ) 
+{
+    return (object)array(
+        "description"   => $description,
+        "correct"       => $correct,
+        "score"         => $score
+    );
+}
+
+function makeQuestion( $questionId, $score )
+{
+    return (object) array(
+        "questionId"    => $questionId,
+        "score"         => $score,
+        "feedback"      => []
+    );
+}
+
+function makeExamScore( $ucid, $examId, $grade ) 
+{
+    return (object) array(
+        "ucid"      => $ucid,
+        "examId"    => $examId,
+        "grade"     => $grade,
+        "questions" => []
+    );
+}
+
+function addfeedback( $question, $description, $correct, $score ) {
+    
+    $feedback = makeFeedback( $description, $correct, $score );
+    
+    $question->score = $question->score + $score;
+    $question->feedback[] = $feedback;
+    
+}
+
+//test if student named function correctly
+function scoreFuncname( $answer, $question ) {
+    
+    $score = 0;
+    
+    $answerText = $answer->answer;
+    $functionName = $answer->functionName;
+    
+    $correct = strpos($answerText, $functionName) == true;
+    $description = "";
+    
+    if( $correct == true)
+    { 
+	$score = 1;
+	$description = "Function named correctly";
+    }   
+    else{
+	$score = 0;
+	$description = "Function named incorrectly";
+    }
+    
+    addfeedback($question, $description, $correct, $score);
+
+}
+
+function scoreCompilation( $answer, $question ) {
+    
+    $file = "test.java";
+    $answerText = $answer->answer;
+    $score = 0;
+    $feedback = "";
+    
+    file_put_contents($file, "class test {\n\n"); //create Java file and write, append code
+    file_put_contents($file, $answerText, FILE_APPEND);
+    file_put_contents($file, "\n\n", FILE_APPEND);
+    file_put_contents($file, "public static void main(String[] args) {\n", FILE_APPEND);
+    file_put_contents($file, "System.out.println(cubed($value));\n", FILE_APPEND);
+    file_put_contents($file, "}\n\n}", FILE_APPEND);
+    
+    exec("javac test.java"); //compile Java
+    
+    $correct = file_exists('test.class') == true;   //test if students' code compiled successfully
+    
+    if( $correct == true ) { 
+        $score = 1;
+        $feedback = "Function compiled correctly";
+    }
+    else{
+        $score = 0;
+        $feedback = "Function does not compile.";
+    }
+
+    addfeedback($question, $description, $correct, $score);
+
+}
+
+function scoreAnswer( $examScore, $answer ) {
+    
+    $question = makeQuestion( $answer->questionId, 0 );
+
+    $examScore->questions[] = $question;
+    
+    scoreFuncName( $answer, $question );
+    scoreCompilation($answer, $question);
+    
+    $examScore->grade = $examScore->grade + $question->score;
+    
+}
+
+//$data = trim(file_get_contents("php://input"));
+$data = '{ "ucid": "rap9", "examId": 1 }';
+$input = json_decode($data);
+
+$results = callback( "studentExamAnswers.php", $data );
+$answers = json_decode($results);
+
+$examScore = makeExamScore( $input->ucid, $input->examId, 0 );
+
+foreach ( $answers as $answer ) {
+    scoreAnswer( $examScore, $answer );
+}
+
 $Scores = array();
 $feedback = array();
 $score = 0;

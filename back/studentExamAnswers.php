@@ -13,10 +13,10 @@ $examId = $query->examId;
 header( "Content-type: application/json" );
 
 echo execQueryToJSON( 
-        "select seg.*, e.examName
-           from cs490_StudentExamGrade seg
-           join cs490_Exam e on seg.examId = e.examId
-          where seg.ucid = '$ucid'
-            and seg.examId = $examId" );
+        "select q.*, a.*
+           from cs490_examquestionanswer a
+           join cs490_question q on a.questionId = q.questionId
+          where a.examId = $examId
+            and a.ucid = '$ucid'" );
 
 ?>
