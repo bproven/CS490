@@ -14,7 +14,7 @@
             "username"      => "dhg6",
             "password"      => "VkwQg0fD",
             "dbname"        => "dhg6",
-            "back"          => "http://afsaccess2.njit.edu/~dhg9/cs490/back/"
+            "back"          => "http://afsaccess2.njit.edu/~dhg6/cs490/back/"
         );
         
     }

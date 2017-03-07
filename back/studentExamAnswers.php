@@ -14,8 +14,8 @@ header( "Content-type: application/json" );
 
 echo execQueryToJSON( 
         "select q.*, a.*
-           from cs490_examquestionanswer a
-           join cs490_question q on a.questionId = q.questionId
+           from cs490_ExamQuestionAnswer a
+           join cs490_Question q on a.questionId = q.questionId
           where a.examId = $examId
             and a.ucid = '$ucid'" );
 

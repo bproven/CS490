@@ -27,7 +27,7 @@ $examId = $data->examId;
 // first delete the answers
 
 $result = execQuery( 
-        "delete from cs490_examquestionanswer
+        "delete from cs490_ExamQuestionAnswer
           where ucid = '$ucid'
             and examId = $examId" );
 
