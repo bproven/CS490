@@ -25,6 +25,9 @@ function execQuery( $sql )
     }
     else {
         $results = $records;
+        if ( $results == FALSE ) {
+            logError( "DB error: " . mysqli_error( $conn ) );
+        }
     }
 
     $conn->close();
