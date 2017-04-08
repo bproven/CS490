@@ -188,15 +188,23 @@
         <script type="text/javascript" src="../js/cs490.js"></script>
         <script type="text/javascript" src="../js/cookies.js"></script>
         <script type="text/javascript" src="../js/http.js"></script>
+        <script type="text/javascript" src="../js/dom.js"></script>
+        <script type="text/javascript" src="../js/utils.js"></script>
         <script type="text/javascript" src="../js/bindings.js"></script>
         <script type="text/javascript" src="../js/ui.js"></script>
         
-        <script type="text/javascript" src="../js/instructor.js"></script>
+        <script type="text/javascript" src="instructor.js"></script>
         
         <script type="text/javascript">
             
+            function onPostError( request ) {
+                showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
+            }
+           
             var instructorId   = getCookie( 'instructorId' );       // 'x';       //
             var instructorUcid = getCookie( 'instructorUcid' );     // 'taj1';    //
+            
+            var instructor = null;
 
             if ( instructorId === '' || instructorUcid === '' ) {
                 showError( "page-error", "Unauthorized", 3000, function () {
@@ -204,8 +212,9 @@
                 });
             }
             else {
-                getQuestions();
-                getExams( instructorUcid );
+                instructor = new Instructor( instructorUcid, onPostError );
+                instructor.getQuestions();
+                instructor.getExams();
             }
 
         </script>

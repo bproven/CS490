@@ -7,7 +7,7 @@
  */
 
 function logError( $error ) {
-    file_put_contents("error.log", $error . "\n", FILE_APPEND);
+    file_put_contents( "error.log", date( "Y-m-d H:i:s: " ) . $error . "\n", FILE_APPEND);
 }
 
 //logError( "this is a test" );

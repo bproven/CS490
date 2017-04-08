@@ -53,7 +53,3 @@ function verifyFieldsNotBlank( object, fields ) {
     });
     return result;
 }
-
-function onPostError( request ) {
-    showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
-};

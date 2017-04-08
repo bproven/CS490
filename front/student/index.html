@@ -127,15 +127,23 @@
         <script type="text/javascript" src="../js/cs490.js"></script>
         <script type="text/javascript" src="../js/cookies.js"></script>
         <script type="text/javascript" src="../js/http.js"></script>
+        <script type="text/javascript" src="../js/dom.js"></script>
+        <script type="text/javascript" src="../js/utils.js"></script>
         <script type="text/javascript" src="../js/bindings.js"></script>
         <script type="text/javascript" src="../js/ui.js"></script>
         
-        <script type="text/javascript" src="../js/student.js"></script>
+        <script type="text/javascript" src="student.js"></script>
         
         <script type="text/javascript">
             
+            function onPostError( request ) {
+                showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
+            }
+
             var studentId   = getCookie( 'studentId' );
             var studentUcid = getCookie( 'studentUcid' );
+            
+            var student = null;
             
             if ( studentId === '' || studentUcid === '' ) {
                 showError( "page-error", "Unauthorized", 3000, function () {
@@ -143,7 +151,8 @@
                 });
             }
             else {
-                getAllExams();
+                student = new Student( studentUcid, onPostError );
+                student.getAllExams();
             }
             
         </script>
