@@ -58,16 +58,6 @@ create table cs490_Question (
   hasRecursion bool not null
 );
 
-/*
-insert into cs490_Question 
-    values  (23,'returns the sum of two integers',                          'int','int',null,null,'int',1,'sum',          false,false,false,false),
-            (24,'returns one integer subtracted by a second',               'int','int',null,null,'int',1,'minus',        false,false,false,false),
-            (25,'returns the remainder of one integer divided by another',  'int','int',null,null,'int',2,'remainder',    false,false,false,false),
-            (26,'returns the product of two numbers,',                      'int','int',null,null,'int',1,'times',        false,false,false,false);
-
-alter table cs490_Question auto_increment = 27;
-*/
-
 /* Test Case */
 
 create table cs490_TestCase (
@@ -80,16 +70,6 @@ create table cs490_TestCase (
     returnValue   varchar(16)
 );
 
-/*
-insert into cs490_TestCase
-    values  ( 1, 23,  '2', '3', null, null,  '5' ),
-            ( 2, 24,  '5', '3', null, null,  '2' ),
-            ( 3, 25, '10', '3', null, null,  '1' ),
-            ( 4, 26,  '5', '8', null, null, '40' );
-
-alter table cs490_TestCase auto_increment = 5;
-*/
-
 /* Exams */
 
 create table cs490_Exam (
@@ -98,32 +78,12 @@ create table cs490_Exam (
     ownerId   varchar(8) not null
 );
 
-/*
-insert into cs490_Exam 
-    values ( 1, 'CS 113 Exam', 'taj1' ),
-           ( 2, 'CS 320 Exam', 'taj1' ),
-           ( 3, 'CS 490 Exam', 'taj1' );
-
-alter table cs490_Exam auto_increment = 4;
-*/
-
 /* ExamQuestions */
 
 create table cs490_ExamQuestion (
   examId     int not null,
   questionId int not null
 );
-
-/*
-insert into cs490_ExamQuestion 
-    values  ( 1, 23 ),
-            ( 1, 24 ),
-            ( 1, 25 ),
-            ( 2, 25 ),
-            ( 2, 26 ),
-            ( 3, 23 ),
-            ( 3, 24 );
-*/
 
 /* ExamQuestionAnswer */
 
@@ -134,17 +94,6 @@ create table cs490_ExamQuestionAnswer (
     answer      text
 );
 
-/*
-insert into cs490_ExamQuestionAnswer
-    values  ( 'rap9', 1, 23, 'this is a sample answer 23' ),
-            ( 'rap9', 1, 24, 'this is a sample answer 24' ),
-            ( 'rap9', 1, 25, 'this is a sample answer 25' ),
-            ( 'rap9', 2, 25, 'this is a sample answer 25' ),
-            ( 'rap9', 2, 26, 'this is a sample answer 26' ),
-            ( 'rap9', 3, 23, 'this is a sample answer 23' ),
-            ( 'rap9', 3, 24, 'this is a sample answer 24' );
-*/
-
 /* StudentExamGrades */
 
 create table cs490_StudentExamScore (
@@ -153,15 +102,6 @@ create table cs490_StudentExamScore (
   score  int not null,
   possible int not null  
 );
-
-/*
-insert into cs490_StudentExamGrade
-    values  ( 'dhg6', 1, 85, 100 ),
-            ( 'rap9', 1, 55, 100 ),
-            ( 'rap9', 2, 65, 100 ),
-            ( 'rap9', 3, 75, 100 ),
-            ( 'keg9', 1, 99, 100 );
-*/
 
 /* StudentExamQuestionScore */
 
@@ -172,21 +112,6 @@ create table cs490_StudentExamQuestionScore (
     score       int not null,
     possible    int not null
 );
-
-/*
-insert into cs490_StudentExamQuestionScore
-    values  ( 'rap9', 1, 23,  76, 100 ),
-            ( 'rap9', 1, 24,  78, 100 ),
-            ( 'rap9', 1, 25,  78, 100 ),
-            ( 'rap9', 2, 25,  78, 100 ),
-            ( 'rap9', 2, 26,  78, 100 ),
-            ( 'rap9', 3, 23,  78, 100 ),
-            ( 'rap9', 3, 24,  78, 100 ),
-            ( 'dhg6', 1, 25,  63, 100 ),
-            ( 'dhg6', 1, 26,  65, 100 ),
-            ( 'keg9', 1, 25, 100, 100 ),
-            ( 'keg9', 1, 26,  98, 100 );
-*/
 
 /* StudentExamQuestionFeedback */
 
@@ -201,29 +126,3 @@ create table cs490_StudentExamQuestionFeedback (
     possible    int not null
 );
 
-/*
-insert into cs490_StudentExamQuestionFeedback
-    values  (  1, 'rap9', 1, 23, "feedback 1",  true, 1, 1 ),
-            (  2, 'rap9', 1, 23, "feedback 2", false, 0, 1 ),
-            (  3, 'rap9', 1, 24, "feedback 3",  true, 1, 1 ),
-            (  4, 'rap9', 1, 24, "feedback 4", false, 0, 1 ),
-            (  5, 'rap9', 1, 25, "feedback 5",  true, 1, 1 ),
-            (  6, 'rap9', 1, 25, "feedback 6", false, 0, 1 ),
-
-            (  7, 'rap9', 2, 25, "feedback 7",  true, 1, 1 ),
-            (  8, 'rap9', 2, 25, "feedback 8", false, 0, 1 ),
-            (  9, 'rap9', 2, 26, "feedback 9",  true, 1, 1 ),
-            ( 10, 'rap9', 2, 26, "feedback 10", false, 0, 1 ),
-
-            ( 11, 'rap9', 3, 23, "feedback 7",  true, 1, 1 ),
-            ( 12, 'rap9', 3, 23, "feedback 8", false, 0, 1 ),
-            ( 13, 'rap9', 3, 24, "feedback 9",  true, 1, 1 ),
-            ( 14, 'rap9', 3, 24, "feedback 10", false, 0, 1 ),
-
-            ( 15, 'dhg6', 1, 24, "feedback 3",  true, 1, 1 ),
-            ( 16, 'dhg6', 1, 25, "feedback 4", false, 0, 1 ),
-            ( 17, 'keg9', 1, 23, "feedback 5",  true, 1, 1 ),
-            ( 18, 'keg9', 1, 25, "feedback 6", false, 0, 1 );
-
-alter table cs490_StudentExamQuestionFeedback auto_increment = 19;
-*/

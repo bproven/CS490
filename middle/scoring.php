@@ -57,16 +57,14 @@ function scoreFuncname( $answer, $question ) {
     $functionName = $answer->functionName;
     
     $correct = strpos($answerText, $functionName) == true;
-    $description = "";
+    $description = "Function Name";
     
     if( $correct == true)
     { 
 	$score = 1;
-	$description = "Function named correctly";
     }   
     else{
 	$score = 0;
-	$description = "Function named incorrectly";
     }
     
     addfeedback($question, $description, $correct, $score, 1);
@@ -100,14 +98,13 @@ function scoreCompilation( $answer, $question ) {
     exec("javac test.java"); //compile Java
     
     $correct = file_exists($compiled) == true;   //test if students' code compiled successfully
+    $feedback = "Compilation";
     
     if( $correct == true ) { 
         $score = 1;
-        $feedback = "Function compiled correctly";
     }
     else{
         $score = 0;
-        $feedback = "Function does not compile.";
     }
 
     addfeedback($question, $feedback, $correct, $score, 1);

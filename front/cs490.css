@@ -7,12 +7,6 @@ h1 {
     color: brown;
 }
 
-/*
-label {
-    width: 320px;
-}
-*/
-
 input {
     margin: 5px;
     padding: 5px;
@@ -63,6 +57,10 @@ form .login-form {
     width: 50px;
 }
 
+.score { 
+    width: 20px;
+}
+
 .question {
     width: 100px;
 }
@@ -79,7 +77,7 @@ form .login-form {
 }
 
 .student-exam-col {
-    width: 50%;
+    width: 95%;
     display: block;
     float: left;
 }

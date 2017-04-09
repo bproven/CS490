@@ -22,6 +22,9 @@ function Instructor( instructorUcid, onPostError ) {
     self.exams = [];
     self.testcases = [];
     self.examquestions = [];
+    self.feedback = [];
+    
+    self.lastExamFeedback = null;
     
     // ids
     self.questionListEmptyId        = "cs490-question-list-empty-id";
@@ -46,6 +49,12 @@ function Instructor( instructorUcid, onPostError ) {
     self.examQuestionListHeaderId   = "cs490-examquestion-list-header-id";
     self.examQuestionListId         = "cs490-examquestion-list-id";
     self.examQuestionFormId         = "cs490-examquestion-form-id";
+    
+    self.examFeedbackId             = "cs490-examfeedback-id";
+    self.examFeedbackListId         = "cs490-examfeedback-list-id";
+    self.examFeedbackListEmptyId    = "cs490-examfeedback-list-empty-id";
+    self.examFeedbackListHeaderId   = "cs490-examfeedback-list-header-id";
+    self.examFeedbackFornId         = "cs490-examfeedback-form-id";
     
     // data retrieval methods
     self.getQuestions = function() {
@@ -120,6 +129,24 @@ function Instructor( instructorUcid, onPostError ) {
         post( "../examQuestions.php", data, success, self.onPostError );
         
     };
+    
+    self.getExamFeedback = function() {
+
+        var data = {
+            examId: self.currentExamId
+        };
+
+        var success = function( results ) {
+            var found = results.length > 0;
+            self.feedback = results;
+            createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createExamFeedbackElement );
+            displayById( self.examFeedbackListEmptyId, !found );
+            displayById( self.examFeedbackListHeaderId, found );
+        };
+
+        post( "../studentExamFeedback.php", data, success, onPostError );
+
+    };
 
     // UI event handlers
     self.addQuestion = function() {
@@ -175,8 +202,8 @@ function Instructor( instructorUcid, onPostError ) {
                     object.examId = results.examId;
                     self.exams.push( object );
                     createAndAddElementById( object, self.createExamElement, self.examListId );
-                    displayById( self.examListEmptyId, !found );
-                    displayById( self.examListHeaderId, found );
+                    displayById( self.examListEmptyId, false );
+                    displayById( self.examListHeaderId, true );
                 }
 
             };
@@ -273,27 +300,40 @@ function Instructor( instructorUcid, onPostError ) {
         
     };
 
-    self.releaseScores = function() {
+    self.scoreExam = function() {
 
-        var examId = this.id;
+        self.currentExamId = this.id;
 
         var data = {
-            examId: examId
+            examId: self.currentExamId
         };
 
         var success = function( results ) {
 
             if ( results.success ) {
-                showError( "examName-error", "Scores released!", 3000 );
+                showError( "examName-error", "Exam Scored!", 3000, 
+                function () {
+                    self.getExamFeedback();
+                } );
             }
             else {
-                showError( "examName-error", "Sorry, there was an error releasing scores.", 3000 );
+                showError( "examName-error", "Sorry, there was an error scoring the exam.", 3000 );
             }
 
         };
 
         post( "../releaseScores.php", data, success, self.onPostError );
 
+    };
+    
+    self.previewScores = function () {
+        
+        self.currentExamId = this.id;
+        
+        self.getExamFeedback();
+        
+        doTabClick( 4 );
+        
     };
     
     self.manageTestCases = function() {
@@ -326,7 +366,6 @@ function Instructor( instructorUcid, onPostError ) {
     };
     
     // instructor DOM elements
-    
     self.getQuestion = function( questionId ) {
         return self.questions.find( function( elem ) {
             return elem.questionId === questionId;
@@ -370,6 +409,41 @@ function Instructor( instructorUcid, onPostError ) {
 
     };
     
+    self.createExamFeedbackElement = function( examFeedback ) {
+        
+        var tr = document.createElement( "tr" );
+        
+        var question = examFeedback.question;
+        var answer = examFeedback.answer;
+        
+        if ( self.lastExamFeedback !== null && question === self.lastExamFeedback.question ) {
+            question = null;
+        }
+        
+        if ( self.lastExamFeedback !== null && answer === self.lastExamFeedback.answer ) {
+            answer = null;
+        }
+        
+        createLabel( null, question, tr );
+        
+        createLabel( null, answer, tr );
+        
+        createLabel( null, examFeedback.description, tr );
+        
+        createCheckbox( examFeedback.feedbackId, examFeedback.feedbackId, examFeedback.correct == "1", tr );
+        
+        var score = createInput( examFeedback.feedbackId, "text", examFeedback.feedbackId, examFeedback.score, tr );
+        
+        score.className += " score";
+        
+        createLabel( null, examFeedback.possible, tr );
+        
+        self.lastExamFeedback = examFeedback;
+        
+        return tr;
+        
+    };
+    
     self.createExamQuestionElement = function( examQuestion ) {
     
         var funcName = self.getQuestion( examQuestion.questionId ).functionName;
@@ -398,7 +472,9 @@ function Instructor( instructorUcid, onPostError ) {
         
         createAnchor( "#", exam.examId, "Manage Questions", self.manageExamQuestions, tr );
 
-        createAnchor( "#", exam.examId, "Release Scores", self.releaseScores, tr );
+        createAnchor( "#", exam.examId, "Score", self.scoreExam, tr );
+        
+        createAnchor( "#", exam.examId, "Preview Scores", self.previewScores, tr );
 
         return tr;
 

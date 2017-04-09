@@ -18,109 +18,134 @@
         
         <div><h1>CS 490 Project - Student Access</h1></div>
         
-        <div class="student-exam-col">
+        <div id="tabs">
+            <a href="#" onclick="doTabClick( 0 );">Exams</a>
+            <a href="#" onclick="doTabClick( 1 );">Take</a>
+            <a href="#" onclick="doTabClick( 2 );">Grades</a>
+            <a href="#" onclick="doTabClick( 3 );">Scores</a>
+            <a href="#" onclick="doTabClick( 4 );">Feedback</a>
+        </div>
+        
+        <div id="tabs_data" class="student-exam-col">
             
             <div id="cs490-errors">
                 <label class="error" id="page-error"></label> 
             </div>
             
-            <h2>Exams</h2>
+            <fieldset>
             
-            <div>
-                <label id="cs490-exam-list-empty-id"></label>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Exam</th><th></th><th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="cs490-exam-list-id">
-                    </tbody>
-                </table>
-            </div>
-            
-            <div id="show-exams">
-            
-            <h2>Exam Grade</h2>
-            
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Exam</th><th>Grade</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cs490-grade-list-id">
-                    </tbody>
-                </table>
-                <label id="cs490-grade-list-empty-id"></label>
-            </div>
-            
-            <h2>Answers</h2>
-            
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Question</th><th>Answer</th><th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cs490-answer-list-id">
-                    </tbody>
-                </table>
-                <label id="cs490-answer-list-empty-id"></label>
-            </div>
-            
-            <h2>Answer Feedback</h2>
-
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Feedback</th><th>Correct?</th><th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cs490-feedback-list-id">
-                    </tbody>
-                </table>
-                <label id="cs490-feedback-list-empty-id"></label>
-            </div>
-            
-            </div>
-            
-        </div>
-        
-        <div class="student-test-col" id="take-test" >
-            
-            <h2>Answers</h2>
-            
-            <div id="cs490-errors">
-                 <label class="error" id="test-message"></label> 
-            </div>
-                
-            <div>
-                
-                <form action="#" id="test">
-                    
-                    <table>
+                <div>
+                    <label id="cs490-exam-list-empty-id" class="message-label list">No exams found</label>
+                    <table id="cs490-exam-list-header-id" class="list">
                         <thead>
                             <tr>
-                                <th>Question</th><th>Required Elements</th><th>Answer</th>
+                                <th>Exam</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody id="cs490-question-list-id">
+                        <tbody id="cs490-exam-list-id">
                         </tbody>
                     </table>
-                    
-                </form>
-                
-                <label id="cs490-question-list-empty-id"></label>
-                
-                <div class="field">
-                    <input type="button" id="saveTest" value="Finish" onclick="saveTest()" />
                 </div>
+            
+            </fieldset>
+            
+            <fieldset>
                 
-            </div>
+                <div class="student-test-col">
+
+                    <div>
+
+                        <label id="cs490-question-list-empty-id" class="message-label list">No questions found</label>
+
+                        <form action="#" id="test">
+
+                            <table id="cs490-question-list-header-id" class="list">
+                                <thead>
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Required Elements</th>
+                                        <th>Answer</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cs490-question-list-id">
+                                </tbody>
+                            </table>
+
+                        </form>
+
+                        <div id="cs490-answers-errors">
+                             <label class="error" id="test-message"></label> 
+                        </div>
+
+                        <div class="field">
+                            <input type="button" id="saveTest" value="Finish" onclick="student.saveTest()" />
+                        </div>
+
+                    </div>
+
+                </div>
+        
+            </fieldset>
+            
+            <fieldset id="show-exams">
+            
+                <div>
+                    <label id="cs490-grade-list-empty-id" class="message-label list">No grades found</label>
+                    <table id="cs490-grade-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Exam</th>
+                                <th>Results</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-grade-list-id">
+                        </tbody>
+                    </table>
+                </div>
+            
+            </fieldset>
+            
+            <fieldset>
+            
+                <div>
+                    <label id="cs490-answer-list-empty-id" class="message-label list">No scores found</label>
+                    <table id="cs490-answer-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>Answer</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-answer-list-id">
+                        </tbody>
+                    </table>
+                </div>
+            
+            </fieldset>
+            
+            <fieldset>
+            
+                <div>
+                    <label id="cs490-feedback-list-empty-id" class="message-label list">No feedback found</label>
+                    <table id="cs490-feedback-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Feedback</th>
+                                <th>Correct?</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-feedback-list-id">
+                        </tbody>
+                    </table>
+                </div>
+            
+            </fieldset>
             
         </div>
         
@@ -139,6 +164,16 @@
             function onPostError( request ) {
                 showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
             }
+           
+            var tabActive = 0, 
+                tabs = document.getElementById( 'tabs' ).getElementsByTagName( 'A' ), 
+                tabs_data = document.getElementById( 'tabs_data' ).getElementsByTagName( 'fieldset' );
+
+            function doTabClick( i ) {
+                tabActive = tabClick( tabs, tabs_data, tabActive, i );
+            }
+            
+            doTabClick( 0 );
 
             var studentId   = getCookie( 'studentId' );
             var studentUcid = getCookie( 'studentUcid' );

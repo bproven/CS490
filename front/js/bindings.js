@@ -2,7 +2,7 @@
  *     File:        js/bindings.js
  *     Author:      Bob Provencher
  *     Created:     Mar 1, 2017
- *     Description: binds objects to TRs
+ *     Description: binds objects to DOM elements, without jquery
  */
 
 function createAndAddElement( elem, create, parent ) {

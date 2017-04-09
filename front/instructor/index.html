@@ -28,11 +28,11 @@
         
         <div id="tabs_data">
         
-            <fieldset class="qcol">
+            <div id="cs490-errors">
+                <label class="error" id="page-error"></label> 
+            </div>
 
-                <div id="cs490-errors">
-                    <label class="error" id="page-error"></label> 
-                </div>
+            <fieldset class="qcol">
 
                 <form action="#" id="cs490-question-form-id">
 
@@ -196,10 +196,6 @@
                         <input type="button" id="submit" value="Add Exam" onclick="instructor.addExam()" />
                     </div>
 
-                    <div>
-                        <label class="error" id="examName-error"></label>
-                    </div>
-
                 </form>
 
                 <div>
@@ -215,6 +211,10 @@
                         <tbody id="cs490-exam-list-id">
                         </tbody>
                     </table>
+                </div>
+
+                <div>
+                    <label class="error" id="examName-error"></label>
                 </div>
 
             </fieldset>
@@ -264,7 +264,23 @@
             
             <fieldset>
                 
-                <label>Scores... TBD</label>
+                <div>
+                    <label id="cs490-examfeedback-list-empty-id" class="message-label list">No feedback found</label>
+                    <table id="cs490-examfeedback-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>Answer</th>
+                                <th>Description</th>
+                                <th>Correct?</th>
+                                <th>Score</th>
+                                <th>Possible</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-examfeedback-list-id">
+                        </tbody>
+                    </table>
+                </div>
                 
             </fieldset>
             

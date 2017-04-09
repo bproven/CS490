@@ -13,33 +13,51 @@ function Student( studentUcid, onPostError ) {
     self.studentUcid = studentUcid;
     self.onPostError = isEmpty( onPostError ) ? function( request ) {} : onPostError;
     
+    // currently selected
     self.currentExamId = null;
     self.currentExamTestId = null;
     self.currentAnswerId = null;
 
+    // current data
     self.exams  = [];
     self.grades = [];
     self.answers = [];
     self.feedback = [];
     self.questions = [];
     
-    // data retrieval
-    self.getExam = function( examId ) {
-        return self.exams.find( function( exam ) {
-            return exam.examId === examId;
-        });
-    };
-
+    // ids
+    self.examListEmptyId            = "cs490-exam-list-empty-id";
+    self.examListHeaderId           = "cs490-exam-list-header-id";
+    self.examListId                 = "cs490-exam-list-id";
+    
+    self.examGradeListEmptyId       = "cs490-grade-list-empty-id";
+    self.examGradeListHeaderId      = "cs490-grade-list-header-id";
+    self.examGradeListId            = "cs490-grade-list-id";
+    
+    self.examAnswerListEmptyId      = "cs490-answer-list-empty-id";
+    self.examAnswerListHeaderId     = "cs490-answer-list-header-id";
+    self.examAnswerListId           = "cs490-answer-list-id";
+    
+    self.examFeedbackListEmptyId    = "cs490-feedback-list-empty-id";
+    self.examFeedbackListHeaderId   = "cs490-feedback-list-header-id";
+    self.examFeedbackListId         = "cs490-feedback-list-id";
+    
+    self.examQuestionListEmptyId    = "cs490-question-list-empty-id";
+    self.examQuestionListHeaderId   = "cs490-question-list-header-id";
+    self.examQuestionListId         = "cs490-question-list-id";
+    
+    // data retrieval methods
     self.getAllExams = function() {
 
-        displayById( "show-exams", true );
-        displayById( "take-test", false );
+        //displayById( "show-exams", true );
+        //displayById( "take-test", false );
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-exam-list-empty-id", !found, "No exams found" );
             self.exams = results;
-            createAndReplaceElementsById( "cs490-exam-list-id", "tr", results, self.createExamElement );
+            createAndReplaceElementsById( self.examListId, "tr", results, self.createExamElement );
+            displayById( self.examListEmptyId, !found );
+            displayById( self.examListHeaderId, found );
         };
 
         post( "../allExams.php", null, success, self.onPostError );
@@ -55,11 +73,12 @@ function Student( studentUcid, onPostError ) {
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-grade-list-empty-id", !found, "No grades found" );
             self.grades = results;
-            createAndReplaceElementsById( "cs490-grade-list-id", "tr", results, self.createExamGradeElement );
+            createAndReplaceElementsById( self.examGradeListId, "tr", results, self.createExamGradeElement );
+            displayById( self.examGradeListEmptyId, !found );
+            displayById( self.examGradeListHeaderId, found );
             if ( found ) {
-                self.selectExamGrade();
+                //self.selectExamGrade();
             }
         };
     
@@ -76,9 +95,10 @@ function Student( studentUcid, onPostError ) {
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-answer-list-empty-id", !found, "No answers found" );
             self.answers = results;
-            createAndReplaceElementsById( "cs490-answer-list-id", "tr", results, self.createAnswerElement );
+            createAndReplaceElementsById( self.examAnswerListId, "tr", results, self.createAnswerElement );
+            displayById( self.examAnswerListEmptyId, !found );
+            displayById( self.examAnswerListHeaderId, found );
         };
 
         post( "../studentExamQuestionScores.php", data, success, self.onPostError );
@@ -95,9 +115,10 @@ function Student( studentUcid, onPostError ) {
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-feedback-list-empty-id", !found, "No feedback found" );
             self.feedback = results;
-            createAndReplaceElementsById( "cs490-feedback-list-id", "tr", results, self.createFeedbackElement );
+            createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createFeedbackElement );
+            displayById( self.examFeedbackListEmptyId, !found );
+            displayById( self.examFeedbackListHeaderId, found );
         };
 
         post( "../studentExamQuestionFeedback.php", data, success, onPostError );
@@ -112,9 +133,10 @@ function Student( studentUcid, onPostError ) {
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-question-list-empty-id", !found, "No questions found" );
             self.questions = results;
-            createAndReplaceElementsById( "cs490-question-list-id", "tr", results, self.createExamQuestionElement );
+            createAndReplaceElementsById( self.examQuestionListId, "tr", results, self.createExamQuestionElement );
+            displayById( self.examQuestionListEmptyId, !found );
+            displayById( self.examQuestionListHeaderId, found );
         };
 
         post( "../examQuestions.php", data, success, onPostError );
@@ -122,12 +144,10 @@ function Student( studentUcid, onPostError ) {
     };
     
     // UI event handlers
-
     self.takeExam = function() {
         self.currentExamTestId = this.id;
         self.getExamQuestions();
-        displayById( "show-exams", false );
-        displayById( "take-test", true );
+        doTabClick( 1 );
     };
 
     self.saveTest = function() {
@@ -146,7 +166,7 @@ function Student( studentUcid, onPostError ) {
                 var a = {
                     questionId: elem.id,
                     answer: elem.value
-                }
+                };
                 data.answers.push( a );
             } 
         }
@@ -164,30 +184,43 @@ function Student( studentUcid, onPostError ) {
 
     };
 
-    self.showScore = function() {
+    self.showExamGrades = function() {
         self.currentExamId = this.id;
         self.getStudentExamGrade();
-        displayById( "show-exams", true );
-        displayById( "take-test", false );
-    };
-
-    self.selectExam = function() {
-        self.currentExamId = this.id;
-        self.getStudentExamGrade();
-        displayById( "show-exams", true );
-        displayById( "take-test", false );
+        doTabClick( 2 );
     };
 
     self.selectExamGrade = function() {
         self.getExamAnswers();
+        doTabClick( 3 );
     };
 
     self.selectAnswer = function() {
         self.currentAnswerId = this.id;
         self.getQuestionFeedback();
+        doTabClick( 4 );
     };
     
     // student DOM elements
+    self.getExam = function( examId ) {
+        return self.exams.find( function( exam ) {
+            return exam.examId === examId;
+        });
+    };
+    
+    self.createExamElement = function( exam ) {
+
+        var tr = document.createElement( "tr" );
+
+        createLabel( exam.examId, exam.examName, tr );
+
+        createAnchor( "#", exam.examId, "Take", self.takeExam, tr );
+
+        createAnchor( "#", exam.examId, "Grade", self.showExamGrades, tr );
+        
+        return tr;
+
+    };
     
     self.createExamQuestionElement = function( question ) {
     
@@ -195,7 +228,7 @@ function Student( studentUcid, onPostError ) {
 
         createLabel( null, question.question, tr );
 
-        createLabel( null, getQuestionTraits( question, false ), tr );
+        createLabel( null, self.getQuestionTraits( question, false ), tr );
 
         createTextArea( question.questionId, 80, 10, tr );
     
@@ -208,34 +241,26 @@ function Student( studentUcid, onPostError ) {
         var tr = document.createElement( "tr" );
 
         createLabel( null, grade.examName, tr );
+        
+        var result = grade.score + " / " + grade.possible;
+        
+        createAnchor( "#", grade.examId, result, self.selectExamGrade, tr );
 
-        createAnchor( "#", grade.examId, grade.score, self.selectExamGrade, tr );
+        var percent = ( grade.score * 100.0 ) / ( grade.possible * 1.0 );
+        
+        createLabel( null, percent + "%", tr );
 
         return tr;
     
     };
 
-    self.createExamElement = function( exam ) {
-
-        var tr = document.createElement( "tr" );
-
-        createAnchor( "#", exam.examId, exam.examName, self.selectExam, tr );
-
-        createAnchor( "#", exam.examId, "Take", self.takeExam, tr );
-
-        createAnchor( "#", exam.examId, "Show Score", self.showExam, tr );
-
-        return tr;
-
-    };
-    
     self.createFeedbackElement = function( feedback ) {
     
         var tr = document.createElement( "tr" );
 
         createLabel( null, feedback.description, tr );
 
-        createLabel( null, feedback.correct ? "YES" : "NO", tr );
+        createLabel( null, feedback.correct ? "yes" : "no", tr );
 
         createLabel( null, feedback.score, tr );
 
@@ -254,6 +279,47 @@ function Student( studentUcid, onPostError ) {
         createAnchor( "#", answer.questionId, answer.score, self.selectAnswer, tr );
 
         return tr;
+
+    };
+    
+    self.getQuestionTraits = function( question, difficulty ) {
+
+        if ( isEmpty( difficulty ) ) {
+            difficulty = true;
+        }
+
+        var sig = "";
+
+        var has = [ "If", "While", "For", "Recursion" ];
+
+        has.forEach( function( h ) {
+            var propName = "has" + h;
+            var value = isTrue( question[ propName ] );
+            if ( value !== false ) {
+                if ( sig !== "" ) {
+                    sig = sig + ", ";
+                }
+                sig = sig + h.toLowerCase();
+            }
+        });
+
+        if ( difficulty ) {
+
+            var diff = self.getDifficulty( question.difficulty );
+
+            if ( sig !== "" ) {
+                sig = sig + ", ";
+            }
+
+            sig = sig + diff;
+
+        }
+        
+        if ( sig === "" ) {
+            sig = "none";
+        }
+
+        return sig;
 
     };
     

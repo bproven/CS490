@@ -34,6 +34,31 @@ function createAnchor( href, id, innerHTML, onclick, parent ) {
     
 }
 
+function createInput( id, type, name, value, parent ) {
+    
+    var elem = document.createElement( "input" );
+    
+    elem.id = id;
+    elem.type = type;
+    elem.name = name;
+    elem.value = value;
+    
+    appendChild( parent, elem );
+    
+    return elem;
+
+}
+
+function createCheckbox( id, name, checked, parent ) {
+    
+    var elem = createInput( id, "checkbox", name, null, parent );
+    
+    elem.checked = checked;
+    
+    return elem;
+    
+}
+
 function createLabel( id, text, parent ) {
     
     var elem = document.createElement( "label" );
@@ -51,7 +76,7 @@ function createTextArea( id, cols, rows, parent ) {
     
     var elem = document.createElement( "textarea" );
     
-    elem.id = elem;
+    elem.id = id;
     elem.cols = cols;
     elem.rows = rows;
     
