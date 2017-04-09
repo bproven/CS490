@@ -68,29 +68,39 @@ function scoreFuncname( $answer, $question ) {
 	$score = 0;
 	$description = "Function named incorrectly";
     }
-    
     addfeedback($question, $description, $correct, $score, 1);
-
+    
 }
 
-function scoreCompilation( $answer, $question ) {
+function scoreCompile_Execute( $answer, $question ) {
     
     $file = "test.java";
     $answerText = $answer->answer;
+	$functionName = $answer -> functionName;
     $score = 0;
     $feedback = "";
 
 // temp test    
     //$answerText = "public static int cubed(int number){return number * number * number;}"; //will be provided by student as their answer
-    $value = 10;
     
     file_put_contents($file, "class test {\n\n"); //create Java file and write, append code
     file_put_contents($file, $answerText, FILE_APPEND);
     file_put_contents($file, "\n\n", FILE_APPEND);
     file_put_contents($file, "public static void main(String[] args) {\n", FILE_APPEND);
-    //file_put_contents($file, "System.out.println(cubed($value));\n", FILE_APPEND);
+  
+	if($functionName == "sum"){
+		file_put_contents($file,"System.out.println($functionName(10,15));\n",FILE_APPEND);
+	}
+	else if($functionName == "subtract"){
+		file_put_contents($file,"System.out.println($functionName(10,25));\n",FILE_APPEND);
+	}
+	else if($functionName == "squared"){
+		file_put_contents($file,"System.out.println($functionName(10));\n",FILE_APPEND);
+	}
+	else if($functionName == "factorial"){
+		file_put_contents($file,"System.out.println($functionName(7));\n",FILE_APPEND);
+	}
     file_put_contents($file, "}\n\n}", FILE_APPEND);
-    
     $compiled = "test.class";
     
     if ( file_exists( $compiled ) == true ){
@@ -109,7 +119,17 @@ function scoreCompilation( $answer, $question ) {
         $score = 0;
         $feedback = "Function does not compile.";
     }
-
+    $output = shell_exec("java test"); //execute code
+	//echo " $functionName is $output, "; output directly to browser for testing when I run scoreExam.php
+	if(isset($output)){
+		$score += 1;
+		$feedback .= ", Function ran successfully.";
+	}
+	else{
+		$score += 0;
+		$feedback .= ", Function did not run successfully.";
+	}
+	
     addfeedback($question, $feedback, $correct, $score, 1);
 
 }
@@ -117,11 +137,10 @@ function scoreCompilation( $answer, $question ) {
 function scoreAnswer( $examScore, $answer ) {
     
     $question = makeQuestion( $answer->questionId, 0, 0 );
-
     $examScore->questions[] = $question;
     
     scoreFuncName( $answer, $question );
-    scoreCompilation($answer, $question);
+    scoreCompile_Execute($answer, $question);
     
     $examScore->score    = $examScore->score    + $question->score;
     $examScore->possible = $examScore->possible + $question->possible;
