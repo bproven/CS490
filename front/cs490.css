@@ -1,16 +1,3 @@
-.field {
-    margin: 5px;
-}
-
-.login {
-    width: 120px;
-}
-
-.error {
-    color: firebrick;
-    font-weight: bold;
-}
-
 body {
     background-color: antiquewhite;
     font: 14px arial, sans-serif;
@@ -20,9 +7,11 @@ h1 {
     color: brown;
 }
 
+/*
 label {
     width: 320px;
 }
+*/
 
 input {
     margin: 5px;
@@ -41,8 +30,29 @@ form {
 }
 
 td {
-    margin: 2px;
-    padding: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.list {
+    display: none;
+}
+
+.field {
+    margin: 5px;
+}
+
+.login {
+    width: 120px;
+}
+
+.error {
+    color: firebrick;
+    font-weight: bold;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 form .login-form {
@@ -51,6 +61,10 @@ form .login-form {
 
 .arg {
     width: 50px;
+}
+
+.question {
+    width: 100px;
 }
 
 .qcol {
@@ -73,4 +87,62 @@ form .login-form {
 .student-test-col {
     display: block;
     float: left;
+}
+
+.message-label {
+    padding: 3px;
+    font-weight: bold;
+}
+
+#cs490-testcase-current-question-id {
+    
+}
+
+#tabs {
+    border-bottom: 2px solid burlywood;
+    height: 33px;
+    margin: 0 0 10px;
+    padding-top: 5px;
+    background: wheat;
+    font-weight: bold;
+}
+
+#tabs a {
+    float: left;
+    margin-left: 2px;
+    border-radius: 10px 10px 0 0;
+    border: 2px solid burlywood;
+    border-bottom-color: antiquewhite;
+    color: darkgray;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 12px;
+    text-decoration: none;
+}
+
+#tabs a:hover {
+    background: antiquewhite;
+    color: black;
+    border-color: burlywood burlywood antiquewhite;
+}
+
+#tabs a.active {
+    background: antiquewhite;
+    color: black;
+    border-color: burlywood burlywood antiquewhite;
+}
+
+#tabs a.active:hover {
+    background: antiquewhite;
+    color: black;
+    border-color: burlywood burlywood antiquewhite;
+}
+
+#tabs_data fieldset {
+    display: none;
+    border: 0;
+}
+
+#tabs_data fieldset div {
+    font-size: 14px;
 }

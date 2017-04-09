@@ -2,7 +2,7 @@
  *     File:        student/student.js
  *     Author:      Bob Provencher
  *     Created:     Mar 5, 2017
- *     Description: student page code
+ *     Description: student view model
  */
 
 function Student( studentUcid, onPostError ) {
@@ -10,7 +10,6 @@ function Student( studentUcid, onPostError ) {
     var self = this;
     
     // data
-    
     self.studentUcid = studentUcid;
     self.onPostError = isEmpty( onPostError ) ? function( request ) {} : onPostError;
     
@@ -25,7 +24,6 @@ function Student( studentUcid, onPostError ) {
     self.questions = [];
     
     // data retrieval
-    
     self.getExam = function( examId ) {
         return self.exams.find( function( exam ) {
             return exam.examId === examId;

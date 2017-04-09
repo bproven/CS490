@@ -18,170 +18,255 @@
         
         <div><h1>CS 490 Project - Instructor Access</h1></div>
         
-        <div class="qcol">
-            
-            <div id="cs490-errors">
-                <label class="error" id="page-error"></label> 
-            </div>
-            
-            <h2>Questions</h2>
-            
-            <form action="#" id="cs490-question-form-id">
-                
-                <div class="field">
-                    <label for="question">Question:</label>
-                    <textarea id="question" name="question" cols="80" rows="4"></textarea>
-                </div>
-                
-                <div>
-                    <label class="error" id="question-error"></label>
-                </div>
-                
-                <datalist id="difficulties">
-                    <option value="0">Easy</option>
-                    <option value="1">Medium</option>
-                    <option value="2">Hard</option>
-                </datalist>
-                
-                <div class="field">
-                    <label for="functionName">Function Name:</label>
-                    <input type="text" id="functionName" name="functionName" />
-                    <label for="difficulty">Difficulty:</label>
-                    <input class="arg" id="difficulty" name="difficulty" list="difficulties" />
-                </div>
-                
-                <div>
-                    <label class="error" id="functionName-error"></label>
-                    <label class="error" id="difficulty-error"></label>
-                </div>
-                
-                <datalist id="types">
-                    <option value="int"></option>
-                    <option value="float"></option>
-                    <option value="double"></option>
-                    <option value="String"></option>
-                </datalist>
-                
-                <datalist id="types-with-null">
-                    <option value=""></option>
-                    <option value="int"></option>
-                    <option value="float"></option>
-                    <option value="double"></option>
-                    <option value="String"></option>
-                </datalist>
-                
-                <div class="field">
-                    <label for="returns">Returns:</label>
-                    <input class="arg" name="returnType" id="returnType" list="types">
-                    <label for="argument1">Arguments:</label>
-                    <input class="arg" name="argument1" id="argument1" list="types">
-                    <input class="arg" name="argument2" id="argument2" list="types-with-null">
-                    <input class="arg" name="argument3" id="argument3" list="types-with-null">
-                    <input class="arg" name="argument4" id="argument4" list="types-with-null">
-                </div>
-                
-                <div>
-                    <label class="error" id="argument1-error"></label>
-                    <label class="error" id="returnType-error"></label>
-                </div>
-                
-                <div class="field">
-                    <label for="hasIf">If:</label>
-                    <input type="checkbox" name="hasIf"        id="hasIf">
-                    <label for="hasWhile">While:</label>
-                    <input type="checkbox" name="hasWhile"     id="hasWhile">
-                    <label for="hasFor">For:</label>
-                    <input type="checkbox" name="hasFor"       id="hasFor">
-                    <label for="hasRecursion">Recursion:</label>
-                    <input type="checkbox" name="hasRecursion" id="hasRecursion">
-                    <input type="button" id="submit" value="Add Question" onclick="addQuestion()" />
-                </div>
-                
-                <div>
-                    <label class="error" id="hasIf-error"></label>
-                    <label class="error" id="hasWhile-error"></label>
-                    <label class="error" id="hasFor-error"></label>
-                    <label class="error" id="hasRecursion-error"></label>
-                    <label class="error" id="question-error"></label>
-                </div>
-                
-            </form>
-        
-            <div>
-                <label id="cs490-question-list-empty-id"></label>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th><th>Question</th><th>Signature</th><th>Traits</th><th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="cs490-question-list-id">
-                    </tbody>
-                </table>
-            </div>
-            
-            <h2>Test Cases</h2>
-            
-            <form action="#" id="cs490-testcase-form-id">
-                
-                <div class="field">
-                    <label for="returns">Returns:</label>
-                    <input class="arg" name="returnValue" id="returnValue">
-                    <label for="argument1">Arguments:</label>
-                    <input class="arg" name="argument1" id="argument1">
-                    <input class="arg" name="argument2" id="argument2">
-                    <input class="arg" name="argument3" id="argument3">
-                    <input class="arg" name="argument4" id="argument4">
-                    <input type="button" id="submit" value="Add Test Case" onclick="addTestCase()" />
-                </div>
-                
-                <div>
-                    <label class="error" id="argument1-error"></label>
-                    <label class="error" id="returnValue-error"></label>
-                    <label class="error" id="testcase-error"></label>
-                </div>
-                
-            </form>
-            
-            <div>
-                <label id="cs490-testcase-list-empty-id"></label>
-                <table id="cs490-testcase-list-id">
-                </table>
-            </div>
-            
+        <div id="tabs">
+            <a href="#" onclick="doTabClick( 0 );">Questions</a>
+            <a href="#" onclick="doTabClick( 1 );">Question Test Cases</a>
+            <a href="#" onclick="doTabClick( 2 );">Exams</a>
+            <a href="#" onclick="doTabClick( 3 );">Exam Questions</a>
+            <a href="#" onclick="doTabClick( 4 );">Exam Scores</a>
         </div>
         
-        <div class="ecol">
-            
-            <h2>Exams</h2>
-            
-            <form action="#" id="cs490-exam-form-id">
-                
-                <div class="field">
-                    <label for="examName">Exam Name:</label>
-                    <input type="text" id="examName" value="" />
-                    <input type="button" id="submit" value="Add Exam" onclick="addExam()" />
+        <div id="tabs_data">
+        
+            <fieldset class="qcol">
+
+                <div id="cs490-errors">
+                    <label class="error" id="page-error"></label> 
                 </div>
-                
+
+                <form action="#" id="cs490-question-form-id">
+
+                    <div class="field">
+                        <label for="question">Question:</label>
+                        <textarea id="question" name="question" cols="80" rows="4"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="error" id="question-error"></label>
+                    </div>
+
+                    <datalist id="difficulties">
+                        <option value="0">Easy</option>
+                        <option value="1">Medium</option>
+                        <option value="2">Hard</option>
+                    </datalist>
+
+                    <div class="field">
+                        <label for="functionName">Function Name:</label>
+                        <input type="text" id="functionName" name="functionName" />
+                        <label for="difficulty">Difficulty:</label>
+                        <input class="arg" id="difficulty" name="difficulty" list="difficulties" />
+                    </div>
+
+                    <div>
+                        <label class="error" id="functionName-error"></label>
+                        <label class="error" id="difficulty-error"></label>
+                    </div>
+
+                    <datalist id="types">
+                        <option value="int"></option>
+                        <option value="float"></option>
+                        <option value="String"></option>
+                    </datalist>
+
+                    <datalist id="types-with-null">
+                        <option value=""></option>
+                        <option value="int"></option>
+                        <option value="float"></option>
+                        <option value="double"></option>
+                        <option value="String"></option>
+                    </datalist>
+
+                    <div class="field">
+                        <label for="returns">Returns:</label>
+                        <input class="arg" name="returnType" id="returnType" list="types">
+                        <label for="argument1">Arguments:</label>
+                        <input class="arg" name="argument1" id="argument1" list="types">
+                        <input class="arg" name="argument2" id="argument2" list="types-with-null">
+                        <input class="arg" name="argument3" id="argument3" list="types-with-null">
+                        <input class="arg" name="argument4" id="argument4" list="types-with-null">
+                    </div>
+
+                    <div>
+                        <label class="error" id="question-argument1-error"></label>
+                        <label class="error" id="returnType-error"></label>
+                    </div>
+
+                    <div class="field">
+                        <label for="hasIf">If:</label>
+                        <input type="checkbox" name="hasIf"        id="hasIf">
+                        <label for="hasWhile">While:</label>
+                        <input type="checkbox" name="hasWhile"     id="hasWhile">
+                        <label for="hasFor">For:</label>
+                        <input type="checkbox" name="hasFor"       id="hasFor">
+                        <label for="hasRecursion">Recursion:</label>
+                        <input type="checkbox" name="hasRecursion" id="hasRecursion">
+                        <input type="button" value="Add Question" onclick="instructor.addQuestion()" />
+                    </div>
+
+                    <div>
+                        <label class="error" id="hasIf-error"></label>
+                        <label class="error" id="hasWhile-error"></label>
+                        <label class="error" id="hasFor-error"></label>
+                        <label class="error" id="hasRecursion-error"></label>
+                        <label class="error" id="question-error"></label>
+                    </div>
+
+                </form>
+
                 <div>
-                    <label class="error" id="examName-error"></label>
+                    <label id="cs490-question-list-empty-id" class="message-label list">No questions found</label>
+                    <table id="cs490-question-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Question</th>
+                                <th>Signature</th>
+                                <th>Difficulty</th>
+                                <th>If</th>
+                                <th>While</th>
+                                <th>For</th>
+                                <th>Recursion</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-question-list-id">
+                        </tbody>
+                    </table>
                 </div>
+
+            </fieldset>
+
+            <fieldset class="qcol">
                 
-            </form>
-            
-            <div>
-                <label id="cs490-exam-list-empty-id"></label>
-                <table id="cs490-exam-list-id">
+                <table>
+                    <tr>
+                        <td class="bold">Current Question:</td>
+                        <td><label id="cs490-testcase-question-id"></label></td>
+                    </tr>
+                    <tr>
+                        <td class="bold">Signature:</td>
+                        <td><label id="cs490-testcase-question-signature-id"></label></td>
+                    </tr>
                 </table>
-            </div>
+                
+                <form action="#" id="cs490-testcase-form-id">
+
+                    <div class="field">
+                        <label for="returnValue">Returns:</label>
+                        <input class="arg" name="returnValue" id="returnValue">
+                        <label for="argument1">Arguments:</label>
+                        <input class="arg" name="argument1" id="argument1">
+                        <input class="arg" name="argument2" id="argument2">
+                        <input class="arg" name="argument3" id="argument3">
+                        <input class="arg" name="argument4" id="argument4">
+                        <input type="button" value="Add Test Case" onclick="instructor.addTestCase()" />
+                    </div>
+
+                    <div>
+                        <label class="error" id="testcase-argument1-error"></label>
+                        <label class="error" id="returnValue-error"></label>
+                        <label class="error" id="testcase-error"></label>
+                    </div>
+
+                </form>
+
+                <div>
+                    <label id="cs490-testcase-list-empty-id" class="message-label list">No test cases found</label>
+                    <table id="cs490-testcase-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Test Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-testcase-list-id">
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+
+            <fieldset class="ecol">
+
+                <form action="#" id="cs490-exam-form-id">
+
+                    <div class="field">
+                        <label for="examName">Exam Name:</label>
+                        <input type="text" id="examName" value="" />
+                        <input type="button" id="submit" value="Add Exam" onclick="instructor.addExam()" />
+                    </div>
+
+                    <div>
+                        <label class="error" id="examName-error"></label>
+                    </div>
+
+                </form>
+
+                <div>
+                    <label id="cs490-exam-list-empty-id" class="message-label list">No exams found</label>
+                    <table id="cs490-exam-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Exams</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-exam-list-id">
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
             
-            <h2>Exam Questions</h2>
-            
-            <div>
-                <label id="cs490-examquestion-list-empty-id"></label>
-                <table id="cs490-examquestion-list-id">
+            <fieldset>
+                
+                <table>
+                    <tr>
+                        <td class="bold">Current Exam:</td>
+                        <td><label id="cs490-examquestion-id"></label></td>
+                    </tr>
                 </table>
-            </div>
+                
+                <form action="#" id="cs490-examquestion-form-id">
+
+                    <datalist id="questions-list">
+                        <option id="1" value="1">cubed</option>
+                        <option id="2" value="2">sum</option>
+                    </datalist>
+
+                    <div class="field">
+                        <label for="questionId">Question:</label>
+                        <input class="question" id="questionId" name="questionId" list="questions-list" />
+                        <input type="button" value="Add Question" onclick="instructor.addToExam()" />
+                    </div>
+
+                    <div>
+                        <label class="error" id="examquestion-error"></label>
+                    </div>
+
+                </form>
+
+                <div>
+                    <label id="cs490-examquestion-list-empty-id" class="message-label list">No questions found</label>
+                    <table id="cs490-examquestion-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th>Exam Questions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-examquestion-list-id">
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+            
+            <fieldset>
+                
+                <label>Scores... TBD</label>
+                
+            </fieldset>
             
         </div>
         
@@ -200,6 +285,16 @@
             function onPostError( request ) {
                 showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
             }
+            
+            var tabActive = 0, 
+                tabs = document.getElementById( 'tabs' ).getElementsByTagName( 'A' ), 
+                tabs_data = document.getElementById( 'tabs_data' ).getElementsByTagName( 'fieldset' );
+
+            function doTabClick( i ) {
+                tabActive = tabClick( tabs, tabs_data, tabActive, i );
+            }
+            
+            doTabClick( 0 );
            
             var instructorId   = getCookie( 'instructorId' );       // 'x';       //
             var instructorUcid = getCookie( 'instructorUcid' );     // 'taj1';    //

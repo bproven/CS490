@@ -53,3 +53,16 @@ function verifyFieldsNotBlank( object, fields ) {
     });
     return result;
 }
+
+function showTab( tabs, tabs_data, i, show ) {
+    if ( i >= 0 && i < tabs.length && i < tabs_data.length ) {
+        tabs[ i ].setAttribute( 'class', show ? 'active' : '' );
+        tabs_data[ i ].style.display = show ? 'block' : 'none';
+    }
+}
+
+function tabClick( tabs, tabs_data, oldx, newx ) {
+    showTab( tabs, tabs_data, oldx, false );
+    showTab( tabs, tabs_data, newx, true );
+    return newx;
+}

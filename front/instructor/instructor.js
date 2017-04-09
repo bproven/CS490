@@ -2,7 +2,7 @@
  *     File:        instructor/instructor.js
  *     Author:      Bob Provencher
  *     Created:     Mar 5, 2017
- *     Description: instructor page code
+ *     Description: instructor view model
  */
 
 function Instructor( instructorUcid, onPostError ) {
@@ -10,62 +10,56 @@ function Instructor( instructorUcid, onPostError ) {
     var self = this;
 
     // data
-    
     self.instructorUcid = instructorUcid;
     self.onPostError = isEmpty( onPostError ) ? function( request ) {} : onPostError;
     
+    // currently selected
     self.currentExamId = null;
     self.currentQuestionId = null;
 
+    // current data
     self.questions = [];
     self.exams = [];
     self.testcases = [];
     self.examquestions = [];
     
-    // data retrieval
+    // ids
+    self.questionListEmptyId        = "cs490-question-list-empty-id";
+    self.questionListHeaderId       = "cs490-question-list-header-id";
+    self.questionListId             = "cs490-question-list-id";
+    self.questionFormId             = "cs490-question-form-id";
     
-    self.getExams = function() {
-
-        // the user
-        var data = {
-            ownerId: self.instructorUcid
-        };
-
-        var success = function( results ) {
-            var found = results.length > 0;
-            displayLabelById( "cs490-exam-list-empty-id", !found, "No exams found" );
-            self.exams = results;
-            createAndReplaceElementsById( "cs490-exam-list-id", "tr", results, self.createExamElement );
-        };
-
-        post( "../exams.php", data, success, self.onPostError );
-
-    };
-
-    self.getExamQuestions = function() {
-
-        var data = {
-            examId: self.currentExamId
-        };
-
-        var success = function( results ) {
-            var found = results.length > 0;
-            displayLabelById( "cs490-examquestion-list-empty-id", !found, "No questions found" );
-            self.examquestions = results;
-            createAndReplaceElementsById( "cs490-examquestion-list-id", "tr", results, self.createExamQuestionElement );
-        };
-
-        post( "../examQuestions.php", data, success, self.onPostError );
-        
-    };
-
+    self.testCaseQuestionId         = "cs490-testcase-question-id";
+    self.testCaseQuestionSignatureId = "cs490-testcase-question-signature-id";
+    self.testCaseListEmptyId        = "cs490-testcase-list-empty-id";
+    self.testCaseListHeaderId       = "cs490-testcase-list-header-id";
+    self.testCaseListId             = "cs490-testcase-list-id";
+    self.testCaseFormId             = "cs490-testcase-form-id";
+     
+    self.examListEmptyId            = "cs490-exam-list-empty-id";
+    self.examListHeaderId           = "cs490-exam-list-header-id";
+    self.examListId                 = "cs490-exam-list-id";
+    self.examFormId                 = "cs490-exam-form-id";
+    
+    self.examQuestionId             = "cs490-examquestion-id";
+    self.examQuestionListEmptyId    = "cs490-examquestion-list-empty-id";
+    self.examQuestionListHeaderId   = "cs490-examquestion-list-header-id";
+    self.examQuestionListId         = "cs490-examquestion-list-id";
+    self.examQuestionFormId         = "cs490-examquestion-form-id";
+    
+    // data retrieval methods
     self.getQuestions = function() {
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-question-list-empty-id", !found, "No questions found" );
             self.questions = results;
-            createAndReplaceElementsById( "cs490-question-list-id", "tr", results, self.createQuestionElement );
+            createAndReplaceElementsById( self.questionListId, "tr", results, 
+                function( question ) { 
+                    return self.createQuestionElement( question, true ); 
+                } );
+            displayById( self.questionListEmptyId, !found );
+            displayById( self.questionListHeaderId, found );
+            createAndReplaceElementsById( "questions-list", "option", results, self.createQuestionOptionElement );
         };
 
         post( "../questions.php", null, success, self.onPostError );
@@ -80,31 +74,58 @@ function Instructor( instructorUcid, onPostError ) {
 
         var success = function( results ) {
             var found = results.length > 0;
-            displayLabelById( "cs490-testcase-list-empty-id", !found, "No test cases found" );
             self.testcases = results;
-            createAndReplaceElementsById( "cs490-testcase-list-id", "tr", results, self.createTestcaseElement );
+            createAndReplaceElementsById( self.testCaseListId, "tr", results, self.createTestcaseElement );
+            displayById( self.testCaseListEmptyId, !found );
+            displayById( self.testCaseListHeaderId, found );
         };
 
         post( "../testCases.php", data, success, self.onPostError );
 
     };
     
+    self.getExams = function() {
+
+        // the user
+        var data = {
+            ownerId: self.instructorUcid
+        };
+
+        var success = function( results ) {
+            var found = results.length > 0;
+            self.exams = results;
+            createAndReplaceElementsById( self.examListId, "tr", results, self.createExamElement );
+            displayById( self.examListEmptyId, !found );
+            displayById( self.examListHeaderId, found );
+        };
+
+        post( "../exams.php", data, success, self.onPostError );
+
+    };
+
+    self.getExamQuestions = function() {
+
+        var data = {
+            examId: self.currentExamId
+        };
+
+        var success = function( results ) {
+            var found = results.length > 0;
+            self.examquestions = results;
+            createAndReplaceElementsById( self.examQuestionListId, "tr", results, self.createExamQuestionElement );
+            displayById( self.examQuestionListEmptyId, !found );
+            displayById( self.examQuestionListHeaderId, found );
+        };
+
+        post( "../examQuestions.php", data, success, self.onPostError );
+        
+    };
+
     // UI event handlers
-
-    self.selectExam = function() {
-        self.currentExamId = this.id;
-        self.getExamQuestions( self.currentExamId );
-    };
-
-    self.selectQuestion = function() {
-        self.currentQuestionId = this.id;
-        self.getTestCases( self.currentQuestionId );
-    };
-
     self.addQuestion = function() {
 
         // pull out the input fields and create a request object
-        var object = formToObjectById( "cs490-question-form-id" );
+        var object = formToObjectById( self.questionFormId );
 
         var fields = [
             "question", "argument1", "returnType", 
@@ -123,7 +144,10 @@ function Instructor( instructorUcid, onPostError ) {
                 if ( results.success ) {
                     object.questionId = results.questionId;
                     self.questions.push( object );
-                    createAndAddElementById( object, self.createQuestionElement, "cs490-question-list-id" );
+                    createAndAddElementById( object, self.createQuestionElement, self.questionListId );
+                    displayById( self.questionListEmptyId, false );
+                    displayById( self.questionListHeaderId, true );
+                    createAndAddElementById( object, self.createQuestionOptionElement, "questions-list" );
                 }
 
             };
@@ -137,7 +161,7 @@ function Instructor( instructorUcid, onPostError ) {
     self.addExam = function() {
 
         // pull out the input fields and create a request object
-        var object = formToObjectById( "cs490-exam-form-id" );
+        var object = formToObjectById( self.examFormId );
 
         var verified = verifyNotBlank ( object.examName, "examName-error", "Exam name cannot be blank" );
 
@@ -150,7 +174,9 @@ function Instructor( instructorUcid, onPostError ) {
                 if ( results.success ) {
                     object.examId = results.examId;
                     self.exams.push( object );
-                    createAndAddElementById( object, self.createExamElement, "cs490-exam-list-id" );
+                    createAndAddElementById( object, self.createExamElement, self.examListId );
+                    displayById( self.examListEmptyId, !found );
+                    displayById( self.examListHeaderId, found );
                 }
 
             };
@@ -163,7 +189,7 @@ function Instructor( instructorUcid, onPostError ) {
 
     self.addTestCase = function() {
 
-        var object = formToObjectById( "cs490-testcase-form-id" );
+        var object = formToObjectById( self.testCaseFormId );
 
         object.questionId = self.currentQuestionId;
 
@@ -182,8 +208,9 @@ function Instructor( instructorUcid, onPostError ) {
                     if ( results.success ) {
                         object.testCaseId = results.testCaseId;
                         self.testcases.push( object );
-                        displayLabelById( "cs490-testcase-list-empty-id", false, null );
-                        createAndAddElementById( object, self.createTestcaseElement, "cs490-testcase-list-id" );
+                        createAndAddElementById( object, self.createTestcaseElement, self.testCaseListId );
+                        displayById( self.testCaseListEmptyId, false );
+                        displayById( self.testCaseListHeaderId, true );
                     }
 
                 };
@@ -202,26 +229,48 @@ function Instructor( instructorUcid, onPostError ) {
     };
 
     self.addToExam = function() {
-
-        var questionId = this.id;
+        
+        // pull out the input fields and create a request object
+        var object = formToObjectById( self.examQuestionFormId );
 
         var data = {
             examId: self.currentExamId,
-            questionId: questionId
+            questionId: object.questionId
         };
 
         var success = function( results ) {
 
             if ( results.success ) {
-                displayLabelById( "cs490-examquestion-list-empty-id", false, null );
                 self.examquestions.push( data );
-                createAndAddElementById( data, self.createExamQuestionElement, "cs490-examquestion-list-id" );
+                createAndAddElementById( data, self.createExamQuestionElement, self.examQuestionListId );
+                displayById( self.examQuestionListEmptyId, false );
+                displayById( self.examQuestionListHeaderId, true );
             }
 
         };
 
         post( "../addExamQuestion.php", data, success, self.onPostError );
 
+    };
+    
+    // not implemented
+    self.deleteQuestion = function() {
+        
+        var questionId = this.id;
+
+        var data = {
+            questionId: questionId
+        };
+
+        var success = function( results ) {
+
+            if ( results.success ) {
+            }
+
+        };
+
+        //post( "../deleteQuestion.php", data, success, self.onPostError );
+        
     };
 
     self.releaseScores = function() {
@@ -247,6 +296,35 @@ function Instructor( instructorUcid, onPostError ) {
 
     };
     
+    self.manageTestCases = function() {
+      
+        self.currentQuestionId = this.id;
+        
+        var question = self.getQuestion( self.currentQuestionId );
+        
+        displayLabelById( self.testCaseQuestionId, true, question.question );
+        displayLabelById( self.testCaseQuestionSignatureId, true, self.getFunctionSignature( question ) );
+        
+        self.getTestCases();
+        
+        doTabClick( 1 );
+        
+    };
+    
+    self.manageExamQuestions = function () {
+      
+        self.currentExamId = this.id;
+        
+        var exam = self.getExam( self.currentExamId );
+        
+        displayLabelById( self.examQuestionId, true, exam.examName );
+        
+        self.getExamQuestions();
+        
+        doTabClick( 3 );
+        
+    };
+    
     // instructor DOM elements
     
     self.getQuestion = function( questionId ) {
@@ -254,20 +332,39 @@ function Instructor( instructorUcid, onPostError ) {
             return elem.questionId === questionId;
         });
     };
+    
+    self.getExam = function( examId ) {
+        return self.exams.find( function( elem ) {
+            return elem.examId === examId;
+        });
+    };
 
-    self.createQuestionElement = function( question ) {
+    self.createQuestionElement = function( question, deleteLink ) {
 
-        var elem = createAnchor( "#", question.questionId, question.functionName, self.selectQuestion );
+        var tr = document.createElement( "tr" );
 
-        var tr = createTableRow( elem );
+        createLabel( null, question.functionName, tr );
 
         createLabel( null, question.question, tr );
 
         createLabel( null, self.getFunctionSignature( question ), tr );
 
-        createLabel( null, self.getQuestionTraits( question, true ), tr );
+        createLabel( null, self.getDifficulty( question.difficulty ), tr );
+        
+        createLabel( null, boolToString( question.hasIf ), tr );
 
-        createAnchor( "#", question.questionId, "Add to Exam", self.addToExam, tr );
+        createLabel( null, boolToString( question.hasWhile ), tr );
+        
+        createLabel( null, boolToString( question.hasFor ), tr );
+        
+        createLabel( null, boolToString( question.hasRecursion ), tr );
+        
+        createAnchor( "#", question.questionId, "Test Cases", self.manageTestCases, tr );
+
+        if ( deleteLink ) {
+            // TODO: not implemented
+            //createAnchor( "#", question.questionId, "Delete", self.deleteQuestion, tr );
+        }
 
         return tr;
 
@@ -281,6 +378,12 @@ function Instructor( instructorUcid, onPostError ) {
         return createTableRow( elem );
 
     };
+    
+    self.createQuestionOptionElement = function( question ) {
+      
+        return createOption( question.questionId, question.functionName );
+        
+    };
 
     /**
      * Creates an exam DOM element suitable for insertion and returns it
@@ -291,9 +394,11 @@ function Instructor( instructorUcid, onPostError ) {
 
         var tr = document.createElement( "tr" );
 
-        createAnchor( "#", exam.examId, exam.examName, self.selectExam, tr );
+        createLabel( null, exam.examName, tr );
+        
+        createAnchor( "#", exam.examId, "Manage Questions", self.manageExamQuestions, tr );
 
-        createAnchor( "#", exam.examId, "Release Scores", self.releaseScores );
+        createAnchor( "#", exam.examId, "Release Scores", self.releaseScores, tr );
 
         return tr;
 
@@ -313,6 +418,8 @@ function Instructor( instructorUcid, onPostError ) {
 
         var args = [ testCase.argument1, testCase.argument2, testCase.argument3, testCase.argument4 ];
         var sig = "";
+        
+        var question = self.getQuestion( testCase.questionId );
 
         args.forEach( function( arg ) {
            if ( arg !== null && arg.length > 0 ) {
@@ -323,7 +430,7 @@ function Instructor( instructorUcid, onPostError ) {
            } 
         });
 
-        return  testCase.returnValue + " == function( " + sig + " )";
+        return question.functionName + "( " + sig + " ) == " + testCase.returnValue;
 
     };
     
@@ -347,6 +454,16 @@ function Instructor( instructorUcid, onPostError ) {
         return  question.returnType + " " + question.functionName +  "( " + sig + " )";
 
     };
+    
+    self.getDifficulty = function( difficulty ) {
+      
+        var diffs = [ "Easy", "Medium", "Hard" ];
+
+        var diff = diffs[ difficulty ];
+
+        return diff;
+        
+    };
 
     self.getQuestionTraits = function( question, difficulty ) {
 
@@ -360,7 +477,7 @@ function Instructor( instructorUcid, onPostError ) {
 
         has.forEach( function( h ) {
             var propName = "has" + h;
-            var value = question[ propName ];
+            var value = isTrue( question[ propName ] );
             if ( value !== false ) {
                 if ( sig !== "" ) {
                     sig = sig + ", ";
@@ -371,9 +488,7 @@ function Instructor( instructorUcid, onPostError ) {
 
         if ( difficulty ) {
 
-            var diffs = [ "Easy", "Medium", "Hard" ];
-
-            var diff = diffs[ question.difficulty ];
+            var diff = self.getDifficulty( question.difficulty );
 
             if ( sig !== "" ) {
                 sig = sig + ", ";

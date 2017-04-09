@@ -1,16 +1,16 @@
 /* 
- *     File:    dom.js
+ *     File:    js/dom.js
  *     Author:  Bob Provencher
  *     Created: Apr 1, 2017
  */
 
 function asTableCell( elem ) {
-    return elem.tagName === "td" ? elem : createTableCell( elem );
+    return elem.tagName.toLowerCase() === "td" ? elem : createTableCell( elem );
 }
 
 function appendChild( parent, child ) {
     if ( !isEmpty( parent ) && !isEmpty( child ) ) {
-        if ( parent.tagName === "tr" ) {
+        if ( parent.tagName.toLowerCase() === "tr" ) {
             parent.appendChild( asTableCell( child ) );
         }
         else {
@@ -80,4 +80,16 @@ function createTableRow( childElem ) {
     
     return tr;
 
+}
+
+function createOption( id, text ) {
+    
+    var option = document.createElement( "option" );
+    
+    option.id = id;
+    option.value = id;
+    option.innerHTML = text;
+    
+    return option;
+    
 }
