@@ -19,7 +19,7 @@ header( "Content-type: application/json" );
 
 echo execQueryToJSON( 
         "select distinct ucid, examId
-           from cs490_examquestionanswer
+           from cs490_ExamQuestionAnswer
           where examId = $examId" ); 
 
 ?>

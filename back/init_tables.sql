@@ -4,7 +4,7 @@
  *     Created: Apr 9, 2017
  */
 
-insert into `cs490_question` 
+insert into `cs490_Question` 
     values  
             (1,'Write a function named cubed that returns the cube of the passed in float\n','float',null,null,null,'float',0,'cubed',0,0,0,0),
             (2,'Write a function named add that returns the sum of two floats.','float','float',null,null,'float',0,'add',0,0,0,0),
@@ -15,10 +15,10 @@ insert into `cs490_question`
             (7,'Using if statements, write a function named binaryOp that takes a float, string operator and another float and returns the result.','float','String','float',null,'float',1,'binaryOp',1,0,0,0),
             (8,"Using a for loop, write a function named power that returns the first integer to the second's power.",'int','int',null,null,'int',1,'power',0,0,1,0);
 
-alter table cs490_question 
+alter table cs490_Question 
     auto_increment = 9;
 
-insert into `cs490_testcase` 
+insert into `cs490_TestCase` 
     values 
         (1,1,'-2',null,null,null,'-8'),
         (2,1,'-1',null,null,null,'-1'),
@@ -108,18 +108,18 @@ insert into `cs490_testcase`
         (73,8,'2','2',null,null,'4'),
         (74,8,'2','3',null,null,'8');
 
-alter table cs490_testcase 
+alter table cs490_TestCase 
     auto_increment = 75;
 
-insert into `cs490_exam` 
+insert into `cs490_Exam` 
     values 
         (1,'CS 101','taj1'),
         (2,'CS 102','taj1');
 
-alter table cs490_exam 
+alter table cs490_Exam 
     auto_increment = 3;
 
-insert into `cs490_examquestion` 
+insert into `cs490_ExamQuestion` 
     values 
         (1,1),
         (1,2),
@@ -133,7 +133,7 @@ insert into `cs490_examquestion`
         (2,2),
         (2,3);
 
-insert into `cs490_examquestionanswer` 
+insert into `cs490_ExamQuestionAnswer` 
     values 
         ('rap9',1,1,'public static float cube( float number )\n{\n    return number * number * number;\n}'),
         ('rap9',1,2,'public static float add( float a, float b )\n{\n    return a + b;\n}'),
@@ -144,7 +144,7 @@ insert into `cs490_examquestionanswer`
         ('rap9',1,7,'public static float binaryOp( float arg1, String op, float arg2 ) \n{ \n    float result = 0; \n    switch (op) {\n        case "+":\n            result = arg1 + arg2;\n            break;\n        case "*":\n            result = arg1 * arg2;\n            break;\n        case "/":\n            result = arg1 / arg2;\n            break;\n        case "%":\n            result = arg1 % arg2;\n            break;\n        default:\n            break;\n    } \n    return result; \n}'),
         ('rap9',1,8,'public static int power( int base, int power  ) \n{ \n    int result = 1; \n    for ( int p = 1; p <= power; p++ ) \n    {\n        result = result * base; \n    }\n    return result;\n}');
 
-insert into `cs490_studentexamquestionfeedback` 
+insert into `cs490_StudentExamQuestionFeedback` 
     values 
         ( 1,'rap9',1,1,'Function Name',0,0,1),
         ( 2,'rap9',1,1,'Compilation  ',0,0,1),
@@ -163,10 +163,10 @@ insert into `cs490_studentexamquestionfeedback`
         (15,'rap9',1,8,'Function Name',1,1,1),
         (16,'rap9',1,8,'Compilation  ',0,0,1);
 
-alter table cs490_studentexamquestionfeedback 
+alter table cs490_StudentExamQuestionFeedback 
     auto_increment = 17;
 
-insert into `cs490_studentexamquestionscore` 
+insert into `cs490_StudentExamQuestionScore` 
     values 
         ('rap9',1,1,0,2),
         ('rap9',1,2,1,2),
@@ -177,6 +177,6 @@ insert into `cs490_studentexamquestionscore`
         ('rap9',1,7,1,2),
         ('rap9',1,8,1,2);
 
-insert into `cs490_studentexamscore` 
+insert into `cs490_StudentExamScore` 
     values 
         ('rap9',1,6,16);
