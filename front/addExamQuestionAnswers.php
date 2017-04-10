@@ -7,7 +7,7 @@
  *     Description: 
  */
 
-include "callmiddle.php";
+include_once "callmiddle.php";
 
 $data = trim(file_get_contents("php://input"));
 

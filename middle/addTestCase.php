@@ -7,7 +7,7 @@
  *     Description: 
  */
 
-include "callback.php";
+include_once "callback.php";
 
 $data = trim(file_get_contents("php://input"));
 //$data = '{ "questionId": 24, "argument1": "1", "argument2": "1", "argument3": null, "argument4": null, "returnValue": "1" }';

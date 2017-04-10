@@ -9,7 +9,7 @@
  *	$data = trim(file_get_contents("php://input"));
  *	$answer = json_decode($data);
 */
-include "CS490/back/testcases.php";
+include_once "CS490/back/testcases.php";
 $logic = " ";
 $Scores = array();
 $feedback = array();

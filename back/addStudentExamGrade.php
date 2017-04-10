@@ -1,6 +1,6 @@
 <?php
 
-include "query.php";
+include_once "query.php";
 
 $content = trim(file_get_contents("php://input"));
 //$content = '{ "ucid": 1, "examId": 1, "score": 100, "possible": 100 }';

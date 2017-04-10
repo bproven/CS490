@@ -7,6 +7,9 @@
 	$answer = json_decode($studentCode);
 */
 
+include_once "logError.php";
+include_once "callback.php";
+
 function makeFeedback( $description, $correct, $score, $possible ) 
 {
     return (object)array(
@@ -17,13 +20,20 @@ function makeFeedback( $description, $correct, $score, $possible )
     );
 }
 
-function makeQuestion( $questionId, $score, $possible )
+function makeQuestion( $answer, $argTypes, $score, $possible )
 {
     return (object) array(
-        "questionId"    => $questionId,
+        "questionId"    => $answer->questionId,
+        "functionName"  => $answer->functionName,
+        "hasIf"         => $answer->hasIf,
+        "hasWhile"      => $answer->hasWhile,
+        "hasFor"        => $answer->hasFor,
+        "hasRecursion"  => $answer->hasRecursion,
         "score"         => $score,
         "possible"      => $possible,
-        "feedback"      => []
+        "argTypes"      => $argTypes,
+        "feedback"      => [],
+        "testCases"     => []
     );
 }
 
@@ -67,27 +77,156 @@ function scoreFuncname( $answer, $question ) {
 	$score = 0;
     }
     
-    addfeedback($question, $description, $correct, $score, 1);
+    addfeedback( $question, $description, $correct, $score, 1 );
 
 }
 
-function scoreCompilation( $answer, $question ) {
+function run( $command, &$results ) {
     
-    $file = "test.java";
-    $answerText = $answer->answer;
-    $score = 0;
-    $feedback = "";
+    $output = array();
+    $return_var = null;
+    $result = false;
+    $results = "";
+    
+    // 2>&1 redirect stderr to stdout, capturing output
+    exec( $command . " 2>&1", $output, $return_var );
+    
+    if ( !is_null( $return_var ) ) {
+        logError( $command . " returned " . $return_var );
+        $result = $return_var == 0;
+    }
+    
+    if ( !is_null( $output ) ) {
+        foreach ( $output as $line ) {
+            logError( $line );
+            if ( strlen( $results ) > 0 ) {
+                $results = $results . PHP_EOL;
+            }
+            $results = $results . $line;
+        }
+    }
+    
+    return $result;
+    
+}
 
-// temp test    
-    //$answerText = "public static int cubed(int number){return number * number * number;}"; //will be provided by student as their answer
-    $value = 10;
+function compile( $file, &$results ) {
+    return run( "javac $file", $results ); //compile Java
+}
+
+function getTestCases( $questionId ) {
     
-    file_put_contents($file, "class test {\n\n"); //create Java file and write, append code
-    file_put_contents($file, $answerText, FILE_APPEND);
-    file_put_contents($file, "\n\n", FILE_APPEND);
-    file_put_contents($file, "public static void main(String[] args) {\n", FILE_APPEND);
-    //file_put_contents($file, "System.out.println(cubed($value));\n", FILE_APPEND);
-    file_put_contents($file, "}\n\n}", FILE_APPEND);
+    $data = '{ "questionId": ' . $questionId . ' }';
+
+    header( "Content-type: application/json" );
+    
+    $testCases = json_decode( callback( "testCases.php", $data ) );
+    
+    return $testCases;
+    
+}
+
+function findFuncName( $code ) {
+    
+    $result = null;
+    
+    $pos = strpos( $code, "(" );
+    
+    if ( $pos !== false && $pos > 0 ) {
+        $sub = substr( $code, 0, $pos );
+        $pos = strrchr( $sub, " " );    
+        if ( $pos !== false ) {
+            $result = substr( $pos, 1 );
+        }
+    }
+
+    return $result;
+    
+}
+
+function generateSource( $file, $answer, $question ) {
+    
+    $answerText = $answer->answer;
+
+    // temp test
+    $testCases = getTestCases( $question->questionId );
+    
+    $question->testCases = $testCases;
+    
+    file_put_contents( $file, "public class test {" . PHP_EOL . PHP_EOL ); //create Java file and write, append code
+    file_put_contents( $file, PHP_EOL . $answerText . PHP_EOL . PHP_EOL, FILE_APPEND );
+    file_put_contents( $file, "\tpublic static void main( String[] args ) {" . PHP_EOL, FILE_APPEND );
+    
+    $funcName = findFuncName( $answerText );
+    
+    if ( is_null( $funcName ) ) {
+        $funcName = $question->functionName;
+    }
+
+    file_put_contents( $file, "\t\tSystem.out.print( \"[\" );" . PHP_EOL, FILE_APPEND );
+    
+    $first = true;
+    
+    // one line for each test case
+    foreach ( $testCases as $testCase ) {
+        
+        if ( !$first ) {
+            file_put_contents( $file, "\t\tSystem.out.println( \",\" );" . PHP_EOL, FILE_APPEND );
+        }
+        
+        $first = false;
+        
+        file_put_contents( $file, "\t\tSystem.out.print( \"{ \\\"testCaseId\\\": \\\"$testCase->testCaseId\\\", \\\"resultValue\\\": \\\"\" );" . PHP_EOL, FILE_APPEND );
+        
+        $args = [];
+        
+        $args[] = $testCase->argument1;
+        $args[] = $testCase->argument2;
+        $args[] = $testCase->argument3;
+        $args[] = $testCase->argument4;
+        
+        $argvalue = "";
+        
+        $index = 0;
+        
+        foreach ( $args as $arg ) {
+            if ( !is_null( $arg ) ) {
+                $argType = $question->argTypes[ $index ];
+                $isString = false;
+                if ( !is_null( $argType ) ) {
+                    $isString = $argType == "String";
+                }
+                if ( strlen( $argvalue ) > 0 ) {
+                    $argvalue = $argvalue . ", ";
+                }
+                if ( $isString ) {
+                    $argvalue = $argvalue . '"';
+                }
+                $argvalue = $argvalue . $arg;
+                if ( $isString ) {
+                    $argvalue = $argvalue . '"';
+                }
+            }
+            $index = $index + 1;
+        }
+        
+        file_put_contents( $file, "\t\tSystem.out.print( $funcName( $argvalue ) );" . PHP_EOL, FILE_APPEND );
+        
+        file_put_contents( $file, "\t\tSystem.out.print( \"\\\" }\" );" . PHP_EOL, FILE_APPEND );
+        
+    }
+    
+    file_put_contents( $file, "\t\tSystem.out.println( \"]\" );" . PHP_EOL, FILE_APPEND );
+    
+    file_put_contents( $file, "\t}" . PHP_EOL . PHP_EOL . "}", FILE_APPEND );
+    
+    return $file;
+    
+}
+
+function generateSourceAndCompile( $file, $answer, $question, &$results ) {
+    
+    generateSource( $file, $answer, $question );
     
     $compiled = "test.class";
     
@@ -95,9 +234,19 @@ function scoreCompilation( $answer, $question ) {
         unlink( $compiled );
     }
     
-    exec("javac test.java"); //compile Java
+    //compile Java
+    return compile( $file, $results );
     
-    $correct = file_exists($compiled) == true;   //test if students' code compiled successfully
+}
+
+function scoreCompilation( $answer, $question ) {
+    
+    $file = "test.java";
+    $score = 0;
+    $results = array();
+    
+    $correct = generateSourceAndCompile( $file, $answer, $question, $results );
+
     $feedback = "Compilation";
     
     if( $correct == true ) { 
@@ -107,18 +256,147 @@ function scoreCompilation( $answer, $question ) {
         $score = 0;
     }
 
-    addfeedback($question, $feedback, $correct, $score, 1);
+    addfeedback( $question, $feedback, $correct, $score, 1 );
 
+}
+
+function scoreRun( $question ) {
+    
+    $cmd = "java test";
+    
+    $results = array();
+    
+    $result = run( $cmd, $results );
+    
+    $score = 0;
+    
+    if ( $result === true ) {
+        $score = 1;
+    }
+    
+    $description = "Run";
+    
+    addfeedback( $question, $description, $result, $score, 1 );
+    
+    $testCases = json_decode( $results );
+    
+    foreach ( $testCases as $testCase ) {
+        
+        $testCaseId = $testCase->testCaseId;
+        
+        $expected = null;
+        
+        foreach ( $question->testCases as $expectedTestCase ) {
+            if ( $expectedTestCase->testCaseId == $testCaseId ) {
+                $expected = $expectedTestCase;
+                break;
+            }
+        }
+        
+        $expectedResult = "unknown";
+        
+        if ( !is_null( $expected ) ) {
+            $expectedResult = $expected->returnValue;
+        }
+        
+        $actualResult = $testCase->resultValue;
+        
+        $correct = $actualResult == $expectedResult;
+        
+        $score = 0;
+        
+        if ( $correct == true ) {
+            $score = 1;
+        }
+        
+        $description = "testCase $testCaseId expected: $expectedResult, actual: $actualResult";
+        
+        addfeedback( $question, $description, $correct, $score, 1 );
+        
+    }
+    
+}
+
+function scoreRecursion( $answer, $question ) {
+    
+    $hasRecursion = $question->hasRecursion;
+    
+    if ( $hasRecursion == "1" ) {
+        
+        $description = "Recursion";
+        $correct = false;
+        $score = 0;
+        
+        $answerText = $answer->answer;
+        
+        $funcName = findFuncName( $answerText );
+        
+        if ( is_null( $funcName ) ) {
+            $funcName = $question->functionName;
+        }
+        
+        if ( !is_null( $funcName ) ) {
+        
+            $pos = strpos( $answerText, $funcName );
+            $correct1 = $pos !== false;
+
+            if ( $correct1 ) {
+                
+                $pos = strpos( $answerText, $funcName, $pos + strlen( $funcName ) );
+                
+                $correct = $pos !== false;
+                
+                if ( $correct ) {
+                    $score = 1;
+                }
+                
+            }
+
+            addfeedback( $question, $description, $correct, $score, 1 );
+        
+        }
+        
+    }
+    
+}
+
+function scoreKeyword( $answer, $question, $has, $keyword ) {
+    if ( $has ) {
+        $description = "Use " . $keyword . " statement";
+        $correct = false;
+        $score = 0;
+        $answerText = $answer->answer;
+        $pos = strpos( $answerText, $keyword );
+        $correct = $pos !== false;
+        if ( $correct ) {
+            $score = 1;
+        }
+        addfeedback( $question, $description, $correct, $score, 1 );
+    }
 }
 
 function scoreAnswer( $examScore, $answer ) {
     
-    $question = makeQuestion( $answer->questionId, 0, 0 );
-
+    $argTypes = [];
+    
+    $answerArray = (array)$answer;
+    
+    $argTypes[] = $answerArray[ "argument1" ];
+    $argTypes[] = $answerArray[ "argument2" ];
+    $argTypes[] = $answerArray[ "argument3" ];
+    $argTypes[] = $answerArray[ "argument4" ];
+    
+    $question = makeQuestion( $answer, $argTypes, 0, 0 );
+    
     $examScore->questions[] = $question;
     
     scoreFuncName( $answer, $question );
-    scoreCompilation($answer, $question);
+    scoreRecursion( $answer, $question );
+    scoreKeyword( $answer, $question, $question->hasIf == "1", "if" );
+    scoreKeyword( $answer, $question, $question->hasWhile == "1", "while" );
+    scoreKeyword( $answer, $question, $question->hasFor == "1", "for" );
+    scoreCompilation( $answer, $question );
+    scoreRun( $question );
     
     $examScore->score    = $examScore->score    + $question->score;
     $examScore->possible = $examScore->possible + $question->possible;
@@ -139,7 +417,11 @@ function scoreExam( $data ) {
         scoreAnswer( $examScore, $answer );
     }
     
-    return callback( "saveExamScore.php", json_encode( $examScore ) );
+    $json = json_encode( $examScore );
+    
+    file_put_contents( "json.log", $json );
+    
+    return callback( "saveExamScore.php", $json );
     
 }
 

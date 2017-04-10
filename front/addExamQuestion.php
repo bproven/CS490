@@ -6,7 +6,7 @@
  *     Created: Mar 4, 2017
  */
 
-include "callmiddle.php";
+include_once "callmiddle.php";
 
 $data = trim(file_get_contents("php://input"));
 //$data = json_encode( (object) array(

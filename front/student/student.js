@@ -214,9 +214,9 @@ function Student( studentUcid, onPostError ) {
 
         createLabel( exam.examId, exam.examName, tr );
 
-        createAnchor( "#", exam.examId, "Take", self.takeExam, tr );
+        createAnchor( "#", exam.examId, "Take Exam", self.takeExam, tr );
 
-        createAnchor( "#", exam.examId, "Grade", self.showExamGrades, tr );
+        createAnchor( "#", exam.examId, "See Grades", self.showExamGrades, tr );
         
         return tr;
 
@@ -260,7 +260,7 @@ function Student( studentUcid, onPostError ) {
 
         createLabel( null, feedback.description, tr );
 
-        createLabel( null, feedback.correct ? "yes" : "no", tr );
+        createLabel( null, feedback.correct == "1" ? "yes" : "no", tr );
 
         createLabel( null, feedback.score, tr );
 

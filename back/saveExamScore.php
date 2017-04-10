@@ -1,6 +1,9 @@
 <?php
 
-include "query.php";
+include_once "query.php";
+include_once "logError.php";
+
+set_time_limit( 600 );
 
 $content = trim(file_get_contents("php://input"));
 
@@ -51,6 +54,8 @@ $content = trim(file_get_contents("php://input"));
 //                ] 
 //            }';
 
+$content = file_get_contents( "json.log" );
+
 function makeQuestion( $ucid, $examId, $object ) 
 {
     return (object) array(
@@ -81,8 +86,6 @@ $data = json_decode($content);
 
 $ucid   = $data->ucid;
 $examId = $data->examId;
-
-set_time_limit( 60 );
 
 // first delete the feedback
 
@@ -166,7 +169,7 @@ if ( $result ) {
 header( "Content-type: application/json" );
 $result = jsonInsertResult( $result, null, false );
 
-error_log($result);
+logError( $result );
 
 echo $result;
 

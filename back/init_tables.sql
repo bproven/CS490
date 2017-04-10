@@ -139,10 +139,10 @@ insert into `cs490_examquestionanswer`
         ('rap9',1,2,'public static float add( float a, float b )\n{\n    return a + b;\n}'),
         ('rap9',1,3,'public static float multiply( float a, float b )\n{\n    return a * b;\n}'),
         ('rap9',1,4,'public static int squar( int number )\n{\n    return number * number;'),
-        ('rap9',1,5,'public static int sum( int number ) \n{ \n    int result;\n    if ( number <= 1 ) \n    { \n        result = 1; \n    } \n    else \n    { \n        result = number + seq( number - 1 ); \n    } \n    return result;\n}'),
-        ('rap9',1,6,'public static int fact( int number ) \n{ \n    int result = 1; \n    int n = 0; \n    while ( n <= number ) \n    { \n        result = result * n \n    } \n    return result; \n}'),
-        ('rap9',1,7,'public static float binaryOp( float arg1, string op, float arg2 ) \n{ \n    float result = 0.0; \n    if ( op == \"+\" ) \n    { \n        result = arg1 + arg2;\n    } \n    else if ( op == \"*\" ) \n    { \n        result = arg1 * arg2;\n    } \n    else if ( op == \"/\" ) \n    { \n        result = arg1 / arg2; \n    } \n    else if ( op == \"%\" ) \n    { \n        result = arg1 % arg2; \n    } \n    return result; \n}'),
-        ('rap9',1,8,'public static int power( int arg1, int arg2 ) \n{ \n    int result = arg1; \n    for ( int p = 2; p <= arg2; p++ ) \n    {\n        result = result * arg1; \n    }\n    return result;\n}');
+        ('rap9',1,5,'public static int sum( int number ) \n{ \n    int result;\n    if ( number <= 1 ) \n    { \n        result = 1; \n    } \n    else \n    { \n        result = number + sum( number - 1 ); \n    } \n    return result;\n}'),
+        ('rap9',1,6,'public static int fact( int number ) \n{ \n    int result = 1; \n    int n = 1; \n    while ( n <= number ) \n    { \n        result = result * n++; \n    } \n    return result; \n}'),
+        ('rap9',1,7,'public static float binaryOp( float arg1, String op, float arg2 ) \n{ \n    float result = 0; \n    switch (op) {\n        case "+":\n            result = arg1 + arg2;\n            break;\n        case "*":\n            result = arg1 * arg2;\n            break;\n        case "/":\n            result = arg1 / arg2;\n            break;\n        case "%":\n            result = arg1 % arg2;\n            break;\n        default:\n            break;\n    } \n    return result; \n}'),
+        ('rap9',1,8,'public static int power( int base, int power  ) \n{ \n    int result = 1; \n    for ( int p = 1; p <= power; p++ ) \n    {\n        result = result * base; \n    }\n    return result;\n}');
 
 insert into `cs490_studentexamquestionfeedback` 
     values 

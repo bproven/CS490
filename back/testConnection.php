@@ -1,6 +1,6 @@
 <?php
 
-include "query.php";
+include_once "query.php";
 
 $results = execQuery( "select version() as version" );
         

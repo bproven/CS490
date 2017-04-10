@@ -6,8 +6,8 @@
  *     Created: Mar 5, 2017
  */
 
-include "callback.php";
-include "scoring.php";
+include_once "callback.php";
+include_once "scoring.php";
 
 set_time_limit( 60 );
 

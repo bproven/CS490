@@ -7,7 +7,7 @@
  *     Description: 
  */
 
-include "callback.php";
+include_once "callback.php";
 
 $data = trim(file_get_contents("php://input"));
 //$data = '{ "examName": "test insert exam", "ownerId": "taj1" }';

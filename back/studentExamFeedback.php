@@ -1,6 +1,6 @@
 <?php
 
-include "query.php";
+include_once "query.php";
 
 $data = trim(file_get_contents("php://input"));
 // TODO: select student

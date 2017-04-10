@@ -1,6 +1,6 @@
 <?php
 
-include "query.php";
+include_once "query.php";
 
 //create table cs490_TestCase (
 //    testCaseId    int not null auto_increment primary key,

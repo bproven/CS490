@@ -1,5 +1,7 @@
 <?php
 
+include_once "logError.php";
+
 function execQuery( $sql )
 {
 

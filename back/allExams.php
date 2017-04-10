@@ -7,7 +7,7 @@
  *      Description:    Returns all exams
  */
 
-include "query.php";
+include_once "query.php";
 
 header( "Content-type: application/json" );
 

@@ -6,7 +6,7 @@
  *     Created: Mar 6, 2017
  */
 
-include "query.php";
+include_once "query.php";
 
 $content = trim(file_get_contents("php://input"));
 //$content = '{ "examId": 1 }';
