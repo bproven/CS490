@@ -10,7 +10,7 @@ function execQuery( $sql )
 
     $results = true;
 
-    error_log( $sql );
+    logError( $sql );
     
     $records = $conn->query( $sql );
     
@@ -103,7 +103,7 @@ function insert( $table, $object, $getId = true ) {
                 " values " .
                 "( " . values( $object, $conn ) . " );";
     
-    error_log( $query );
+    logError( $query );
     
     $result = $conn->query( $query );
     

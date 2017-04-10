@@ -248,7 +248,7 @@ function Student( studentUcid, onPostError ) {
 
         var percent = ( grade.score * 100.0 ) / ( grade.possible * 1.0 );
         
-        createLabel( null, percent + "%", tr );
+        createLabel( null, percent.toFixed( 1 ) + "%", tr );
 
         return tr;
     
@@ -276,8 +276,10 @@ function Student( studentUcid, onPostError ) {
 
         createLabel( null, answer.answer, tr );
         
-        createAnchor( "#", answer.questionId, answer.score, self.selectAnswer, tr );
-
+        var result = answer.score + " / " + answer.possible;
+        
+        createAnchor( "#", answer.questionId, result, self.selectAnswer, tr );
+        
         return tr;
 
     };

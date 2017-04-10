@@ -8,6 +8,8 @@
 
 include_once "callmiddle.php";
 
+set_time_limit( 600 );
+
 //$data = trim(file_get_contents("php://input"));
 $data = '{ "examId": 1 }';
 

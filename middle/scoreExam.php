@@ -13,7 +13,7 @@ include_once "scoring.php";
 set_time_limit( 600 );
 
 $data = trim(file_get_contents("php://input"));
-$data = '{ "ucid": "rap9", "examId": 1 }';
+//$data = '{ "ucid": "rap9", "examId": 1 }';
 
 $result = scoreExam( $data );
 

@@ -54,7 +54,7 @@ $content = trim(file_get_contents("php://input"));
 //                ] 
 //            }';
 
-$content = file_get_contents( "json.log" );
+//$content = file_get_contents( "json.log" );
 
 function makeQuestion( $ucid, $examId, $object ) 
 {
@@ -80,7 +80,7 @@ function makeFeedback( $ucid, $examId, $questionId, $object )
     );
 }
 
-error_log( $content );
+logError( $content );
 
 $data = json_decode($content);
 

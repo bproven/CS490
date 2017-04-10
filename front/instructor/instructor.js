@@ -314,6 +314,7 @@ function Instructor( instructorUcid, onPostError ) {
                 showError( "examName-error", "Exam Scored!", 3000, 
                 function () {
                     self.getExamFeedback();
+                    doTabClick( 4 );
                 } );
             }
             else {

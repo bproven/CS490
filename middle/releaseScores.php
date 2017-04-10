@@ -9,7 +9,7 @@
 include_once "callback.php";
 include_once "scoring.php";
 
-set_time_limit( 60 );
+set_time_limit( 600 );
 
 $content = trim(file_get_contents("php://input"));
 //$content = '{ "examId": 1 }';
