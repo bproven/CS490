@@ -280,39 +280,43 @@ function scoreRun( $question ) {
     
     $testCases = json_decode( $results );
     
-    foreach ( $testCases as $testCase ) {
-        
-        $testCaseId = $testCase->testCaseId;
-        
-        $expected = null;
-        
-        foreach ( $question->testCases as $expectedTestCase ) {
-            if ( $expectedTestCase->testCaseId == $testCaseId ) {
-                $expected = $expectedTestCase;
-                break;
+    if ( $result && !is_null( $testCases ) ) {
+    
+        foreach ( $testCases as $testCase ) {
+
+            $testCaseId = $testCase->testCaseId;
+
+            $expected = null;
+
+            foreach ( $question->testCases as $expectedTestCase ) {
+                if ( $expectedTestCase->testCaseId == $testCaseId ) {
+                    $expected = $expectedTestCase;
+                    break;
+                }
             }
+
+            $expectedResult = "unknown";
+
+            if ( !is_null( $expected ) ) {
+                $expectedResult = $expected->returnValue;
+            }
+
+            $actualResult = $testCase->resultValue;
+
+            $correct = $actualResult == $expectedResult;
+
+            $score = 0;
+
+            if ( $correct == true ) {
+                $score = 1;
+            }
+
+            $description = "testCase $testCaseId expected: $expectedResult, actual: $actualResult";
+
+            addfeedback( $question, $description, $correct, $score, 1 );
+
         }
-        
-        $expectedResult = "unknown";
-        
-        if ( !is_null( $expected ) ) {
-            $expectedResult = $expected->returnValue;
-        }
-        
-        $actualResult = $testCase->resultValue;
-        
-        $correct = $actualResult == $expectedResult;
-        
-        $score = 0;
-        
-        if ( $correct == true ) {
-            $score = 1;
-        }
-        
-        $description = "testCase $testCaseId expected: $expectedResult, actual: $actualResult";
-        
-        addfeedback( $question, $description, $correct, $score, 1 );
-        
+    
     }
     
 }
