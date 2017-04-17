@@ -66,3 +66,19 @@ function tabClick( tabs, tabs_data, oldx, newx ) {
     showTab( tabs, tabs_data, newx, true );
     return newx;
 }
+
+function startActivity() {
+    return;
+    var elem = document.getElementById( "activity-loading-id" );
+    if ( !isEmpty( elem ) ) {
+        elem.classList.remove( "hide" );
+    }
+}
+
+function stopActivity() {
+    return;
+    var elem = document.getElementById( "activity-loading-id" );
+    if ( !isEmpty( elem ) ) {
+        elem.className = "hide";
+    }
+}

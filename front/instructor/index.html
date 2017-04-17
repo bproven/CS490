@@ -286,6 +286,10 @@
             
         </div>
         
+        <div id="activity-loading-id">
+            <img src="../activity.gif">
+        </div>
+        
         <script type="text/javascript" src="../js/cs490.js?v=rc"></script>
         <script type="text/javascript" src="../js/cookies.js?v=rc"></script>
         <script type="text/javascript" src="../js/http.js?v=rc"></script>
@@ -299,6 +303,7 @@
         <script type="text/javascript">
             
             function onPostError( request ) {
+                stopActivity();
                 showError( "page-error", "Error: Status Code " + request.status + ", " + request.statusText + " '" + request.response + "'", 3000 );
             }
             

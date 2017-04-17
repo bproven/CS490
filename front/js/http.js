@@ -15,14 +15,14 @@ function post( url, data, success, error ) {
     
     // check for success function, then call
     var callSuccess = function( results, request ) {
-        if ( success !== undefined && success !== null ) {
+        if ( !isEmpty( success ) ) {
             success( results, request );
         }
     };
     
     // check for error function, then call
     var callError = function( request ) {
-        if ( error !== undefined && error !== null ) {
+        if ( !isEmpty( error ) ) {
             error( request );
         }
     };

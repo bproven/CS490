@@ -11,7 +11,7 @@ function Instructor( instructorUcid, onPostError ) {
 
     // data
     self.instructorUcid = instructorUcid;
-    self.onPostError = isEmpty( onPostError ) ? function( request ) {} : onPostError;
+    self.onPostError = isEmpty( onPostError ) ? function( request ) { stopActivity(); } : onPostError;
     
     // currently selected
     self.currentExamId = null;
@@ -60,6 +60,7 @@ function Instructor( instructorUcid, onPostError ) {
     self.getQuestions = function() {
 
         var success = function( results ) {
+            stopActivity();
             var found = results.length > 0;
             self.questions = results;
             createAndReplaceElementsById( self.questionListId, "tr", results, 
@@ -82,6 +83,7 @@ function Instructor( instructorUcid, onPostError ) {
         };
 
         var success = function( results ) {
+            stopActivity();
             var found = results.length > 0;
             self.testcases = results;
             createAndReplaceElementsById( self.testCaseListId, "tr", results, self.createTestcaseElement );
@@ -101,6 +103,7 @@ function Instructor( instructorUcid, onPostError ) {
         };
 
         var success = function( results ) {
+            stopActivity();
             var found = results.length > 0;
             self.exams = results;
             createAndReplaceElementsById( self.examListId, "tr", results, self.createExamElement );
@@ -119,6 +122,7 @@ function Instructor( instructorUcid, onPostError ) {
         };
 
         var success = function( results ) {
+            stopActivity();
             var found = results.length > 0;
             self.examquestions = results;
             createAndReplaceElementsById( self.examQuestionListId, "tr", results, self.createExamQuestionElement );
@@ -137,6 +141,7 @@ function Instructor( instructorUcid, onPostError ) {
         };
 
         var success = function( results ) {
+            stopActivity();
             var found = results.length > 0;
             self.feedback = results;
             createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createExamFeedbackElement );
@@ -166,6 +171,7 @@ function Instructor( instructorUcid, onPostError ) {
 
             var success = function( results ) {
 
+                stopActivity();
                 //console.log( results );
 
                 if ( results.success ) {
@@ -198,6 +204,8 @@ function Instructor( instructorUcid, onPostError ) {
 
             var success = function( results ) {
 
+                stopActivity();
+            
                 if ( results.success ) {
                     object.examId = results.examId;
                     self.exams.push( object );
@@ -232,6 +240,8 @@ function Instructor( instructorUcid, onPostError ) {
 
                 var success = function( results ) {
 
+                    stopActivity();
+                    
                     if ( results.success ) {
                         object.testCaseId = results.testCaseId;
                         self.testcases.push( object );
@@ -267,6 +277,8 @@ function Instructor( instructorUcid, onPostError ) {
 
         var success = function( results ) {
 
+            stopActivity();
+            
             if ( results.success ) {
                 self.examquestions.push( data );
                 createAndAddElementById( data, self.createExamQuestionElement, self.examQuestionListId );
@@ -291,6 +303,8 @@ function Instructor( instructorUcid, onPostError ) {
 
         var success = function( results ) {
 
+            stopActivity();
+            
             if ( results.success ) {
             }
 
@@ -369,7 +383,7 @@ function Instructor( instructorUcid, onPostError ) {
     // instructor DOM elements
     self.getQuestion = function( questionId ) {
         return self.questions.find( function( elem ) {
-            return elem.questionId === questionId;
+            return elem.questionId == questionId;       // newly entered exams are ints
         });
     };
     
