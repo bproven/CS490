@@ -1,0 +1,6 @@
+﻿function activityStart() {
+}
+
+function activityEnd() {
+}
+
