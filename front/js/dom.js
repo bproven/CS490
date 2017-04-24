@@ -63,7 +63,9 @@ function createLabel( id, text, parent ) {
     
     var elem = document.createElement( "label" );
     
-    elem.id = id;
+    if ( id !== null ) {
+        elem.id = id;
+    }
     elem.innerHTML = text;
     
     appendChild( parent, elem );

@@ -250,13 +250,13 @@ function scoreCompilation( $answer, $question ) {
     $feedback = "Compilation";
     
     if( $correct == true ) { 
-        $score = 1;
+        $score = 5;
     }
     else{
         $score = 0;
     }
 
-    addfeedback( $question, $feedback, $correct, $score, 1 );
+    addfeedback( $question, $feedback, $correct, $score, 5 );
 
 }
 
@@ -271,12 +271,12 @@ function scoreRun( $question ) {
     $score = 0;
     
     if ( $result === true ) {
-        $score = 1;
+        $score = 5;
     }
     
     $description = "Run";
     
-    addfeedback( $question, $description, $result, $score, 1 );
+    addfeedback( $question, $description, $result, $score, 5 );
     
     $testCases = json_decode( $results );
     

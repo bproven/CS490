@@ -96,6 +96,31 @@ form .login-form {
     font-weight: bold;
 }
 
+#cs490-examfeedback-list-header-id th {
+    text-align: left;
+}
+
+.feedback-question {
+    width: 25%;
+}
+
+.feedback-answer {
+    width: 25%;
+}
+
+.feedback-category {
+    width: 25%;
+}
+
+.feedback-correct {
+    color: limegreen;
+}
+
+.feedback-incorrect {
+    color: red;
+    font-weight: bold;
+}
+
 #cs490-testcase-current-question-id {
     
 }

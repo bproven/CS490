@@ -428,6 +428,8 @@ function Instructor( instructorUcid, onPostError ) {
         
         var tr = document.createElement( "tr" );
         
+        tr.id = examFeedback.feedbackId;
+        
         var question = examFeedback.question;
         var answer = examFeedback.answer;
         
@@ -445,7 +447,13 @@ function Instructor( instructorUcid, onPostError ) {
         
         createLabel( null, examFeedback.description, tr );
         
-        createCheckbox( examFeedback.feedbackId, examFeedback.feedbackId, examFeedback.correct == "1", tr );
+        var correct = examFeedback.correct == "1";
+        
+        //createCheckbox( examFeedback.feedbackId, examFeedback.feedbackId, examFeedback.correct == "1", tr );
+        
+        var correctLabel = createLabel( null, correct ? "yes" : "no", tr );
+        
+        correctLabel.className += correct ?  " feedback-correct" : " feedback-incorrect";
         
         var score = createInput( examFeedback.feedbackId, "text", examFeedback.feedbackId, examFeedback.score, tr );
         
