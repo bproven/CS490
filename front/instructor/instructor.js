@@ -405,7 +405,7 @@ function Instructor( instructorUcid, onPostError ) {
         var tr = document.createElement( "tr" );
         
         if ( select !== undefined && select !== null && select ) {
-            createCheckbox( question.Id, question.Id, false, tr );
+            createCheckbox( question.questionId, question.questionId, false, tr );
         }
 
         createLabel( null, question.functionName, tr );
@@ -673,5 +673,63 @@ function Instructor( instructorUcid, onPostError ) {
         displayById( self.filteredQuestionListHeaderId, found );
         
     };
+    
+    self.addQuestionsToExam = function() {
+        
+        // pull out the input fields and create a request object
+        var object = formToObjectById( self.filteredQuestionFormId );
+        
+        var questionIds = [];
+        
+        for ( var prop in object ) {
+            // grab the checked boxes
+            if ( object[ prop ] ) {
+                // only if they are not already a part of the examQuestionList
+                if ( self.examquestions.findIndex( function( elem ) {
+                    return elem.questionId === prop;
+                }) === -1 ) {
+                    questionIds.push( prop );
+                }
+            }
+        }
 
+        var data = {
+            examId: self.currentExamId,
+            questionIds: questionIds
+        };
+        
+        var adding = questionIds.length > 0;
+
+        if ( adding ) {
+
+            var success = function( results ) {
+
+                stopActivity();
+
+                if ( results.success ) {
+                    
+                    checkAllByFormId( self.filteredQuestionFormId, 'checkbox', false );
+                    
+                    data.questionIds.forEach( function( questionId ) {
+                        var newData = {
+                            examId: self.currentExamId,
+                            questionId: questionId
+                        };
+                        self.examquestions.push( newData );
+                        createAndAddElementById( newData, self.createExamQuestionElement, self.examQuestionListId );
+                    } );
+                    
+                    displayById( self.examQuestionListEmptyId, false );
+                    displayById( self.examQuestionListHeaderId, true );
+                    
+                }
+
+            };
+
+            post( "../addExamQuestions.php", data, success, self.onPostError );
+        
+        }
+
+    };
+    
 }

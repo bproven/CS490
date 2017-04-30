@@ -120,3 +120,18 @@ function createOption( id, text ) {
     return option;
     
 }
+
+function checkAllByFormId( formId, type, check )
+{
+    var form = document.getElementById( formId );
+    
+    var checkboxes = form.getElementsByTagName( 'input' );
+ 
+    for ( var i = 0; i < checkboxes.length; i++ ) {
+        var elem = checkboxes.item( i );
+        if ( elem.type === type )   {
+            elem.checked = check;
+        }
+    }
+    
+}

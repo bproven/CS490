@@ -29,14 +29,14 @@ td {
 }
 
 .filter-head { 
-    display: block; 
+    /*display: table-header-group;*/
 }
 
 .filter-body {
-    display: block; 
-    height: 250px;       /* Just for the demo          */
-    overflow-y: auto;    /* Trigger vertical scroll    */
-    overflow-x: hidden;  /* Hide the horizontal scroll */
+    /*display: block; 
+    height: 250px;       
+    overflow-y: auto;    
+    overflow-x: hidden;  */
 }
 .list {
     display: none;

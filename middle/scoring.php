@@ -423,7 +423,7 @@ function scoreExam( $data ) {
     
     $json = json_encode( $examScore );
     
-    file_put_contents( "json.log", $json );
+    //file_put_contents( "json.log", $json );
     
     return callback( "saveExamScore.php", $json );
     
