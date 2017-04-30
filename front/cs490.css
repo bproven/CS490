@@ -75,6 +75,10 @@ form .login-form {
     float: left;
 }
 
+.filter {
+    width: 100%;
+}
+
 .ecol {
     display: block;
     float: left;

@@ -64,7 +64,26 @@ function formToObject( form ) {
     return object;
 }
 
+function formNameToObject( form ) {
+    var object = {};
+    for ( var i = 0; i < form.elements.length; i++ ) {
+        var elem = form.elements[ i ];
+        if ( elem.type === 'checkbox' || elem.type === 'radio' ) {
+            object[ elem.name ] = elem.checked;
+        } 
+        else if ( elem.type !== 'button' ) {
+            object[ elem.name ] = elem.value;
+        }
+    }
+    return object;
+}
+
 function formToObjectById( formId ) {
     var form = document.getElementById( formId );
     return formToObject( form );
+}
+
+function formNameToObjectById( formId ) {
+    var form = document.getElementById( formId );
+    return formNameToObject( form );
 }

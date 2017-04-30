@@ -56,6 +56,12 @@ function Instructor( instructorUcid, onPostError ) {
     self.examFeedbackListHeaderId   = "cs490-examfeedback-list-header-id";
     self.examFeedbackFornId         = "cs490-examfeedback-form-id";
     
+    self.filteredQuestionListEmptyId = "cs490-filtered-question-list-empty-id";
+    self.filteredQuestionListHeaderId = "cs490-filtered-question-list-header-id";
+    self.filteredQuestionListId     = "cs490-filtered-question-list-id";
+    self.filteredQuestionFormId     = "cs490-filtered-question-form-id";
+    self.questionFilterFormId       = "cs490-question-filter-form-id";
+    
     // data retrieval methods
     self.getQuestions = function() {
 
@@ -69,7 +75,8 @@ function Instructor( instructorUcid, onPostError ) {
                 } );
             displayById( self.questionListEmptyId, !found );
             displayById( self.questionListHeaderId, found );
-            createAndReplaceElementsById( "questions-list", "option", results, self.createQuestionOptionElement );
+            //createAndReplaceElementsById( "questions-list", "option", results, self.createQuestionOptionElement );
+            self.filterQuestions();
         };
 
         post( "../questions.php", null, success, self.onPostError );
@@ -393,9 +400,13 @@ function Instructor( instructorUcid, onPostError ) {
         });
     };
 
-    self.createQuestionElement = function( question, deleteLink ) {
+    self.createQuestionElement = function( question, deleteLink, select ) {
 
         var tr = document.createElement( "tr" );
+        
+        if ( select !== undefined && select !== null && select ) {
+            createCheckbox( question.Id, question.Id, false, tr );
+        }
 
         createLabel( null, question.functionName, tr );
 
@@ -599,6 +610,68 @@ function Instructor( instructorUcid, onPostError ) {
 
         return sig;
 
+    };
+    
+    function stringFilter( text, substring ) {
+        return contains( text, substring );
+    }
+    
+    function boolFilter( questionFlag, filterFlag ) {
+        var result = true;
+        if ( filterFlag !== null && filterFlag ) {
+            result = questionFlag != 0;
+        }
+        return result;
+    }
+    
+    function intFilter( questionValue, filterValue ) {
+        var result = true;
+        if ( !isEmptyString( filterValue ) ) {
+            result = questionValue === filterValue;
+        }
+        return result;
+    }
+    
+    self.filterQuestions = function () {
+        
+        var filter = formNameToObjectById( self.questionFilterFormId );
+        
+        var filteredQuestions = self.questions.filter( function( question ) {
+            
+            var result = true;
+            
+            if ( filter !== null ) {
+            
+                result = result && stringFilter( question.question, filter.textFilter );
+
+                result = result && stringFilter( question.functionName, filter.funcNameFilter );
+
+                result = result && intFilter( question.difficulty, filter.difficultyFilter );
+
+                result = result && boolFilter( question.hasIf, filter.hasIfFilter );
+                
+                result = result && boolFilter( question.hasWhile, filter.hasWhileFilter );
+                
+                result = result && boolFilter( question.hasFor, filter.hasForFilter );
+                
+                result = result && boolFilter( question.hasRecursion, filter.hasRecursionFilter );
+            
+            }
+            
+            return result;
+            
+        });
+        
+        var found = filteredQuestions.length > 0;
+        
+        createAndReplaceElementsById( self.filteredQuestionListId, "tr", filteredQuestions, 
+            function( question ) { 
+                return self.createQuestionElement( question, false, true ); 
+            } );
+            
+        displayById( self.filteredQuestionListEmptyId, !found );
+        displayById( self.filteredQuestionListHeaderId, found );
+        
     };
 
 }

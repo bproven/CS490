@@ -46,9 +46,9 @@
                     </div>
 
                     <datalist id="difficulties">
-                        <option value="0">Easy</option>
-                        <option value="1">Medium</option>
-                        <option value="2">Hard</option>
+                        <option value="0" label="Easy"></option>
+                        <option value="1" label="Medium"></option>
+                        <option value="2" label="Hard"></option>
                     </datalist>
 
                     <div class="field">
@@ -66,7 +66,7 @@
                     <datalist id="types">
                         <option value="int"></option>
                         <option value="float"></option>
-                        <option value="String"></option>
+                        <option value="string"></option>
                     </datalist>
 
                     <datalist id="types-with-null">
@@ -74,7 +74,7 @@
                         <option value="int"></option>
                         <option value="float"></option>
                         <option value="double"></option>
-                        <option value="String"></option>
+                        <option value="string"></option>
                     </datalist>
 
                     <div class="field">
@@ -221,24 +221,70 @@
             
             <fieldset>
                 
-                <table>
-                    <tr>
-                        <td class="bold">Current Exam:</td>
-                        <td><label id="cs490-examquestion-id"></label></td>
-                    </tr>
-                </table>
+                <div class="field">
+                    <label class="bold">Current Exam:</label>
+                    <label id="cs490-examquestion-id"></label>
+                </div>
                 
-                <form action="#" id="cs490-examquestion-form-id">
-
-                    <datalist id="questions-list">
-                        <option id="1" value="1">cubed</option>
-                        <option id="2" value="2">sum</option>
+                <form action="#" id="cs490-question-filter-form-id">
+                    
+                    <datalist id="difficultiesFilter">
+                        <option value=""></option>
+                        <option value="0" label="Easy"></option>
+                        <option value="1" label="Medium"></option>
+                        <option value="2" label="Hard"></option>
                     </datalist>
-
+                    
                     <div class="field">
-                        <label for="questionId">Question:</label>
-                        <input class="question" id="questionId" name="questionId" list="questions-list" />
-                        <input type="button" value="Add Question" onclick="instructor.addToExam()" />
+                        
+                        <label for="funcNameFilterId">Function Name:</label>
+                        <input type="text" class="question" id="funcNameFilterId" name="funcNameFilter"/>
+                        
+                        <label for="textFilterId">Question Text:</label>
+                        <input type="text" class="question" id="textFilterId" name="textFilter"/>
+                        
+                        <label for="difficultyFilterId">Difficulty:</label>
+                        <input class="arg" id="difficultyFilterId" name="difficultyFilter" list="difficultiesFilter" />
+                        
+                        <label for="hasIfFilterId">If:</label>
+                        <input type="checkbox" name="hasIfFilter" id="hasIfFilterId">
+                        <label for="hasWhileFilterId">While:</label>
+                        <input type="checkbox" name="hasWhileFilter" id="hasWhileFilterId">
+                        <label for="hasForFilterId">For:</label>
+                        <input type="checkbox" name="hasForFilter" id="hasForFilterId">
+                        <label for="hasRecursionFilterId">Recursion:</label>
+                        <input type="checkbox" name="hasRecursionFilter" id="hasRecursionFilterId">
+                        
+                        <input type="button" value="Apply Filter" onclick="instructor.filterQuestions()" />
+                        
+                    </div>
+                    
+                </form>
+                
+                <form action="#" id="cs490-filtered-question-form-id">
+                    
+                    <label id="cs490-filtered-question-list-empty-id" class="message-label list">No questions found</label>
+                    <table id="cs490-filtered-question-list-header-id" class="list">
+                        <thead>
+                            <tr class="filter">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Question</th>
+                                <th>Signature</th>
+                                <th>Difficulty</th>
+                                <th>If</th>
+                                <th>While</th>
+                                <th>For</th>
+                                <th>Recursion</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-filtered-question-list-id">
+                        </tbody>
+                    </table>
+                    
+                    <div class="field">
+                        <input type="button" value="Add Questions" onclick="instructor.addToExam()" />
                     </div>
 
                     <div>
