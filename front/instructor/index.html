@@ -63,28 +63,39 @@
                         <label class="error" id="difficulty-error"></label>
                     </div>
 
-                    <datalist id="types">
-                        <option value="int"></option>
-                        <option value="float"></option>
-                        <option value="string"></option>
-                    </datalist>
-
-                    <datalist id="types-with-null">
-                        <option value=""></option>
-                        <option value="int"></option>
-                        <option value="float"></option>
-                        <option value="double"></option>
-                        <option value="string"></option>
-                    </datalist>
-
                     <div class="field">
-                        <label for="returns">Returns:</label>
-                        <input class="arg" name="returnType" id="returnType" list="types">
+                        <label for="returnType">Returns:</label>
+                        <select class="arg" name="returnType" id="returnType">
+                            <option value=""></option>
+                            <option value="int">int</option>
+                            <option value="float">float</option>
+                            <option value="string">string</option>
+                        </select>
                         <label for="argument1">Arguments:</label>
-                        <input class="arg" name="argument1" id="argument1" list="types">
-                        <input class="arg" name="argument2" id="argument2" list="types-with-null">
-                        <input class="arg" name="argument3" id="argument3" list="types-with-null">
-                        <input class="arg" name="argument4" id="argument4" list="types-with-null">
+                        <select class="arg" name="argument1" id="argument1">
+                            <option value=""></option>
+                            <option value="int">int</option>
+                            <option value="float">float</option>
+                            <option value="string">string</option>
+                        </select>
+                        <select class="arg" name="argument2" id="argument2">
+                            <option value=""></option>
+                            <option value="int">int</option>
+                            <option value="float">float</option>
+                            <option value="string">string</option>
+                        </select>
+                        <select class="arg" name="argument3" id="argument3">
+                            <option value=""></option>
+                            <option value="int">int</option>
+                            <option value="float">float</option>
+                            <option value="string">string</option>
+                        </select>
+                        <select class="arg" name="argument4" id="argument4">
+                            <option value=""></option>
+                            <option value="int">int</option>
+                            <option value="float">float</option>
+                            <option value="string">string</option>
+                        </select>
                     </div>
 
                     <div>
@@ -228,13 +239,6 @@
                 
                 <form action="#" id="cs490-question-filter-form-id">
                     
-                    <datalist id="difficultiesFilter">
-                        <option value=""></option>
-                        <option value="0" label="Easy"></option>
-                        <option value="1" label="Medium"></option>
-                        <option value="2" label="Hard"></option>
-                    </datalist>
-                    
                     <div class="field">
                         
                         <label for="funcNameFilterId">Function Name:</label>
@@ -244,7 +248,12 @@
                         <input type="text" class="question" id="textFilterId" name="textFilter"/>
                         
                         <label for="difficultyFilterId">Difficulty:</label>
-                        <input class="arg" id="difficultyFilterId" name="difficultyFilter" list="difficultiesFilter" />
+                        <select class="dropdown-list" id="difficultyFilterId" name="difficultyFilter">
+                            <option value=""></option>
+                            <option value="0" label="Easy">Easy</option>
+                            <option value="1" label="Medium">Medium</option>
+                            <option value="2" label="Hard">Hard</option>
+                        </select>
                         
                         <label for="hasIfFilterId">If:</label>
                         <input type="checkbox" name="hasIfFilter" id="hasIfFilterId">
@@ -265,7 +274,7 @@
                     
                     <label id="cs490-filtered-question-list-empty-id" class="message-label list">No questions found</label>
                     <table id="cs490-filtered-question-list-header-id" class="list">
-                        <thead>
+                        <thead class="filter-head">
                             <tr class="filter">
                                 <th></th>
                                 <th>Name</th>
@@ -279,7 +288,7 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="cs490-filtered-question-list-id">
+                        <tbody id="cs490-filtered-question-list-id" class="filter-body">
                         </tbody>
                     </table>
                     

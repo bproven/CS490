@@ -7,7 +7,7 @@ h1 {
     color: brown;
 }
 
-input {
+input, select, textarea {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
@@ -28,6 +28,16 @@ td {
     margin-right: 2px;
 }
 
+.filter-head { 
+    display: block; 
+}
+
+.filter-body {
+    display: block; 
+    height: 250px;       /* Just for the demo          */
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;  /* Hide the horizontal scroll */
+}
 .list {
     display: none;
 }
@@ -54,7 +64,11 @@ form .login-form {
 }
 
 .arg {
-    width: 50px;
+    width: 75px;
+}
+
+.dropdown-list {
+    width: 85px;
 }
 
 .score { 
