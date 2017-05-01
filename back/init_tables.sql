@@ -146,22 +146,22 @@ insert into `cs490_ExamQuestionAnswer`
 
 insert into `cs490_StudentExamQuestionFeedback` 
     values 
-        ( 1,'rap9',1,1,'Function Name',0,0,1),
-        ( 2,'rap9',1,1,'Compilation  ',0,0,1),
-        ( 3,'rap9',1,2,'Function Name',1,1,1),
-        ( 4,'rap9',1,2,'Compilation  ',0,0,1),
-        ( 5,'rap9',1,3,'Function Name',1,1,1),
-        ( 6,'rap9',1,3,'Compilation  ',0,0,1),
-        ( 7,'rap9',1,4,'Function Name',0,0,1),
-        ( 8,'rap9',1,4,'Compilation  ',0,0,1),
-        ( 9,'rap9',1,5,'Function Name',1,1,1),
-        (10,'rap9',1,5,'Compilation  ',0,0,1),
-        (11,'rap9',1,6,'Function Name',1,1,1),
-        (12,'rap9',1,6,'Compilation  ',0,0,1),
-        (13,'rap9',1,7,'Function Name',1,1,1),
-        (14,'rap9',1,7,'Compilation  ',0,0,1),
-        (15,'rap9',1,8,'Function Name',1,1,1),
-        (16,'rap9',1,8,'Compilation  ',0,0,1);
+        ( 1,'rap9',1,1,'Correct Function Name',0,0,1),
+        ( 2,'rap9',1,1,'Function Compiled',    0,0,1),
+        ( 3,'rap9',1,2,'Correct Function Name',1,1,1),
+        ( 4,'rap9',1,2,'Function Compiled',    0,0,1),
+        ( 5,'rap9',1,3,'Correct Function Name',1,1,1),
+        ( 6,'rap9',1,3,'Function Compiled',    0,0,1),
+        ( 7,'rap9',1,4,'Correct Function Name',0,0,1),
+        ( 8,'rap9',1,4,'Function Compiled',    0,0,1),
+        ( 9,'rap9',1,5,'Correct Function Name',1,1,1),
+        (10,'rap9',1,5,'Function Compiled',    0,0,1),
+        (11,'rap9',1,6,'Correct Function Name',1,1,1),
+        (12,'rap9',1,6,'Function Compiled',    0,0,1),
+        (13,'rap9',1,7,'Correct Function Name',1,1,1),
+        (14,'rap9',1,7,'Function Compiled',    0,0,1),
+        (15,'rap9',1,8,'Correct Function Name',1,1,1),
+        (16,'rap9',1,8,'Function Compiled',    0,0,1);
 
 alter table cs490_StudentExamQuestionFeedback 
     auto_increment = 17;

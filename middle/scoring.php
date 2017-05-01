@@ -67,7 +67,7 @@ function scoreFuncname( $answer, $question ) {
     $functionName = $answer->functionName;
     
     $correct = strpos($answerText, $functionName) == true;
-    $description = "Function Name";
+    $description = "Correct Function Name";
     
     if( $correct == true)
     { 
@@ -247,7 +247,7 @@ function scoreCompilation( $answer, $question ) {
     
     $correct = generateSourceAndCompile( $file, $answer, $question, $results );
 
-    $feedback = "Compilation";
+    $feedback = "Function Compiled";
     
     if( $correct == true ) { 
         $score = 5;
@@ -274,7 +274,7 @@ function scoreRun( $question ) {
         $score = 5;
     }
     
-    $description = "Run";
+    $description = "Function Run";
     
     addfeedback( $question, $description, $result, $score, 5 );
     
@@ -327,7 +327,7 @@ function scoreRecursion( $answer, $question ) {
     
     if ( $hasRecursion == "1" ) {
         
-        $description = "Recursion";
+        $description = "Used Recursion";
         $correct = false;
         $score = 0;
         
@@ -366,7 +366,7 @@ function scoreRecursion( $answer, $question ) {
 
 function scoreKeyword( $answer, $question, $has, $keyword ) {
     if ( $has ) {
-        $description = "Use " . $keyword . " statement";
+        $description = "Used " . $keyword . " statement";
         $correct = false;
         $score = 0;
         $answerText = $answer->answer;
