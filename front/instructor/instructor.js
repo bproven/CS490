@@ -1,4 +1,4 @@
-/* 
+/* self.instructorUcid
  *     File:        instructor/instructor.js
  *     Author:      Bob Provencher
  *     Created:     Mar 5, 2017
@@ -16,6 +16,7 @@ function Instructor( instructorUcid, onPostError ) {
     // currently selected
     self.currentExamId = null;
     self.currentQuestionId = null;
+    self.currentExam = null;
 
     // current data
     self.questions = [];
@@ -27,39 +28,47 @@ function Instructor( instructorUcid, onPostError ) {
     self.lastExamFeedback = null;
     
     // ids
-    self.questionListEmptyId        = "cs490-question-list-empty-id";
-    self.questionListHeaderId       = "cs490-question-list-header-id";
-    self.questionListId             = "cs490-question-list-id";
-    self.questionFormId             = "cs490-question-form-id";
     
-    self.testCaseQuestionId         = "cs490-testcase-question-id";
-    self.testCaseQuestionSignatureId = "cs490-testcase-question-signature-id";
-    self.testCaseListEmptyId        = "cs490-testcase-list-empty-id";
-    self.testCaseListHeaderId       = "cs490-testcase-list-header-id";
-    self.testCaseListId             = "cs490-testcase-list-id";
-    self.testCaseFormId             = "cs490-testcase-form-id";
-     
-    self.examListEmptyId            = "cs490-exam-list-empty-id";
-    self.examListHeaderId           = "cs490-exam-list-header-id";
-    self.examListId                 = "cs490-exam-list-id";
-    self.examFormId                 = "cs490-exam-form-id";
+    self.makeIds = function( name ) {
+        self[ name + "Id" ]             = "cs490-" + name.toLowerCase() + "-id";
+        self[ name + "FormId" ]         = "cs490-" + name.toLowerCase() + "-form-id";
+        self[ name + "ListId" ]         = "cs490-" + name.toLowerCase() + "-list-id";
+        self[ name + "ErrorId" ]        = "cs490-" + name.toLowerCase() + "-error-id";
+        self[ name + "ListEmptyId" ]    = "cs490-" + name.toLowerCase() + "-list-empty-id";
+        self[ name + "ListHeaderId" ]   = "cs490-" + name.toLowerCase() + "-list-header-id";
+    };
+            
+    self.makeIds( "question" );
+    self.makeIds( "testCase" );
+            
+    self.testCaseQuestionId         = "cs490-testcasequestion-id";
+    self.testCaseQuestionSignatureId = "cs490-testcasequestion-signature-id";
     
-    self.examQuestionId             = "cs490-examquestion-id";
-    self.examQuestionListEmptyId    = "cs490-examquestion-list-empty-id";
-    self.examQuestionListHeaderId   = "cs490-examquestion-list-header-id";
-    self.examQuestionListId         = "cs490-examquestion-list-id";
-    self.examQuestionFormId         = "cs490-examquestion-form-id";
+    self.makeIds( "exam" );
+    self.makeIds( "examQuestion" );
+    self.makeIds( "examQuestionScores" );
     
-    self.examFeedbackId             = "cs490-examfeedback-id";
-    self.examFeedbackListId         = "cs490-examfeedback-list-id";
-    self.examFeedbackListEmptyId    = "cs490-examfeedback-list-empty-id";
-    self.examFeedbackListHeaderId   = "cs490-examfeedback-list-header-id";
-    self.examFeedbackFornId         = "cs490-examfeedback-form-id";
+    //self.examQuestionScoresId       = "cs490-examquestionscores-id";
+    //self.examQuestionScoresListId   = "cs490-examquestionscores-list-id";
+    //self.examQuestionScoresEmptyId  = "cs490-examquestionscores-list-empty-id";
+    //self.examQuestionScoresHeaderId = "cs490-examquestionscores-list-header-id";
+    //self.examQuestionScoresFormId   = "cs490-examquestionscores-form-id";
     
-    self.filteredQuestionListEmptyId = "cs490-filtered-question-list-empty-id";
-    self.filteredQuestionListHeaderId = "cs490-filtered-question-list-header-id";
-    self.filteredQuestionListId     = "cs490-filtered-question-list-id";
-    self.filteredQuestionFormId     = "cs490-filtered-question-form-id";
+    self.makeIds( "examFeedback" );
+    
+//    self.examFeedbackId             = "cs490-examfeedback-id";
+//    self.examFeedbackListId         = "cs490-examfeedback-list-id";
+//    self.examFeedbackListEmptyId    = "cs490-examfeedback-list-empty-id";
+//    self.examFeedbackListHeaderId   = "cs490-examfeedback-list-header-id";
+//    self.examFeedbackFornId         = "cs490-examfeedback-form-id";
+
+    self.makeIds( "filteredQuestion" );
+    
+//    self.filteredQuestionListEmptyId = "cs490-filteredquestion-list-empty-id";
+//    self.filteredQuestionListHeaderId = "cs490-filteredquestion-list-header-id";
+//    self.filteredQuestionListId     = "cs490-filteredquestion-list-id";
+//    self.filteredQuestionFormId     = "cs490-filteredquestion-form-id";
+    
     self.questionFilterFormId       = "cs490-question-filter-form-id";
     
     // data retrieval methods
@@ -120,6 +129,27 @@ function Instructor( instructorUcid, onPostError ) {
 
         post( "../exams.php", data, success, self.onPostError );
 
+    };
+    
+    self.getStudentExamQuestionScores = function() {
+
+        var data = {
+            ucid: self.currentExamUcid,
+            examId: self.currentExamId
+        };
+
+        var success = function( results ) {
+            stopActivity();
+            var found = results.length > 0;
+            self.examquestions = results;
+            createAndReplaceElementsById( self.examQuestionScoresListId, "tr", results, self.createExamQuestionScoreElement );
+            displayById( self.examQuestionScoresListEmptyId, !found );
+            displayById( self.examQuestionScoresListHeaderId, found );
+        };
+
+        post( "../studentExamQuestionScores.php", data, success, self.onPostError );
+
+        
     };
 
     self.getExamQuestions = function() {
@@ -332,14 +362,14 @@ function Instructor( instructorUcid, onPostError ) {
         var success = function( results ) {
 
             if ( results.success ) {
-                showError( "examName-error", "Exam Scored!", 3000, 
+                showError( "examname-error", "Exam Scored!", 3000, 
                 function () {
                     self.getExamFeedback();
-                    doTabClick( 4 );
+                    doTabClick( 5 );
                 } );
             }
             else {
-                showError( "examName-error", "Sorry, there was an error scoring the exam.", 3000 );
+                showError( "examname-error", "Sorry, there was an error scoring the exam.", 3000 );
             }
 
         };
@@ -350,9 +380,12 @@ function Instructor( instructorUcid, onPostError ) {
     
     self.previewScores = function () {
         
-        self.currentExamId = this.id;
+        var id = JSON.parse( this.id );
         
-        self.getExamFeedback();
+        self.currentExamId = id.examId;
+        self.currentExamUcid = id.ucid;
+        
+        self.getStudentExamQuestionScores();
         
         doTabClick( 4 );
         
@@ -392,6 +425,10 @@ function Instructor( instructorUcid, onPostError ) {
         return self.questions.find( function( elem ) {
             return elem.questionId == questionId;       // newly entered exams are ints
         });
+    };
+    
+    self.getFeedback = function() {
+        
     };
     
     self.getExam = function( examId ) {
@@ -435,6 +472,32 @@ function Instructor( instructorUcid, onPostError ) {
 
     };
     
+    self.createExamQuestionScoreElement = function( score ) {
+        
+        var tr = document.createElement( "tr" );
+        
+        tr.id = score.questionId;
+        
+        createLabel( null, score.question, tr );
+        
+        createLabel( null, score.answer, tr );
+        
+        var difficulty = [ "", "Easy", "Medium", "Hard" ];
+        
+        createLabel( null, difficulty[ score.difficulty ], tr );
+        
+        var scoreElem = createInput( score.questionId, "text", score.questionId, score.score, tr );
+        
+        scoreElem.className += " score";
+        
+        createLabel( null, score.possible, tr );
+        
+        createAnchor( "#", score.questionId, "Feedback", self.getFeedback, tr );
+        
+        return tr;
+        
+    };
+    
     self.createExamFeedbackElement = function( examFeedback ) {
         
         var tr = document.createElement( "tr" );
@@ -472,6 +535,8 @@ function Instructor( instructorUcid, onPostError ) {
         
         createLabel( null, examFeedback.possible, tr );
         
+        createAnchor( "#", examFeedback.questionId, "Feedback", self.getFeedback, tr );
+        
         self.lastExamFeedback = examFeedback;
         
         return tr;
@@ -508,7 +573,9 @@ function Instructor( instructorUcid, onPostError ) {
 
         createAnchor( "#", exam.examId, "Score", self.scoreExam, tr );
         
-        createAnchor( "#", exam.examId, "Preview Scores", self.previewScores, tr );
+        var id = { examId: exam.examId, ucid: exam.ucid };
+        
+        createAnchor( "#", JSON.stringify( id ), "Preview Scores", self.previewScores, tr );
 
         return tr;
 

@@ -23,7 +23,8 @@
             <a href="#" onclick="doTabClick( 1 );">Question Test Cases</a>
             <a href="#" onclick="doTabClick( 2 );">Exams</a>
             <a href="#" onclick="doTabClick( 3 );">Exam Questions</a>
-            <a href="#" onclick="doTabClick( 4 );">Exam Scores</a>
+            <a href="#" onclick="doTabClick( 4 );">Exam Score</a>
+            <a href="#" onclick="doTabClick( 5 );">Question Feedback</a>
         </div>
         
         <div id="tabs_data">
@@ -225,7 +226,7 @@
                 </div>
 
                 <div>
-                    <label class="error" id="examName-error"></label>
+                    <label class="error" id="examname-error"></label>
                 </div>
 
             </fieldset>
@@ -270,10 +271,10 @@
                     
                 </form>
                 
-                <form action="#" id="cs490-filtered-question-form-id">
+                <form action="#" id="cs490-filteredquestion-form-id">
                     
-                    <label id="cs490-filtered-question-list-empty-id" class="message-label list">No questions found</label>
-                    <table id="cs490-filtered-question-list-header-id" class="list">
+                    <label id="cs490-filteredquestion-list-empty-id" class="message-label list">No questions found</label>
+                    <table id="cs490-filteredquestion-list-header-id" class="list">
                         <thead class="filter-head">
                             <tr class="filter">
                                 <th></th>
@@ -288,7 +289,7 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="cs490-filtered-question-list-id" class="filter-body">
+                        <tbody id="cs490-filteredquestion-list-id" class="filter-body">
                         </tbody>
                     </table>
                     
@@ -319,17 +320,42 @@
             
             <fieldset>
                 
+                <div class="field">
+                    <label class="bold">Current Exam:</label>
+                    <label id="cs490-examquestionscores-id"></label>
+                </div>
+                
+                <div>
+                    <label id="cs490-examquestionscores-list-empty-id" class="message-label list">No scores found</label>
+                    <table id="cs490-examquestionscores-list-header-id" class="list">
+                        <thead>
+                            <tr>
+                                <th class="feedback-question">Question</th>
+                                <th class="feedback-answer">Answer</th>
+                                <th>Difficulty</th>
+                                <th>Score</th>
+                                <th>Possible</th>
+                                <th>Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cs490-examquestionscores-list-id">
+                        </tbody>
+                    </table>
+                </div>
+
+                
+            </fieldset>
+            
+            <fieldset>
+                
                 <div>
                     <label id="cs490-examfeedback-list-empty-id" class="message-label list">No scores found</label>
                     <table id="cs490-examfeedback-list-header-id" class="list">
                         <thead>
                             <tr>
-                                <th class="feedback-question">Question</th>
-                                <th class="feedback-answer">Answer</th>
                                 <th class="feedback-category">Score Category</th>
                                 <th>Correct?</th>
                                 <th>Score</th>
-                                <th>Possible</th>
                             </tr>
                         </thead>
                         <tbody id="cs490-examfeedback-list-id">
@@ -347,16 +373,16 @@
             </div>
         </div>
         
-        <script type="text/javascript" src="../js/cs490.js?v=r1"></script>
-        <script type="text/javascript" src="../js/cookies.js?v=r1"></script>
-        <script type="text/javascript" src="../js/http.js?v=r1"></script>
-        <script type="text/javascript" src="../js/dom.js?v=r1"></script>
-        <script type="text/javascript" src="../js/utils.js?v=r1"></script>
-        <script type="text/javascript" src="../js/bindings.js?v=r1"></script>
-        <script type="text/javascript" src="../js/ui.js?v=r1"></script>
-        <script type="text/javascript" src="../js/activity.js?v=r1"></script>
+        <script type="text/javascript" src="../js/cs490.js?v=r2"></script>
+        <script type="text/javascript" src="../js/cookies.js?v=r2"></script>
+        <script type="text/javascript" src="../js/http.js?v=r2"></script>
+        <script type="text/javascript" src="../js/dom.js?v=r2"></script>
+        <script type="text/javascript" src="../js/utils.js?v=r2"></script>
+        <script type="text/javascript" src="../js/bindings.js?v=r2"></script>
+        <script type="text/javascript" src="../js/ui.js?v=r2"></script>
+        <script type="text/javascript" src="../js/activity.js?v=r2"></script>
         
-        <script type="text/javascript" src="instructor.js?v=r1"></script>
+        <script type="text/javascript" src="instructor.js?v=r2"></script>
         
         <script type="text/javascript">
             

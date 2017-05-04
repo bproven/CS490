@@ -11,7 +11,7 @@ function createAndAddElement( elem, create, parent ) {
 }
 
 function createAndAddElementById( elem, create, parentId ) {
-    var parent = document.getElementById( parentId );
+    var parent = getElementById( parentId );
     createAndAddElement( elem, create, parent );
 }
 
@@ -22,7 +22,7 @@ function createAndAddElements( elems, create, parent ) {
 };
 
 function createAndAddElementsById( elems, create, parentId ) {
-    var parent = document.getElementById( parentId );
+    var parent = getElementById( parentId );
     createAndAddElements( elems, create, parent );
 }
 
@@ -40,12 +40,12 @@ function clearElements( parent, tag ) {
 }
 
 function clearElementsById( parentId, tag ) {
-    var parent = document.getElementById( parentId );
+    var parent = getElementById( parentId );
     clearElements( parent, tag );
 }
 
 function createAndReplaceElementsById( parentId, tag, elems, create ) {
-    var parent = document.getElementById( parentId );
+    var parent = getElementById( parentId );
     clearElements( parent, tag );
     createAndAddElements( elems, create, parent );
 }
@@ -79,11 +79,11 @@ function formNameToObject( form ) {
 }
 
 function formToObjectById( formId ) {
-    var form = document.getElementById( formId );
+    var form = getElementById( formId );
     return formToObject( form );
 }
 
 function formNameToObjectById( formId ) {
-    var form = document.getElementById( formId );
+    var form = getElementById( formId );
     return formNameToObject( form );
 }

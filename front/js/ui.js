@@ -6,7 +6,7 @@
  */
 
 function showError( id, error, time, onTimer ) {
-    var elem = document.getElementById( id );
+    var elem = getElementById( id );
     displayLabel( elem, true, error );
     if ( time !== undefined || time !== null || time <= 0 ) {
         time = 3000;
@@ -24,7 +24,7 @@ function display( elem, show ) {
 }
 
 function displayById( elemId, show ) {
-    var elem = document.getElementById( elemId );
+    var elem = getElementById( elemId );
     display( elem, show );
 }
 
@@ -34,7 +34,7 @@ function displayLabel( elem, show, text ) {
 }
 
 function displayLabelById( id, show, text ) {
-    var elem = document.getElementById( id );
+    var elem = getElementById( id );
     displayLabel( elem, show, text );
 }
 
@@ -69,7 +69,7 @@ function tabClick( tabs, tabs_data, oldx, newx ) {
 
 function startActivity() {
     return;
-    var elem = document.getElementById( "activity-loading-id" );
+    var elem = getElementById( "activity-loading-id" );
     if ( !isEmpty( elem ) ) {
         elem.classList.remove( "hide" );
     }
@@ -77,7 +77,7 @@ function startActivity() {
 
 function stopActivity() {
     return;
-    var elem = document.getElementById( "activity-loading-id" );
+    var elem = getElementById( "activity-loading-id" );
     if ( !isEmpty( elem ) ) {
         elem.className = "hide";
     }

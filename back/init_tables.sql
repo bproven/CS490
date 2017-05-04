@@ -6,14 +6,14 @@
 
 insert into `cs490_Question` 
     values  
-            (1,'Write a function named cubed that returns the cube of the passed in float\n','float',null,null,null,'float',0,'cubed',0,0,0,0),
-            (2,'Write a function named add that returns the sum of two floats.','float','float',null,null,'float',0,'add',0,0,0,0),
-            (3,'Write a function named multiply that multiplies two floats and returns the result.','float','float',null,null,'float',0,'multiply',0,0,0,0),
-            (4,'Write a function named square that returns the square of the passed in integer.','int',null,null,null,'int',0,'square',0,0,0,0),
-            (5,'Using recursion, write a function named sum that returns the sum of the numbers from 1 to the passed in integer.','int',null,null,null,'int',2,'sum',0,0,0,1),
-            (6,'Using a while loop, write a function named fact that returns the factorial of the passed in integer.','int',null,null,null,'int',1,'fact',0,1,0,0),
-            (7,'Using if statements, write a function named binaryOp that takes a float, string operator and another float and returns the result.','float','String','float',null,'float',1,'binaryOp',1,0,0,0),
-            (8,"Using a for loop, write a function named power that returns the first integer to the second's power.",'int','int',null,null,'int',1,'power',0,0,1,0);
+            (1,'Write a function named cubed that returns the cube of the passed in float\n','float',null,null,null,'float',1,'cubed',0,0,0,0),
+            (2,'Write a function named add that returns the sum of two floats.','float','float',null,null,'float',1,'add',0,0,0,0),
+            (3,'Write a function named multiply that multiplies two floats and returns the result.','float','float',null,null,'float',1,'multiply',0,0,0,0),
+            (4,'Write a function named square that returns the square of the passed in integer.','int',null,null,null,'int',1,'square',0,0,0,0),
+            (5,'Using recursion, write a function named sum that returns the sum of the numbers from 1 to the passed in integer.','int',null,null,null,'int',3,'sum',0,0,0,1),
+            (6,'Using a while loop, write a function named fact that returns the factorial of the passed in integer.','int',null,null,null,'int',2,'fact',0,1,0,0),
+            (7,'Using if statements, write a function named binaryOp that takes a float, string operator and another float and returns the result.','float','String','float',null,'float',2,'binaryOp',1,0,0,0),
+            (8,"Using a for loop, write a function named power that returns the first integer to the second's power.",'int','int',null,null,'int',2,'power',0,0,1,0);
 
 alter table cs490_Question 
     auto_increment = 9;

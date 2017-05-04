@@ -121,9 +121,17 @@ function createOption( id, text ) {
     
 }
 
+function getElementById( id ) {
+    var elem = document.getElementById( id );
+    if ( elem === null ) {
+        console.debug( "element not found", id );
+    }
+    return elem;
+}
+
 function checkAllByFormId( formId, type, check )
 {
-    var form = document.getElementById( formId );
+    var form = getElementById( formId );
     
     var checkboxes = form.getElementsByTagName( 'input' );
  

@@ -13,7 +13,7 @@ $examId = $query->examId;
 header( "Content-type: application/json" );
 
 echo execQueryToJSON( 
-        "select s.*, q.question, a.answer
+        "select s.*, q.question, q.difficulty, a.answer
            from cs490_StudentExamQuestionScore s
            join cs490_Question q on q.questionId = s.questionId
            join cs490_ExamQuestionAnswer a 

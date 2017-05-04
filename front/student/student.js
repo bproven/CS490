@@ -86,7 +86,7 @@ function Student( studentUcid, onPostError ) {
     
     };
 
-    self.getExamAnswers = function() {
+    self.getExamQuestionScores = function() {
 
         var data = {
             ucid: self.studentUcid,
@@ -152,7 +152,7 @@ function Student( studentUcid, onPostError ) {
 
     self.saveTest = function() {
     
-        var form = document.getElementById( "test" );
+        var form = getElementById( "test" );
 
         var data = {
             ucid: self.studentUcid,
@@ -191,7 +191,7 @@ function Student( studentUcid, onPostError ) {
     };
 
     self.selectExamGrade = function() {
-        self.getExamAnswers();
+        self.getExamQuestionScores();
         doTabClick( 3 );
     };
 

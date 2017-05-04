@@ -12,8 +12,10 @@ $ownerId = $query->ownerId;
 header( "Content-type: application/json" );
 
 echo execQueryToJSON( 
-        "select examId, examName 
-           from cs490_Exam
+        "select e.examId, e.examName, s.ucid
+           from cs490_Exam e
+      left join cs490_StudentExamScore s
+             on e.examId = s.examId
           where ownerId = '$ownerId'
        order by examName" );
 
