@@ -138,6 +138,9 @@ function Instructor( instructorUcid, onPostError ) {
             examId: self.currentExamId
         };
 
+        displayById( self.examQuestionScoresListEmptyId,  false );
+        displayById( self.examQuestionScoresListHeaderId, false );
+        
         var success = function( results ) {
             stopActivity();
             var found = results.length > 0;
@@ -148,7 +151,6 @@ function Instructor( instructorUcid, onPostError ) {
         };
 
         post( "../studentExamQuestionScores.php", data, success, self.onPostError );
-
         
     };
 
@@ -158,6 +160,9 @@ function Instructor( instructorUcid, onPostError ) {
             examId: self.currentExamId
         };
 
+        displayById( self.examQuestionListEmptyId,  false );
+        displayById( self.examQuestionListHeaderId, false );
+        
         var success = function( results ) {
             stopActivity();
             var found = results.length > 0;
@@ -474,6 +479,8 @@ function Instructor( instructorUcid, onPostError ) {
     
     self.createExamQuestionScoreElement = function( score ) {
         
+        console.debug( score );
+        
         var tr = document.createElement( "tr" );
         
         tr.id = score.questionId;
@@ -482,9 +489,7 @@ function Instructor( instructorUcid, onPostError ) {
         
         createLabel( null, score.answer, tr );
         
-        var difficulty = [ "", "Easy", "Medium", "Hard" ];
-        
-        createLabel( null, difficulty[ score.difficulty ], tr );
+        createLabel( null, self.getDifficulty( score.difficulty ), tr );
         
         var scoreElem = createInput( score.questionId, "text", score.questionId, score.score, tr );
         
@@ -634,7 +639,7 @@ function Instructor( instructorUcid, onPostError ) {
     
     self.getDifficulty = function( difficulty ) {
       
-        var diffs = [ "Easy", "Medium", "Hard" ];
+        var diffs = [ "", "Easy", "Medium", "Hard" ];
 
         var diff = diffs[ difficulty ];
 

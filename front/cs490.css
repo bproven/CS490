@@ -59,6 +59,10 @@ td {
     font-weight: bold;
 }
 
+.left {
+    float: left;
+}
+
 form .login-form {
     width: 320px;
 }
