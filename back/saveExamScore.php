@@ -54,7 +54,7 @@ $content = trim(file_get_contents("php://input"));
 //                ] 
 //            }';
 
-//$content = file_get_contents( "json.log" );
+//$content = file_get_contents( "score.json" );
 
 function makeQuestion( $ucid, $examId, $object ) 
 {

@@ -56,7 +56,12 @@
                         <label for="functionName">Function Name:</label>
                         <input type="text" id="functionName" name="functionName" />
                         <label for="difficulty">Difficulty:</label>
-                        <input class="arg" id="difficulty" name="difficulty" list="difficulties" />
+                        <select class="arg" id="difficulty" name="difficulty">
+                            <option value=""></option>
+                            <option value="1">Easy</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Hard</option>
+                        </select>
                     </div>
 
                     <div>
@@ -374,7 +379,7 @@
                     <table id="cs490-examfeedback-list-header-id" class="list">
                         <thead>
                             <tr>
-                                <th class="feedback-category">Score Category</th>
+                                <th class="feedback-category">Description</th>
                                 <th>Correct?</th>
                                 <th>Score</th>
                             </tr>

@@ -16,7 +16,6 @@ function Instructor( instructorUcid, onPostError ) {
     // currently selected
     self.currentExamId = null;
     self.currentQuestionId = null;
-    self.currentExam = null;
     self.currentExamGrade = null;
 
     // current data
@@ -58,7 +57,7 @@ function Instructor( instructorUcid, onPostError ) {
             self.questions = results;
             createAndReplaceElementsById( self.questionListId, "tr", results, 
                 function( question ) { 
-                    return self.createQuestionElement( question, true ); 
+                    return self.createQuestionElement( question ); 
                 } );
             displayById( self.questionListEmptyId, !found );
             displayById( self.questionListHeaderId, found );
@@ -76,6 +75,9 @@ function Instructor( instructorUcid, onPostError ) {
             questionId: self.currentQuestionId 
         };
 
+        displayById( self.testCaseListEmptyId, false );
+        displayById( self.testCaseListHeaderId, false );
+        
         var success = function( results ) {
             stopActivity();
             var found = results.length > 0;
@@ -202,8 +204,6 @@ function Instructor( instructorUcid, onPostError ) {
         
     };
     
-
-    
 //    self.getExamFeedback = function() {
 //
 //        var data = {
@@ -242,7 +242,9 @@ function Instructor( instructorUcid, onPostError ) {
             var success = function( results ) {
 
                 stopActivity();
-                //console.log( results );
+
+                displayById( self.questionListEmptyId, false );
+                displayById( self.questionListHeaderId, false );
 
                 if ( results.success ) {
                     object.questionId = results.questionId;
@@ -250,7 +252,6 @@ function Instructor( instructorUcid, onPostError ) {
                     createAndAddElementById( object, self.createQuestionElement, self.questionListId );
                     displayById( self.questionListEmptyId, false );
                     displayById( self.questionListHeaderId, true );
-                    createAndAddElementById( object, self.createQuestionOptionElement, "questions-list" );
                 }
 
             };
@@ -362,28 +363,6 @@ function Instructor( instructorUcid, onPostError ) {
 
     };
     
-    // not implemented
-//    self.deleteQuestion = function() {
-//        
-//        var questionId = this.id;
-//
-//        var data = {
-//            questionId: questionId
-//        };
-//
-//        var success = function( results ) {
-//
-//            stopActivity();
-//            
-//            if ( results.success ) {
-//            }
-//
-//        };
-//
-//        //post( "../deleteQuestion.php", data, success, self.onPostError );
-//        
-//    };
-
     self.scoreExam = function() {
 
         self.currentExamId = this.id;
@@ -475,7 +454,7 @@ function Instructor( instructorUcid, onPostError ) {
       
         self.currentExamId = this.id;
         
-        var exam = self.getCurrentExam();
+        var exam = self.currentExam();
         
         displayLabelById( self.examQuestionId, true, exam.examName );
         
@@ -511,7 +490,7 @@ function Instructor( instructorUcid, onPostError ) {
         return currentExam;
     };
     
-    self.createQuestionElement = function( question, deleteLink, select ) {
+    self.createQuestionElement = function( question, select ) {
 
         var tr = document.createElement( "tr" );
         
@@ -536,11 +515,6 @@ function Instructor( instructorUcid, onPostError ) {
         createLabel( null, boolToString( question.hasRecursion ), tr );
         
         createAnchor( "#", question.questionId, "Test Cases", self.manageTestCases, tr );
-
-        if ( deleteLink ) {
-            // TODO: not implemented
-            //createAnchor( "#", question.questionId, "Delete", self.deleteQuestion, tr );
-        }
 
         return tr;
 
@@ -576,42 +550,17 @@ function Instructor( instructorUcid, onPostError ) {
         
         var tr = document.createElement( "tr" );
         
-        tr.id = examFeedback.feedbackId;
-        
-        var question = examFeedback.question;
-        var answer = examFeedback.answer;
-        
-        if ( self.lastExamFeedback !== null && question === self.lastExamFeedback.question ) {
-            question = null;
-        }
-        
-        if ( self.lastExamFeedback !== null && answer === self.lastExamFeedback.answer ) {
-            answer = null;
-        }
-        
-        createLabel( null, question, tr );
-        
-        createLabel( null, answer, tr );
-        
         createLabel( null, examFeedback.description, tr );
         
         var correct = examFeedback.correct == "1";
-        
-        //createCheckbox( examFeedback.feedbackId, examFeedback.feedbackId, examFeedback.correct == "1", tr );
         
         var correctLabel = createLabel( null, correct ? "yes" : "no", tr );
         
         correctLabel.className += correct ?  " feedback-correct" : " feedback-incorrect";
         
-        var score = createInput( examFeedback.feedbackId, "text", examFeedback.feedbackId, examFeedback.score, tr );
+        var result = '( ' + examFeedback.score + ' / ' + examFeedback.possible + ' )';
         
-        score.className += " score";
-        
-        createLabel( null, examFeedback.possible, tr );
-        
-        createAnchor( "#", examFeedback.questionId, "Feedback", self.getFeedback, tr );
-        
-        self.lastExamFeedback = examFeedback;
+        createLabel( null, result, tr );
         
         return tr;
         
@@ -807,7 +756,7 @@ function Instructor( instructorUcid, onPostError ) {
         
         createAndReplaceElementsById( self.filteredQuestionListId, "tr", filteredQuestions, 
             function( question ) { 
-                return self.createQuestionElement( question, false, true ); 
+                return self.createQuestionElement( question, true ); 
             } );
             
         displayById( self.filteredQuestionListEmptyId, !found );
