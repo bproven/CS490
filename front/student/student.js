@@ -113,6 +113,9 @@ function Student( studentUcid, onPostError ) {
             questionId: self.currentAnswerId
         };
 
+        displayById( self.examFeedbackListEmptyId, false );
+        displayById( self.examFeedbackListHeaderId, false );
+            
         var success = function( results ) {
             var found = results.length > 0;
             self.feedback = results;

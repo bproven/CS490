@@ -33,3 +33,23 @@ function contains( s, sub ) {
     }
     return result;
 }
+
+function formatGrade( grade ) {
+    return grade.toFixed( 1 );
+}
+
+function getGrade( score, possible ) {
+    return formatGrade( 100.0 * score / possible ) + ' %';
+}
+
+function makeIds( self, name, prefix ) {
+    if ( prefix === null || prefix === undefined ) {
+        prefix = "cs490";
+    }
+    self[ name + "Id" ]             = prefix + "-" + name.toLowerCase() + "-id";
+    self[ name + "FormId" ]         = prefix + "-" + name.toLowerCase() + "-form-id";
+    self[ name + "ListId" ]         = prefix + "-" + name.toLowerCase() + "-list-id";
+    self[ name + "ErrorId" ]        = prefix + "-" + name.toLowerCase() + "-error-id";
+    self[ name + "ListEmptyId" ]    = prefix + "-" + name.toLowerCase() + "-list-empty-id";
+    self[ name + "ListHeaderId" ]   = prefix + "-" + name.toLowerCase() + "-list-header-id";
+}

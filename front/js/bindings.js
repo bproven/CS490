@@ -87,3 +87,18 @@ function formNameToObjectById( formId ) {
     var form = getElementById( formId );
     return formNameToObject( form );
 }
+
+function formToObjectArray( form ) {
+    var array = [];
+    for ( var i = 0; i < form.elements.length; i++ ) {
+        var elem = form.elements[ i ];
+        var item = { id: elem.id, name: elem.name, value: elem.value };
+        array.push( item );
+    }
+    return array;
+}
+
+function formToObjectArrayById( formId ) {
+    var form = getElementById( formId );
+    return formToObjectArray( form );
+}

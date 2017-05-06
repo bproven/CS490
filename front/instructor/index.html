@@ -320,30 +320,51 @@
             
             <fieldset>
                 
-                <div class="field">
-                    <label class="bold">Current Exam:</label>
-                    <label id="cs490-examquestionscores-id"></label>
+                <div>
+                    <div class="field">
+                        <table>
+                            <tr>
+                                <td><label class="bold">Current Exam:</label></td>
+                                <td><label id="cs490-examquestionscores-id"></label></td>
+                            </tr>
+                            <tr>
+                                <td><label class="bold">Score:</label></td>
+                                <td><label id="cs490-examquestionscores-score-id"></label></td>
+                            </tr>
+                            <tr>
+                                <td><label class="bold">Grade:</label></td>
+                                <td><label id="cs490-examquestionscores-grade-id"></label></td>
+                            </tr>
+                        </table>
+                        <div>
+                            <label class="error" id="cs490-examquestionscores-error-id"></label>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="button" value="Save Scores" onclick="instructor.saveScores()">
+                    </div>
                 </div>
                 
                 <div>
                     <label id="cs490-examquestionscores-list-empty-id" class="message-label list">No scores found</label>
-                    <table id="cs490-examquestionscores-list-header-id" class="list">
-                        <thead>
-                            <tr>
-                                <th class="feedback-question">Question</th>
-                                <th class="feedback-answer">Answer</th>
-                                <th>Difficulty</th>
-                                <th>Score</th>
-                                <th>Possible</th>
-                                <th>Feedback</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cs490-examquestionscores-list-id">
-                        </tbody>
-                    </table>
+                    <form id="cs490-examquestionscores-form-id">
+                        <table id="cs490-examquestionscores-list-header-id" class="list">
+                            <thead>
+                                <tr>
+                                    <th class="feedback-question">Question</th>
+                                    <th class="feedback-answer">Answer</th>
+                                    <th>Difficulty</th>
+                                    <th>Score</th>
+                                    <th>Possible</th>
+                                    <th>Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cs490-examquestionscores-list-id">
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
 
-                
             </fieldset>
             
             <fieldset>

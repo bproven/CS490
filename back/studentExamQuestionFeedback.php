@@ -3,7 +3,7 @@
 include_once "query.php";
 
 $data = trim(file_get_contents("php://input"));
-//$data = '{ "ucid": "rap9", "examId": 1, "questionId": 23 }';
+//$data = '{ "ucid": "rap9", "examId": "1", "questionId": "1" }';
 
 $query = json_decode( $data );
 
@@ -22,8 +22,8 @@ echo execQueryToJSON(
              on f.ucid = a.ucid 
             and f.examId = a.examId
             and f.questionId = a.questionId           
-          where ucid = '$ucid'
-            and examId = $examId
-            and questionId = $questionId" );
+          where f.ucid = '$ucid'
+            and f.examId = $examId
+            and f.questionId = $questionId" );
 
 ?>

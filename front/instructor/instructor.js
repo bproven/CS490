@@ -17,6 +17,7 @@ function Instructor( instructorUcid, onPostError ) {
     self.currentExamId = null;
     self.currentQuestionId = null;
     self.currentExam = null;
+    self.currentExamGrade = null;
 
     // current data
     self.questions = [];
@@ -28,46 +29,23 @@ function Instructor( instructorUcid, onPostError ) {
     self.lastExamFeedback = null;
     
     // ids
-    
-    self.makeIds = function( name ) {
-        self[ name + "Id" ]             = "cs490-" + name.toLowerCase() + "-id";
-        self[ name + "FormId" ]         = "cs490-" + name.toLowerCase() + "-form-id";
-        self[ name + "ListId" ]         = "cs490-" + name.toLowerCase() + "-list-id";
-        self[ name + "ErrorId" ]        = "cs490-" + name.toLowerCase() + "-error-id";
-        self[ name + "ListEmptyId" ]    = "cs490-" + name.toLowerCase() + "-list-empty-id";
-        self[ name + "ListHeaderId" ]   = "cs490-" + name.toLowerCase() + "-list-header-id";
-    };
-            
-    self.makeIds( "question" );
-    self.makeIds( "testCase" );
+
+    makeIds( self, "question" );
+    makeIds( self, "testCase" );
             
     self.testCaseQuestionId         = "cs490-testcasequestion-id";
     self.testCaseQuestionSignatureId = "cs490-testcasequestion-signature-id";
     
-    self.makeIds( "exam" );
-    self.makeIds( "examQuestion" );
-    self.makeIds( "examQuestionScores" );
+    makeIds( self, "exam" );
+    makeIds( self, "examQuestion" );
+    makeIds( self, "examQuestionScores" );
     
-    //self.examQuestionScoresId       = "cs490-examquestionscores-id";
-    //self.examQuestionScoresListId   = "cs490-examquestionscores-list-id";
-    //self.examQuestionScoresEmptyId  = "cs490-examquestionscores-list-empty-id";
-    //self.examQuestionScoresHeaderId = "cs490-examquestionscores-list-header-id";
-    //self.examQuestionScoresFormId   = "cs490-examquestionscores-form-id";
+    self.examQuestionScoresScoreId  = "cs490-examquestionscores-score-id";
+    self.examQuestionScoresGradeId  = "cs490-examquestionscores-grade-id";
     
-    self.makeIds( "examFeedback" );
+    makeIds( self, "examFeedback" );
     
-//    self.examFeedbackId             = "cs490-examfeedback-id";
-//    self.examFeedbackListId         = "cs490-examfeedback-list-id";
-//    self.examFeedbackListEmptyId    = "cs490-examfeedback-list-empty-id";
-//    self.examFeedbackListHeaderId   = "cs490-examfeedback-list-header-id";
-//    self.examFeedbackFornId         = "cs490-examfeedback-form-id";
-
-    self.makeIds( "filteredQuestion" );
-    
-//    self.filteredQuestionListEmptyId = "cs490-filteredquestion-list-empty-id";
-//    self.filteredQuestionListHeaderId = "cs490-filteredquestion-list-header-id";
-//    self.filteredQuestionListId     = "cs490-filteredquestion-list-id";
-//    self.filteredQuestionFormId     = "cs490-filteredquestion-form-id";
+    makeIds( self, "filteredQuestion" );
     
     self.questionFilterFormId       = "cs490-question-filter-form-id";
     
@@ -131,6 +109,28 @@ function Instructor( instructorUcid, onPostError ) {
 
     };
     
+    self.getStudentExamGrade = function() {
+    
+        var data = {
+            ucid: self.currentExamUcid,
+            examId: self.currentExamId
+        };
+
+        var success = function( results ) {
+            var found = results.length > 0;
+            if ( found ) {
+                self.currentExamGrade = results[ 0 ];
+                var exam = self.currentExamGrade;
+                displayLabelById( self.examQuestionScoresId, true, exam.examName );
+                displayLabelById( self.examQuestionScoresScoreId, true, '( ' + exam.score + ' / ' + exam.possible + ' )' );
+                displayLabelById( self.examQuestionScoresGradeId, true, getGrade( exam.score, exam.possible ) );
+            }
+        };
+    
+        post( "../studentExamGrade.php", data, success, self.onPostError );
+    
+    };
+
     self.getStudentExamQuestionScores = function() {
 
         var data = {
@@ -176,24 +176,52 @@ function Instructor( instructorUcid, onPostError ) {
         
     };
     
-    self.getExamFeedback = function() {
-
+    self.getFeedback = function() {
+        
+        var id = this.id;
+        
         var data = {
-            examId: self.currentExamId
+            ucid: self.currentExamUcid,
+            examId: self.currentExamId,
+            questionId: id
         };
-
+        
+        displayById( self.examFeedbackListEmptyId, false );
+        displayById( self.examFeedbackListHeaderId, false );
+            
         var success = function( results ) {
-            stopActivity();
             var found = results.length > 0;
             self.feedback = results;
             createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createExamFeedbackElement );
             displayById( self.examFeedbackListEmptyId, !found );
             displayById( self.examFeedbackListHeaderId, found );
+            doTabClick( 5 );
         };
-
-        post( "../studentExamFeedback.php", data, success, onPostError );
-
+        
+        post( "../studentExamQuestionFeedback.php", data, success, self.onPostError );
+        
     };
+    
+
+    
+//    self.getExamFeedback = function() {
+//
+//        var data = {
+//            examId: self.currentExamId
+//        };
+//
+//        var success = function( results ) {
+//            stopActivity();
+//            var found = results.length > 0;
+//            self.feedback = results;
+//            createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createExamFeedbackElement );
+//            displayById( self.examFeedbackListEmptyId, !found );
+//            displayById( self.examFeedbackListHeaderId, found );
+//        };
+//
+//        post( "../studentExamFeedback.php", data, success, onPostError );
+//
+//    };
 
     // UI event handlers
     self.addQuestion = function() {
@@ -335,26 +363,26 @@ function Instructor( instructorUcid, onPostError ) {
     };
     
     // not implemented
-    self.deleteQuestion = function() {
-        
-        var questionId = this.id;
-
-        var data = {
-            questionId: questionId
-        };
-
-        var success = function( results ) {
-
-            stopActivity();
-            
-            if ( results.success ) {
-            }
-
-        };
-
-        //post( "../deleteQuestion.php", data, success, self.onPostError );
-        
-    };
+//    self.deleteQuestion = function() {
+//        
+//        var questionId = this.id;
+//
+//        var data = {
+//            questionId: questionId
+//        };
+//
+//        var success = function( results ) {
+//
+//            stopActivity();
+//            
+//            if ( results.success ) {
+//            }
+//
+//        };
+//
+//        //post( "../deleteQuestion.php", data, success, self.onPostError );
+//        
+//    };
 
     self.scoreExam = function() {
 
@@ -369,8 +397,9 @@ function Instructor( instructorUcid, onPostError ) {
             if ( results.success ) {
                 showError( "examname-error", "Exam Scored!", 3000, 
                 function () {
-                    self.getExamFeedback();
-                    doTabClick( 5 );
+                    self.getStudentExamGrade();
+                    self.getStudentExamQuestionScores();
+                    doTabClick( 4 );
                 } );
             }
             else {
@@ -390,9 +419,40 @@ function Instructor( instructorUcid, onPostError ) {
         self.currentExamId = id.examId;
         self.currentExamUcid = id.ucid;
         
+        self.getStudentExamGrade();
         self.getStudentExamQuestionScores();
         
         doTabClick( 4 );
+        
+    };
+    
+    self.saveScores = function () {
+        
+        var request = {
+            examId: self.currentExamId,
+            ucid: self.currentExamUcid,
+            scores: []
+        };
+        
+        var objects = formToObjectArrayById( self.examQuestionScoresFormId );
+        
+        objects.forEach( function( elem ) {
+            var score = { questionId: elem.id, score: elem.value };
+            request.scores.push( score );
+        });
+
+        var success = function( results ) {
+            if ( results.success ) {
+                self.getStudentExamGrade();
+                showError( self.examQuestionScoresErrorId, "Scores Saved!", 3000 );
+            }
+            else {
+                showError( self.examQuestionScoresErrorId, "Sorry, there was an error updating the exam question scores.", 3000 );
+            }
+
+        };
+        
+        post( "../saveScores.php", request, success, self.onPostError );
         
     };
     
@@ -415,7 +475,7 @@ function Instructor( instructorUcid, onPostError ) {
       
         self.currentExamId = this.id;
         
-        var exam = self.getExam( self.currentExamId );
+        var exam = self.getCurrentExam();
         
         displayLabelById( self.examQuestionId, true, exam.examName );
         
@@ -432,8 +492,8 @@ function Instructor( instructorUcid, onPostError ) {
         });
     };
     
-    self.getFeedback = function() {
-        
+    self.currentQuestion = function() {
+        return self.getQuestion( self.currentQuestionId );
     };
     
     self.getExam = function( examId ) {
@@ -441,7 +501,16 @@ function Instructor( instructorUcid, onPostError ) {
             return elem.examId === examId;
         });
     };
-
+    
+    self.currentExam = function() {
+        var currentExam = null;
+        var examId = self.currentExamId;
+        if ( examId !== null ) {
+            currentExam = self.getExam( examId );
+        }
+        return currentExam;
+    };
+    
     self.createQuestionElement = function( question, deleteLink, select ) {
 
         var tr = document.createElement( "tr" );

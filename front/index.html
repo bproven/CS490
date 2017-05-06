@@ -16,14 +16,23 @@
             
             <form action="login.php" id="login-form">
                 
+                <table>
+                    <tr>
+                        <td><label for="ucid">Username:</label></td>
+                        <td><input type="text" id="ucid" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="pass">Password:</label></td>
+                        <td><input type="password" id="pass" value="" /></td>
+                    </tr>
+                </table>
+                
                 <div class="field">
-                    <label for="ucid">Username:</label>
-                    <input type="text" id="ucid" value="" />
                 </div>
+                
                 <div class="field">
-                    <label for="pass">Password:</label>
-                    <input type="password" id="pass" value="" />
                 </div>
+                
                 <div class="field">
                 <input type="button" id="login" value="Login" onclick="postLogin()" />
                 </div>

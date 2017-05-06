@@ -141,4 +141,20 @@ function jsonInsertResult( $id, $idName, $getId = true ) {
     return json_encode( insertResult( $id, $idName, $getId ) );
 }
 
+function result( $success ) {
+    
+    $result = array(
+        "success"   => $success
+    );
+    
+    $results = (object)$result;
+            
+    return $results;
+    
+}
+
+function jsonResult( $success ) {
+    return json_encode( result( $success ) );
+}
+
 ?>
