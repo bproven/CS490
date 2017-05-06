@@ -6,6 +6,8 @@
  *     Created: May 5, 2017
  */
 
+include_once "callback.php";
+
 $data = file_get_contents( "score.json" );
 
 header( "Content-type: application/json" );
