@@ -12,7 +12,7 @@ include_once "scoring.php";
 set_time_limit( 600 );
 
 $content = trim(file_get_contents("php://input"));
-//$content = '{ "examId": "4" }';
+//$content = '{ "examId": "3" }';
 
 $rows = callback( "examStudents.php", $content );
 
