@@ -25,11 +25,11 @@ function Student( studentUcid, onPostError ) {
     self.feedback = [];
     self.questions = [];
     
-    makeIds( self, "exam-list" );
-    makeIds( self, "grade-list" );
-    makeIds( self, "answer-list" );
-    makeIds( self, "feedback-list" );
-    makeIds( self, "question-list" );
+    makeIds( self, "exam" );
+    makeIds( self, "grade" );
+    makeIds( self, "answer" );
+    makeIds( self, "feedback" );
+    makeIds( self, "question" );
     
     // ids
 //    self.examListEmptyId            = "cs490-exam-list-empty-id";
@@ -80,15 +80,15 @@ function Student( studentUcid, onPostError ) {
             examId: self.currentExamId
         };
 
-        displayById( self.examGradeListEmptyId, false );
-        displayById( self.examGradeListHeaderId, false );
+        displayById( self.gradeListEmptyId, false );
+        displayById( self.gradeListHeaderId, false );
             
         var success = function( results ) {
             var found = results.length > 0;
             self.grades = results;
-            createAndReplaceElementsById( self.examGradeListId, "tr", results, self.createExamGradeElement );
-            displayById( self.examGradeListEmptyId, !found );
-            displayById( self.examGradeListHeaderId, found );
+            createAndReplaceElementsById( self.gradeListId, "tr", results, self.createExamGradeElement );
+            displayById( self.gradeListEmptyId, !found );
+            displayById( self.gradeListHeaderId, found );
             if ( found ) {
                 //self.selectExamGrade();
             }
@@ -105,15 +105,15 @@ function Student( studentUcid, onPostError ) {
             examId: self.currentExamId
         };
 
-        displayById( self.examAnswerListEmptyId, false );
-        displayById( self.examAnswerListHeaderId, false );
+        displayById( self.answerListEmptyId, false );
+        displayById( self.answerListHeaderId, false );
             
         var success = function( results ) {
             var found = results.length > 0;
             self.answers = results;
-            createAndReplaceElementsById( self.examAnswerListId, "tr", results, self.createAnswerElement );
-            displayById( self.examAnswerListEmptyId, !found );
-            displayById( self.examAnswerListHeaderId, found );
+            createAndReplaceElementsById( self.answerListId, "tr", results, self.createAnswerElement );
+            displayById( self.answerListEmptyId, !found );
+            displayById( self.answerListHeaderId, found );
         };
 
         post( "../studentExamQuestionScores.php", data, success, self.onPostError );
@@ -128,15 +128,15 @@ function Student( studentUcid, onPostError ) {
             questionId: self.currentAnswerId
         };
 
-        displayById( self.examFeedbackListEmptyId, false );
-        displayById( self.examFeedbackListHeaderId, false );
+        displayById( self.feedbackListEmptyId, false );
+        displayById( self.feedbackListHeaderId, false );
             
         var success = function( results ) {
             var found = results.length > 0;
             self.feedback = results;
-            createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createFeedbackElement );
-            displayById( self.examFeedbackListEmptyId, !found );
-            displayById( self.examFeedbackListHeaderId, found );
+            createAndReplaceElementsById( self.feedbackListId, "tr", results, self.createFeedbackElement );
+            displayById( self.feedbackListEmptyId, !found );
+            displayById( self.feedbackListHeaderId, found );
         };
 
         post( "../studentExamQuestionFeedback.php", data, success, onPostError );
@@ -149,15 +149,15 @@ function Student( studentUcid, onPostError ) {
             examId: self.currentExamTestId
         };
 
-        displayById( self.examQuestionListEmptyId, false );
-        displayById( self.examQuestionListHeaderId, false );
+        displayById( self.questionListEmptyId, false );
+        displayById( self.questionListHeaderId, false );
             
         var success = function( results ) {
             var found = results.length > 0;
             self.questions = results;
-            createAndReplaceElementsById( self.examQuestionListId, "tr", results, self.createExamQuestionElement );
-            displayById( self.examQuestionListEmptyId, !found );
-            displayById( self.examQuestionListHeaderId, found );
+            createAndReplaceElementsById( self.questionListId, "tr", results, self.createExamQuestionElement );
+            displayById( self.questionListEmptyId, !found );
+            displayById( self.questionListHeaderId, found );
         };
 
         post( "../examQuestions.php", data, success, onPostError );
@@ -280,9 +280,13 @@ function Student( studentUcid, onPostError ) {
         var tr = document.createElement( "tr" );
 
         createLabel( null, feedback.description, tr );
+        
+        var correct = feedback.correct == "1";
 
-        createLabel( null, feedback.correct == "1" ? "yes" : "no", tr );
+        var correctLabel = createLabel( null, correct ? "yes" : "no", tr );
 
+        correctLabel.className += correct ?  " feedback-correct" : " feedback-incorrect";
+        
         createLabel( null, feedback.score, tr );
 
         return tr;
