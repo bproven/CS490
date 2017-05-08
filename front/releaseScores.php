@@ -11,7 +11,7 @@ include_once "callmiddle.php";
 set_time_limit( 600 );
 
 //$data = trim(file_get_contents("php://input"));
-$data = '{ "examId": 1 }';
+$data = '{ "examId": "1" }';
 
 header( "Content-type: application/json" );
 echo callmiddle( "releaseScores.php", $data );

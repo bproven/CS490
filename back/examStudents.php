@@ -9,7 +9,7 @@
 include_once "query.php";
 
 $content = trim(file_get_contents("php://input"));
-//$content = '{ "examId": 1 }';
+//$content = '{ "examId": "4" }';
 
 $query = json_decode( $content );
 

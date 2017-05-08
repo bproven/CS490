@@ -17,6 +17,7 @@ function Instructor( instructorUcid, onPostError ) {
     self.currentExamId = null;
     self.currentQuestionId = null;
     self.currentExamGrade = null;
+    self.currentExamUcid = null;
 
     // current data
     self.questions = [];
@@ -24,8 +25,6 @@ function Instructor( instructorUcid, onPostError ) {
     self.testcases = [];
     self.examquestions = [];
     self.feedback = [];
-    
-    self.lastExamFeedback = null;
     
     // ids
 
@@ -61,7 +60,6 @@ function Instructor( instructorUcid, onPostError ) {
                 } );
             displayById( self.questionListEmptyId, !found );
             displayById( self.questionListHeaderId, found );
-            //createAndReplaceElementsById( "questions-list", "option", results, self.createQuestionOptionElement );
             self.filterQuestions();
         };
 
@@ -204,25 +202,6 @@ function Instructor( instructorUcid, onPostError ) {
         
     };
     
-//    self.getExamFeedback = function() {
-//
-//        var data = {
-//            examId: self.currentExamId
-//        };
-//
-//        var success = function( results ) {
-//            stopActivity();
-//            var found = results.length > 0;
-//            self.feedback = results;
-//            createAndReplaceElementsById( self.examFeedbackListId, "tr", results, self.createExamFeedbackElement );
-//            displayById( self.examFeedbackListEmptyId, !found );
-//            displayById( self.examFeedbackListHeaderId, found );
-//        };
-//
-//        post( "../studentExamFeedback.php", data, success, onPostError );
-//
-//    };
-
     // UI event handlers
     self.addQuestion = function() {
 
@@ -252,6 +231,7 @@ function Instructor( instructorUcid, onPostError ) {
                     createAndAddElementById( object, self.createQuestionElement, self.questionListId );
                     displayById( self.questionListEmptyId, false );
                     displayById( self.questionListHeaderId, true );
+                    self.filterQuestions();
                 }
 
             };
@@ -271,7 +251,7 @@ function Instructor( instructorUcid, onPostError ) {
 
         if ( verified ) {
 
-            object.ownerId = instructorUcid;
+            object.ownerId = self.instructorUcid;
 
             var success = function( results ) {
 
@@ -279,6 +259,7 @@ function Instructor( instructorUcid, onPostError ) {
             
                 if ( results.success ) {
                     object.examId = results.examId;
+                    object.ucid = null;
                     self.exams.push( object );
                     createAndAddElementById( object, self.createExamElement, self.examListId );
                     displayById( self.examListEmptyId, false );
@@ -374,6 +355,9 @@ function Instructor( instructorUcid, onPostError ) {
         var success = function( results ) {
 
             if ( results.success ) {
+                if ( results.ucids !== null && results.ucids !== undefined && results.ucids.length > 0 ) {
+                    self.currentExamUcid = results.ucids[ 0 ]; // take only the first.
+                }
                 showError( "examname-error", "Exam Scored!", 3000, 
                 function () {
                     self.getStudentExamGrade();
@@ -477,7 +461,7 @@ function Instructor( instructorUcid, onPostError ) {
     
     self.getExam = function( examId ) {
         return self.exams.find( function( elem ) {
-            return elem.examId === examId;
+            return elem.examId == examId;
         });
     };
     
@@ -593,12 +577,16 @@ function Instructor( instructorUcid, onPostError ) {
         createLabel( null, exam.examName, tr );
         
         createAnchor( "#", exam.examId, "Manage Questions", self.manageExamQuestions, tr );
+        
+        createAnchor( "#", exam.examId, "Score Exam", self.scoreExam, tr );
 
-        createAnchor( "#", exam.examId, "Score", self.scoreExam, tr );
+        if ( exam.ucid !== null ) {
+
+            var id = { examId: exam.examId, ucid: exam.ucid };
+
+            createAnchor( "#", JSON.stringify( id ), "Preview Scores", self.previewScores, tr );
         
-        var id = { examId: exam.examId, ucid: exam.ucid };
-        
-        createAnchor( "#", JSON.stringify( id ), "Preview Scores", self.previewScores, tr );
+        }
 
         return tr;
 

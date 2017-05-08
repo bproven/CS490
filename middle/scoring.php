@@ -25,6 +25,7 @@ function makeQuestion( $answer, $argTypes, $score, $possible )
     return (object) array(
         "questionId"    => $answer->questionId,
         "functionName"  => $answer->functionName,
+        "difficulty"    => $answer->difficulty,
         "hasIf"         => $answer->hasIf,
         "hasWhile"      => $answer->hasWhile,
         "hasFor"        => $answer->hasFor,
@@ -119,7 +120,7 @@ function compile( $file, &$results ) {
 
 function getTestCases( $questionId ) {
     
-    $data = '{ "questionId": ' . $questionId . ' }';
+    $data = '{ "questionId": "' . $questionId . '" }';
 
     header( "Content-type: application/json" );
     
@@ -152,7 +153,7 @@ function startsWith( $s, $sub ) {
     return substr( $s, 0, $length ) === $sub;
 }
 
-function generateSource( $file, $answer, $question, $number ) {
+function generateSource( $file, $answer, $question ) {
     
     $answerText = $answer->answer;
 
@@ -160,10 +161,11 @@ function generateSource( $file, $answer, $question, $number ) {
     $testCases = getTestCases( $question->questionId );
     
     $question->testCases = $testCases;
+    $number = $question->questionId;
     
-    if ( !startsWith( ltrim( $answer ), "static" ) ) {
-        $answer = "static $answer";
-    }
+//    if ( !startsWith( ltrim( $answerText ), "static" ) ) {
+//        $answerText = "static $answerText";
+//    }
     
     file_put_contents( $file, "public class test$number {" . PHP_EOL . PHP_EOL ); //create Java file and write, append code
     file_put_contents( $file, PHP_EOL . $answerText . PHP_EOL . PHP_EOL, FILE_APPEND );
@@ -206,7 +208,7 @@ function generateSource( $file, $answer, $question, $number ) {
                 $argType = $question->argTypes[ $index ];
                 $isString = false;
                 if ( !is_null( $argType ) ) {
-                    $isString = $argType == "String";
+                    $isString = strtolower( $argType ) == "string";
                 }
                 if ( strlen( $argvalue ) > 0 ) {
                     $argvalue = $argvalue . ", ";
@@ -236,9 +238,11 @@ function generateSource( $file, $answer, $question, $number ) {
     
 }
 
-function generateSourceAndCompile( $file, $answer, $question, &$results, $number ) {
+function generateSourceAndCompile( $file, $answer, $question, &$results ) {
     
-    generateSource( $file, $answer, $question, $number );
+    generateSource( $file, $answer, $question );
+    
+    $number = $question->questionId;
     
     $compiled = "test$number.class";
     
@@ -251,13 +255,15 @@ function generateSourceAndCompile( $file, $answer, $question, &$results, $number
     
 }
 
-function scoreCompilation( $answer, $question, $number ) {
+function scoreCompilation( $answer, $question ) {
+    
+    $number = $question->questionId;
     
     $file = "test$number.java";
     $score = 0;
     $results = array();
     
-    $correct = generateSourceAndCompile( $file, $answer, $question, $results, $number );
+    $correct = generateSourceAndCompile( $file, $answer, $question, $results );
 
     $feedback = "Function Compiled";
     
@@ -276,7 +282,9 @@ function scoreCompilation( $answer, $question, $number ) {
 
 }
 
-function scoreRun( $question, $number ) {
+function scoreRun( $question ) {
+    
+    $number = $question->questionId;
     
     $cmd = "java test$number";
     
@@ -327,13 +335,13 @@ function scoreRun( $question, $number ) {
 
             $score = 0;
 
-            if ( $correct == true ) {
+            if ( $correct === true ) {
                 $score = 1;
             }
             
             $score = $score * $difficulty;
 
-            $description = "testCase $testCaseId expected: $expectedResult, actual: $actualResult";
+            $description = "Test Case $testCaseId - expected: $expectedResult, actual: $actualResult";
 
             addfeedback( $question, $description, $correct, $score, $difficulty );
 
@@ -407,7 +415,7 @@ function scoreKeyword( $answer, $question, $has, $keyword ) {
     }
 }
 
-function scoreAnswer( $examScore, $answer, $number ) {
+function scoreAnswer( $examScore, $answer ) {
     
     $argTypes = [];
     
@@ -427,8 +435,8 @@ function scoreAnswer( $examScore, $answer, $number ) {
     scoreKeyword( $answer, $question, $question->hasIf == "1", "if" );
     scoreKeyword( $answer, $question, $question->hasWhile == "1", "while" );
     scoreKeyword( $answer, $question, $question->hasFor == "1", "for" );
-    scoreCompilation( $answer, $question, $number );
-    scoreRun( $question, $number );
+    scoreCompilation( $answer, $question );
+    scoreRun( $question );
     
     $examScore->score    = $examScore->score    + $question->score;
     $examScore->possible = $examScore->possible + $question->possible;
@@ -439,25 +447,26 @@ function scoreAnswer( $examScore, $answer, $number ) {
 function scoreExam( $data ) {
     
     $input = json_decode($data);
-
+    
     $results = callback( "studentExamAnswers.php", $data );
-    $answers = json_decode($results);
-
-    $examScore = makeExamScore( $input->ucid, $input->examId, 0, 0 );
+    $answers = json_decode( $results );
     
-    $number = 0;
+    $ucid = $input->ucid;
+    $examId = $input->examId;
 
+    $examScore = makeExamScore( $ucid, $examId, 0, 0 );
+    
     foreach ( $answers as $answer ) {
-        scoreAnswer( $examScore, $answer, $number );
-        $number = $number + 1;
+        scoreAnswer( $examScore, $answer );
     }
-    
+
     $json = json_encode( $examScore );
-    
-    file_put_contents( "score.json", $json );
-    
+
+    // for debugging
+    file_put_contents( "score$examId.json", $json );
+                
     return callback( "saveExamScore.php", $json );
-    
+
 }
 
 ?>

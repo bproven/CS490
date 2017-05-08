@@ -12,19 +12,22 @@ include_once "scoring.php";
 set_time_limit( 600 );
 
 $content = trim(file_get_contents("php://input"));
-//$content = '{ "examId": 1 }';
+//$content = '{ "examId": "4" }';
 
 $rows = callback( "examStudents.php", $content );
 
 $students = json_decode($rows);
 
 $result = (object) array (
-    "success" => true
+    "success" => true,
+    "ucids" => []
 );
         
 foreach ( $students as $student ) {
+    $result->ucids[] = $student->ucid;
     $data = json_encode( $student );
-    $result = json_decode(scoreExam( $data ));
+    $score_result = json_decode( scoreExam( $data ) );
+    $result->success = $score_result->success;
     if ( $result->success == false ) {
         break;
     }

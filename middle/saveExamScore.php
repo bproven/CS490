@@ -8,7 +8,7 @@
 
 include_once "callback.php";
 
-$data = file_get_contents( "score.json" );
+$data = file_get_contents( "score4.json" );
 
 header( "Content-type: application/json" );
 echo callback( "saveExamScore.php", $data );

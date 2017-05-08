@@ -3,7 +3,6 @@
 include_once "query.php";
 
 $data = trim(file_get_contents("php://input"));
-// TODO: select student
 //$data = '{ "examId": 1 }';
 
 $query = json_decode( $data );

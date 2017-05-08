@@ -3,4 +3,5 @@ userConfig.php
 *.class
 *.java
 *.log
-score.json
+score*.json
+

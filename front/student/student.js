@@ -25,26 +25,32 @@ function Student( studentUcid, onPostError ) {
     self.feedback = [];
     self.questions = [];
     
+    makeIds( self, "exam-list" );
+    makeIds( self, "grade-list" );
+    makeIds( self, "answer-list" );
+    makeIds( self, "feedback-list" );
+    makeIds( self, "question-list" );
+    
     // ids
-    self.examListEmptyId            = "cs490-exam-list-empty-id";
-    self.examListHeaderId           = "cs490-exam-list-header-id";
-    self.examListId                 = "cs490-exam-list-id";
-    
-    self.examGradeListEmptyId       = "cs490-grade-list-empty-id";
-    self.examGradeListHeaderId      = "cs490-grade-list-header-id";
-    self.examGradeListId            = "cs490-grade-list-id";
-    
-    self.examAnswerListEmptyId      = "cs490-answer-list-empty-id";
-    self.examAnswerListHeaderId     = "cs490-answer-list-header-id";
-    self.examAnswerListId           = "cs490-answer-list-id";
-    
-    self.examFeedbackListEmptyId    = "cs490-feedback-list-empty-id";
-    self.examFeedbackListHeaderId   = "cs490-feedback-list-header-id";
-    self.examFeedbackListId         = "cs490-feedback-list-id";
-    
-    self.examQuestionListEmptyId    = "cs490-question-list-empty-id";
-    self.examQuestionListHeaderId   = "cs490-question-list-header-id";
-    self.examQuestionListId         = "cs490-question-list-id";
+//    self.examListEmptyId            = "cs490-exam-list-empty-id";
+//    self.examListHeaderId           = "cs490-exam-list-header-id";
+//    self.examListId                 = "cs490-exam-list-id";
+//    
+//    self.examGradeListEmptyId       = "cs490-grade-list-empty-id";
+//    self.examGradeListHeaderId      = "cs490-grade-list-header-id";
+//    self.examGradeListId            = "cs490-grade-list-id";
+//    
+//    self.examAnswerListEmptyId      = "cs490-answer-list-empty-id";
+//    self.examAnswerListHeaderId     = "cs490-answer-list-header-id";
+//    self.examAnswerListId           = "cs490-answer-list-id";
+//    
+//    self.examFeedbackListEmptyId    = "cs490-feedback-list-empty-id";
+//    self.examFeedbackListHeaderId   = "cs490-feedback-list-header-id";
+//    self.examFeedbackListId         = "cs490-feedback-list-id";
+//    
+//    self.examQuestionListEmptyId    = "cs490-question-list-empty-id";
+//    self.examQuestionListHeaderId   = "cs490-question-list-header-id";
+//    self.examQuestionListId         = "cs490-question-list-id";
     
     // data retrieval methods
     self.getAllExams = function() {
@@ -52,6 +58,9 @@ function Student( studentUcid, onPostError ) {
         //displayById( "show-exams", true );
         //displayById( "take-test", false );
 
+        displayById( self.examListEmptyId, false );
+        displayById( self.examListHeaderId, false );
+            
         var success = function( results ) {
             var found = results.length > 0;
             self.exams = results;
@@ -71,6 +80,9 @@ function Student( studentUcid, onPostError ) {
             examId: self.currentExamId
         };
 
+        displayById( self.examGradeListEmptyId, false );
+        displayById( self.examGradeListHeaderId, false );
+            
         var success = function( results ) {
             var found = results.length > 0;
             self.grades = results;
@@ -93,6 +105,9 @@ function Student( studentUcid, onPostError ) {
             examId: self.currentExamId
         };
 
+        displayById( self.examAnswerListEmptyId, false );
+        displayById( self.examAnswerListHeaderId, false );
+            
         var success = function( results ) {
             var found = results.length > 0;
             self.answers = results;
@@ -134,6 +149,9 @@ function Student( studentUcid, onPostError ) {
             examId: self.currentExamTestId
         };
 
+        displayById( self.examQuestionListEmptyId, false );
+        displayById( self.examQuestionListHeaderId, false );
+            
         var success = function( results ) {
             var found = results.length > 0;
             self.questions = results;
